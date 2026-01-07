@@ -1,0 +1,470 @@
+import { useState } from 'react';
+import { ArrowRight, Code, Cloud, Brain, Network, Settings, Layers, Award, Rocket, Target, Github, Mail, X, Users, TrendingUp, Shield } from 'lucide-react';
+
+interface ServiceItem {
+  icon: any;
+  title: string;
+  description: string;
+  detailedContent: {
+    overview: string;
+    benefits: string[];
+    technologies?: string[];
+  };
+}
+
+export default function App() {
+  const [selectedItem, setSelectedItem] = useState<ServiceItem | null>(null);
+
+  const expertise: ServiceItem[] = [
+    {
+      icon: Users,
+      title: "Engineering Management & Leadership",
+      description: "Build high-performing teams and establish engineering excellence.",
+      detailedContent: {
+        overview: "Transform your engineering organization with proven leadership strategies. We help you build high-performing teams, establish best practices, efficient workflows, and create a culture of continuous improvement and innovation.",
+        benefits: [
+          "Build and scale high-performing engineering teams",
+          "Establish best practices and efficient workflows",
+          "Provide mentorship and technical guidance to developers",
+          "Foster a culture of continuous improvement and innovation",
+          "Implement agile methodologies tailored to your organization",
+          "Develop engineering processes and standards",
+          "Team performance optimization and KPI development"
+        ]
+      }
+    },
+    {
+      icon: Code,
+      title: "Full-Stack Development",
+      description: "End-to-end web application development from concept to production.",
+      detailedContent: {
+        overview: "Design and develop robust, scalable web applications with modern technologies. We deliver production-ready solutions that meet your business objectives, from initial concept through deployment and beyond.",
+        benefits: [
+          "Design and develop robust, scalable web applications",
+          "Create RESTful APIs and integrate third-party services",
+          "Implement responsive, user-friendly front-end interfaces",
+          "Ensure code quality through comprehensive testing and code reviews",
+          "Full project lifecycle management from concept to deployment",
+          "Database design and optimization",
+          "Performance optimization and scalability planning"
+        ],
+        technologies: ["React", "Node.js", "TypeScript", "Python", "PostgreSQL", "MongoDB", "REST APIs", "GraphQL"]
+      }
+    },
+    {
+      icon: Target,
+      title: "CTO as a Service",
+      description: "Strategic technical leadership and executive guidance on demand.",
+      detailedContent: {
+        overview: "Get executive-level technical leadership without the full-time commitment. Perfect for startups, growing companies, and organizations undergoing digital transformation. We provide strategic guidance for all your technology decisions.",
+        benefits: [
+          "Strategic technology planning and roadmap development",
+          "Technology stack evaluation and selection",
+          "Team structuring and hiring strategies",
+          "Technical due diligence for investors and M&A",
+          "Budget planning and resource allocation",
+          "Vendor evaluation and technology partnerships",
+          "Innovation strategy and competitive analysis",
+          "Risk assessment and mitigation planning",
+          "Board-level technical reporting and communication"
+        ]
+      }
+    }
+  ];
+
+  const services: ServiceItem[] = [
+    {
+      icon: Cloud,
+      title: "Cloud Solutions & DevOps Strategy",
+      description: "Modern cloud infrastructure and automated deployment pipelines.",
+      detailedContent: {
+        overview: "Design and implement scalable cloud infrastructure that reduces costs and improves reliability. We help you modernize your infrastructure with cloud-native solutions and DevOps best practices.",
+        benefits: [
+          "Design and implement scalable cloud infrastructure (AWS, Azure, GCP)",
+          "Automate deployment pipelines with CI/CD best practices",
+          "Optimize performance, cost, and security in cloud environments",
+          "Implement comprehensive monitoring, logging, and alerting",
+          "Disaster recovery planning and implementation",
+          "Container orchestration with Kubernetes and Docker",
+          "Infrastructure as Code (Terraform, CloudFormation)",
+          "Security hardening and compliance implementation"
+        ],
+        technologies: ["AWS", "Azure", "GCP", "Kubernetes", "Docker", "Terraform", "Jenkins", "GitLab CI/CD", "CloudFormation", "Ansible"]
+      }
+    },
+    {
+      icon: Brain,
+      title: "AI Consulting & Machine Learning",
+      description: "Custom AI/ML solutions and LLM integration for your business.",
+      detailedContent: {
+        overview: "Develop custom AI and machine learning solutions tailored to your business needs. From LLM integration to predictive analytics, we help you leverage the power of modern AI technologies to gain competitive advantages.",
+        benefits: [
+          "Develop custom AI/ML solutions tailored to your business needs",
+          "Integrate Large Language Models (LLMs) like ChatGPT into applications",
+          "Build recommendation systems, NLP models, and predictive analytics",
+          "Provide AI strategy consulting and proof-of-concept development",
+          "Data pipeline design and implementation",
+          "MLOps infrastructure and model deployment",
+          "Model training, fine-tuning, and optimization",
+          "AI ethics and responsible AI implementation"
+        ],
+        technologies: ["OpenAI GPT", "ChatGPT", "PyTorch", "TensorFlow", "Hugging Face", "LangChain", "Scikit-learn", "Pandas", "NumPy"]
+      }
+    },
+    {
+      icon: Layers,
+      title: "Enterprise Architecture",
+      description: "Scalable system design and comprehensive technology roadmaps.",
+      detailedContent: {
+        overview: "Design resilient, scalable systems that grow with your business. We create comprehensive architecture strategies that align technology with business goals, ensuring long-term success and adaptability.",
+        benefits: [
+          "Enterprise system architecture design and documentation",
+          "Microservices and distributed systems architecture",
+          "API strategy, design, and integration planning",
+          "Technical debt assessment and reduction strategies",
+          "Scalability and performance optimization",
+          "Security architecture and compliance (GDPR, SOC2, ISO 27001)",
+          "Technology modernization and migration strategies",
+          "Architecture governance and standards"
+        ],
+        technologies: ["Microservices", "API Gateway", "Message Queues", "Event-Driven Architecture", "Service Mesh", "Domain-Driven Design"]
+      }
+    }
+  ];
+
+  const whyChoose = [
+    {
+      icon: Users,
+      title: "Experienced Leadership",
+      description: "Seasoned professionals with proven track records in leading technical teams and projects"
+    },
+    {
+      icon: Rocket,
+      title: "Innovative Solutions",
+      description: "Cutting-edge technologies and modern best practices to keep you ahead of the curve"
+    },
+    {
+      icon: Award,
+      title: "Proven Track Record",
+      description: "Successful projects across multiple industries and company stages"
+    },
+    {
+      icon: TrendingUp,
+      title: "Agile Management",
+      description: "Flexible methodologies that adapt to your workflow and business needs"
+    },
+    {
+      icon: Target,
+      title: "ROI-Focused",
+      description: "Clear business outcomes and measurable return on investment"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-border z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
+              <Code className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
+              <span className="text-lg sm:text-xl">TRENDev</span>
+            </div>
+          </div>
+          <nav className="hidden md:flex items-center gap-8">
+            <a href="#expertise" className="text-muted-foreground hover:text-foreground transition-colors">Expertise</a>
+            <a href="#services" className="text-muted-foreground hover:text-foreground transition-colors">Services</a>
+            <a href="#why-choose" className="text-muted-foreground hover:text-foreground transition-colors">Why Us</a>
+            <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</a>
+          </nav>
+          <button className="px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base">
+            Free Consultation
+          </button>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 border border-accent/20 rounded-full mb-6 sm:mb-8">
+            <span className="text-xs sm:text-sm">Empowering Enterprises and Startups to Scale with Confidence</span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl md:text-7xl mb-4 sm:mb-6 tracking-tight max-w-4xl mx-auto px-4">
+            Technology solutions that drive real business value
+          </h1>
+          <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto px-4">
+            From MVP to enterprise scale, we transform your technology challenges into competitive advantages. Expert engineering, cloud infrastructure, AI integration, and strategic leadership.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
+            <button className="px-5 sm:px-6 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base">
+              Schedule Free Consultation
+              <ArrowRight className="w-4 h-4" />
+            </button>
+            <button className="px-5 sm:px-6 py-2.5 sm:py-3 border border-border rounded-lg hover:bg-secondary transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base">
+              View Our Work
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Expertise Section */}
+      <section id="expertise" className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
+              Our Expertise
+            </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
+              Strategic consulting and leadership for your technology initiatives
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {expertise.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={index}
+                  onClick={() => setSelectedItem(item)}
+                  className="group p-6 sm:p-8 bg-white border border-border rounded-2xl hover:border-accent hover:shadow-lg transition-all duration-300 text-left w-full"
+                >
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 mb-4 sm:mb-6 bg-accent/10 rounded-xl flex items-center justify-center group-hover:bg-accent/20 transition-colors">
+                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />
+                  </div>
+                  <h3 className="mb-2 sm:mb-3 group-hover:text-accent transition-colors">
+                    {item.title}
+                  </h3>
+                  <p className="text-muted-foreground mb-3 sm:mb-4 text-sm sm:text-base">
+                    {item.description}
+                  </p>
+                  <div className="inline-flex items-center gap-2 text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-sm">Learn more</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section id="services" className="py-16 sm:py-24 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
+              Our Services
+            </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
+              Technical implementation and infrastructure solutions
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {services.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={index}
+                  onClick={() => setSelectedItem(item)}
+                  className="group p-6 sm:p-8 bg-white border border-border rounded-2xl hover:border-accent hover:shadow-lg transition-all duration-300 text-left w-full"
+                >
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 mb-4 sm:mb-6 bg-accent/10 rounded-xl flex items-center justify-center group-hover:bg-accent/20 transition-colors">
+                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />
+                  </div>
+                  <h3 className="mb-2 sm:mb-3 group-hover:text-accent transition-colors">
+                    {item.title}
+                  </h3>
+                  <p className="text-muted-foreground mb-3 sm:mb-4 text-sm sm:text-base">
+                    {item.description}
+                  </p>
+                  <div className="inline-flex items-center gap-2 text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-sm">Learn more</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Detail Modal */}
+      {selectedItem && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedItem(null)}
+        >
+          <div 
+            className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sticky top-0 bg-white border-b border-border px-6 sm:px-8 py-4 sm:py-6 flex items-start justify-between">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-accent/10 rounded-xl flex items-center justify-center shrink-0">
+                  {selectedItem.icon && <selectedItem.icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />}
+                </div>
+                <div>
+                  <h2 className="text-2xl sm:text-3xl mb-1 sm:mb-2">{selectedItem.title}</h2>
+                  <p className="text-muted-foreground text-sm sm:text-base">{selectedItem.description}</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setSelectedItem(null)}
+                className="p-2 hover:bg-secondary rounded-lg transition-colors shrink-0"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="px-6 sm:px-8 py-6 sm:py-8">
+              <div className="mb-8">
+                <h3 className="text-lg sm:text-xl mb-3 sm:mb-4">Overview</h3>
+                <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                  {selectedItem.detailedContent.overview}
+                </p>
+              </div>
+
+              <div className="mb-8">
+                <h3 className="text-lg sm:text-xl mb-3 sm:mb-4">What We Deliver</h3>
+                <ul className="space-y-3">
+                  {selectedItem.detailedContent.benefits.map((benefit, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 shrink-0" />
+                      <span className="text-muted-foreground text-sm sm:text-base">{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {selectedItem.detailedContent.technologies && (
+                <div className="mb-8">
+                  <h3 className="text-lg sm:text-xl mb-3 sm:mb-4">Technologies We Use</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedItem.detailedContent.technologies.map((tech, idx) => (
+                      <span key={idx} className="px-3 py-1.5 bg-secondary text-foreground rounded-lg text-xs sm:text-sm">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="pt-6 border-t border-border">
+                <button className="w-full sm:w-auto px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2">
+                  Get Started
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Why Choose TRENDev */}
+      <section id="why-choose" className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
+              Why Choose TRENDev
+            </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground">
+              Professional excellence meets innovative solutions
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {whyChoose.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <div key={index} className="text-center p-6 bg-white rounded-xl border border-border">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 bg-primary rounded-2xl flex items-center justify-center">
+                    <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-accent" />
+                  </div>
+                  <h3 className="mb-2 sm:mb-3">
+                    {item.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm sm:text-base">
+                    {item.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Technologies Section */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 bg-primary text-primary-foreground">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl mb-4 sm:mb-6">
+            Modern Technology Stack
+          </h2>
+          <p className="text-lg sm:text-xl opacity-90 mb-8 sm:mb-12 max-w-2xl mx-auto">
+            We work with cutting-edge technologies to deliver robust, scalable solutions
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            {['Cloud Platforms', 'AI & ML', 'DevOps Tools', 'Modern Frameworks'].map((tech, index) => (
+              <div key={index} className="p-4 sm:p-6 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                <p className="text-sm sm:text-base">{tech}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section id="contact" className="py-16 sm:py-24 px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gradient-to-br from-primary to-primary/80 rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-center text-white">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl mb-4 sm:mb-6">
+              Ready to elevate your technology?
+            </h2>
+            <p className="text-lg sm:text-xl opacity-90 mb-6 sm:mb-8 max-w-2xl mx-auto">
+              Schedule a free consultation to discuss your project and explore how we can help achieve your goals.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <button className="px-5 sm:px-6 py-2.5 sm:py-3 bg-accent text-accent-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base">
+                Book via Google Meet
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <a 
+                href="mailto:contact@trendev.fr"
+                className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg hover:bg-white/20 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
+                <Mail className="w-4 h-4" />
+                <span className="hidden sm:inline">contact@trendev.fr</span>
+                <span className="sm:hidden">Email us</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-border py-8 sm:py-12 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-6 sm:mb-8">
+            <div className="flex items-center gap-3">
+              <Code className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
+              <span className="text-lg sm:text-xl">TRENDev</span>
+            </div>
+            <nav className="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm sm:text-base">
+              <a href="#expertise" className="text-muted-foreground hover:text-foreground transition-colors">Expertise</a>
+              <a href="#services" className="text-muted-foreground hover:text-foreground transition-colors">Services</a>
+              <a href="#why-choose" className="text-muted-foreground hover:text-foreground transition-colors">Why Us</a>
+              <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</a>
+              <a href="https://github.com/trendev" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+                <Github className="w-4 h-4" />
+                GitHub
+              </a>
+            </nav>
+          </div>
+          <div className="text-center text-muted-foreground border-t border-border pt-6 sm:pt-8">
+            <p className="text-sm sm:text-base">© 2026 TRENDev Consulting. High-end technical solutions for modern businesses.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
