@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowRight, Code, Cloud, Brain, Network, Settings, Layers, Award, Rocket, Target, Github, Mail, X, Users, TrendingUp, Shield } from 'lucide-react';
+import { ArrowRight, Code, Cloud, Brain, Network, Settings, Layers, Award, Rocket, Target, Github, Mail, X, Users, TrendingUp, Shield, Coins } from 'lucide-react';
 
 interface ServiceItem {
   icon: any;
@@ -14,6 +14,7 @@ interface ServiceItem {
 
 export default function App() {
   const [selectedItem, setSelectedItem] = useState<ServiceItem | null>(null);
+  const [showConsultationModal, setShowConsultationModal] = useState(false);
 
   const expertise: ServiceItem[] = [
     {
@@ -38,7 +39,7 @@ export default function App() {
       title: "Full-Stack Development",
       description: "End-to-end web application development from concept to production.",
       detailedContent: {
-        overview: "Design and develop robust, scalable web applications with modern technologies. We deliver production-ready solutions that meet your business objectives, from initial concept through deployment and beyond.",
+        overview: "Leveraging a wide range of programming languages and frameworks to deliver comprehensive solutions. Design and develop robust, scalable web applications with modern technologies. We deliver production-ready solutions that meet your business objectives, from initial concept through deployment and beyond.",
         benefits: [
           "Design and develop robust, scalable web applications",
           "Create RESTful APIs and integrate third-party services",
@@ -48,7 +49,13 @@ export default function App() {
           "Database design and optimization",
           "Performance optimization and scalability planning"
         ],
-        technologies: ["React", "Node.js", "TypeScript", "Python", "PostgreSQL", "MongoDB", "REST APIs", "GraphQL"]
+        technologies: [
+          "Go", "Rust", "Java", "JavaEE/JakartaEE", "Eclipse MicroProfile", 
+          "TypeScript", "JavaScript", "Node.js", "Python",
+          "Angular", "React", "AngularJS", "NativeScript", "React Native",
+          "Solana", "Anchor", "Ethereum", "Solidity", "Avalanche", "ethers.js", "web3.js", "MetaMask",
+          "Kafka", "Stripe"
+        ]
       }
     },
     {
@@ -56,7 +63,7 @@ export default function App() {
       title: "CTO as a Service",
       description: "Strategic technical leadership and executive guidance on demand.",
       detailedContent: {
-        overview: "Get executive-level technical leadership without the full-time commitment. Perfect for startups, growing companies, and organizations undergoing digital transformation. We provide strategic guidance for all your technology decisions.",
+        overview: "Dedicated executive-level technical leadership that drives results. We become your committed technology partner, providing hands-on strategic guidance and execution support. From board presentations to team building, we deliver the full spectrum of CTO responsibilities with complete accountability for your technology success.",
         benefits: [
           "Strategic technology planning and roadmap development",
           "Technology stack evaluation and selection",
@@ -86,10 +93,39 @@ export default function App() {
           "Implement comprehensive monitoring, logging, and alerting",
           "Disaster recovery planning and implementation",
           "Container orchestration with Kubernetes and Docker",
-          "Infrastructure as Code (Terraform, CloudFormation)",
+          "Infrastructure as Code (Terraform, Pulumi)",
           "Security hardening and compliance implementation"
         ],
         technologies: ["AWS", "Azure", "GCP", "Kubernetes", "Docker", "Terraform", "Jenkins", "GitLab CI/CD", "CloudFormation", "Ansible"]
+      }
+    },
+    {
+      icon: Coins,
+      title: "Blockchain & Web3 Development",
+      description: "Smart contract development, security audits, and tokenomics design.",
+      detailedContent: {
+        overview: "Build secure, scalable blockchain solutions from smart contracts to full DeFi platforms. We provide end-to-end blockchain development including smart contract architecture, comprehensive security auditing, token engineering, and Web3 integration. Our expertise spans multiple blockchain ecosystems to deliver production-ready decentralized applications.",
+        benefits: [
+          "Smart contract development on Solana, Ethereum, and Avalanche",
+          "Comprehensive smart contract security audits and vulnerability assessment",
+          "Token engineering and tokenomics design",
+          "DeFi protocol development and optimization",
+          "NFT platform development and marketplace integration",
+          "Web3 wallet integration (MetaMask, Phantom, WalletConnect)",
+          "On-chain and off-chain architecture design",
+          "Gas optimization and transaction efficiency",
+          "Blockchain security best practices and risk mitigation",
+          "Integration with existing Web2 systems",
+          "DAO governance mechanisms and voting systems"
+        ],
+        technologies: [
+          "Solana", "Anchor", "Rust",
+          "Ethereum", "Solidity", "Hardhat", "Foundry",
+          "Avalanche", "Polygon",
+          "ethers.js", "web3.js", "MetaMask", "Phantom",
+          "IPFS", "The Graph", "Chainlink",
+          "OpenZeppelin", "Truffle"
+        ]
       }
     },
     {
@@ -140,8 +176,8 @@ export default function App() {
     },
     {
       icon: Rocket,
-      title: "Innovative Solutions",
-      description: "Cutting-edge technologies and modern best practices to keep you ahead of the curve"
+      title: "Accelerated Time-to-Market",
+      description: "Efficient development processes and innovative technologies enable faster product launches, capturing market opportunities sooner"
     },
     {
       icon: Award,
@@ -150,13 +186,18 @@ export default function App() {
     },
     {
       icon: TrendingUp,
-      title: "Agile Management",
-      description: "Flexible methodologies that adapt to your workflow and business needs"
+      title: "Scalability & Growth",
+      description: "Solutions designed to scale with your business, supporting growth without compromising performance"
     },
     {
       icon: Target,
-      title: "ROI-Focused",
-      description: "Clear business outcomes and measurable return on investment"
+      title: "Cost Optimization",
+      description: "Reduced downtime and enhanced efficiency through optimized DevOps strategies, streamlining operations and reducing costs"
+    },
+    {
+      icon: Shield,
+      title: "High Resilience",
+      description: "Implementing high resilience and data consistency solutions to minimize system downtime and maximize productivity"
     }
   ];
 
@@ -177,7 +218,10 @@ export default function App() {
             <a href="#why-choose" className="text-muted-foreground hover:text-foreground transition-colors">Why Us</a>
             <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</a>
           </nav>
-          <button className="px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base">
+          <button 
+            onClick={() => setShowConsultationModal(true)}
+            className="px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base"
+          >
             Free Consultation
           </button>
         </div>
@@ -196,7 +240,10 @@ export default function App() {
             From MVP to enterprise scale, we transform your technology challenges into competitive advantages. Expert engineering, cloud infrastructure, AI integration, and strategic leadership.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
-            <button className="px-5 sm:px-6 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base">
+            <button 
+              onClick={() => setShowConsultationModal(true)}
+              className="px-5 sm:px-6 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+            >
               Schedule Free Consultation
               <ArrowRight className="w-4 h-4" />
             </button>
@@ -207,8 +254,41 @@ export default function App() {
         </div>
       </section>
 
+      {/* Why Choose TRENDev */}
+      <section id="why-choose" className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
+              Why Choose TRENDev
+            </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
+              Investing in TRENDev Consulting leads to measurable returns through reduced costs, increased efficiency, and accelerated growth
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {whyChoose.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <div key={index} className="text-center p-6 bg-white rounded-xl border border-border">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 bg-primary rounded-2xl flex items-center justify-center">
+                    <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-accent" />
+                  </div>
+                  <h3 className="mb-2 sm:mb-3">
+                    {item.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm sm:text-base">
+                    {item.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* Expertise Section */}
-      <section id="expertise" className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50">
+      <section id="expertise" className="py-16 sm:py-24 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
@@ -249,7 +329,7 @@ export default function App() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-16 sm:py-24 px-4 sm:px-6">
+      <section id="services" className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
@@ -260,14 +340,14 @@ export default function App() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 max-w-6xl mx-auto">
             {services.map((item, index) => {
               const Icon = item.icon;
               return (
                 <button
                   key={index}
                   onClick={() => setSelectedItem(item)}
-                  className="group p-6 sm:p-8 bg-white border border-border rounded-2xl hover:border-accent hover:shadow-lg transition-all duration-300 text-left w-full"
+                  className="group p-6 sm:p-8 bg-white border border-border rounded-2xl hover:border-accent hover:shadow-lg transition-all duration-300 text-left w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
                 >
                   <div className="w-12 h-12 sm:w-14 sm:h-14 mb-4 sm:mb-6 bg-accent/10 rounded-xl flex items-center justify-center group-hover:bg-accent/20 transition-colors">
                     <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />
@@ -361,38 +441,82 @@ export default function App() {
         </div>
       )}
 
-      {/* Why Choose TRENDev */}
-      <section id="why-choose" className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
-              Why Choose TRENDev
-            </h2>
-            <p className="text-lg sm:text-xl text-muted-foreground">
-              Professional excellence meets innovative solutions
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {whyChoose.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <div key={index} className="text-center p-6 bg-white rounded-xl border border-border">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 bg-primary rounded-2xl flex items-center justify-center">
-                    <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-accent" />
-                  </div>
-                  <h3 className="mb-2 sm:mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm sm:text-base">
-                    {item.description}
-                  </p>
+      {/* Consultation Modal */}
+      {showConsultationModal && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setShowConsultationModal(false)}
+        >
+          <div 
+            className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="bg-gradient-to-br from-primary to-primary/80 px-6 sm:px-8 py-8 sm:py-10 text-white">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center">
+                  <Target className="w-6 h-6 text-accent" />
                 </div>
-              );
-            })}
+                <button 
+                  onClick={() => setShowConsultationModal(false)}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <h2 className="text-2xl sm:text-3xl mb-3">
+                Let's Start Your Journey
+              </h2>
+              <p className="text-base sm:text-lg opacity-90">
+                Ready to scale your business with resilience and consistency or launch a disruptive new venture?
+              </p>
+            </div>
+            
+            <div className="px-6 sm:px-8 py-6 sm:py-8">
+              <div className="mb-6">
+                <p className="text-muted-foreground leading-relaxed mb-4">
+                  At TRENDev Consulting, <strong className="text-foreground">we provide a complimentary initial consultation</strong> via Google Meet to discuss your needs and explore how we can support your journey.
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  During this free session, we'll dive deep into your technical challenges, strategic goals, and growth objectives. Whether you're looking to optimize your infrastructure, build a high-performing team, or develop cutting-edge solutions, we'll outline a clear path forward tailored to your unique situation.
+                </p>
+              </div>
+
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 shrink-0" />
+                  <p className="text-sm text-muted-foreground">No commitment required - just an honest conversation about your goals</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 shrink-0" />
+                  <p className="text-sm text-muted-foreground">Discuss your technical challenges and strategic objectives</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 shrink-0" />
+                  <p className="text-sm text-muted-foreground">Get expert insights and actionable recommendations</p>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a
+                  href="https://calendly.com/whyvrafvr/trendev-consult"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 px-6 py-3 bg-accent text-accent-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 font-medium"
+                >
+                  Book Your Free Consultation
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+                <button
+                  onClick={() => setShowConsultationModal(false)}
+                  className="px-6 py-3 border border-border rounded-lg hover:bg-secondary transition-colors"
+                >
+                  Maybe Later
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
+      )}
 
       {/* Technologies Section */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 bg-primary text-primary-foreground">
@@ -404,7 +528,7 @@ export default function App() {
             We work with cutting-edge technologies to deliver robust, scalable solutions
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            {['Cloud Platforms', 'AI & ML', 'DevOps Tools', 'Modern Frameworks'].map((tech, index) => (
+            {['Cloud Platforms & Blockchain', 'AI & ML', 'DevOps Tools', 'Modern Frameworks'].map((tech, index) => (
               <div key={index} className="p-4 sm:p-6 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
                 <p className="text-sm sm:text-base">{tech}</p>
               </div>
@@ -424,17 +548,21 @@ export default function App() {
               Schedule a free consultation to discuss your project and explore how we can help achieve your goals.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-              <button className="px-5 sm:px-6 py-2.5 sm:py-3 bg-accent text-accent-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base">
+              <a
+                href="https://calendly.com/whyvrafvr/trendev-consult"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 sm:px-6 py-2.5 sm:py-3 bg-accent text-accent-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
                 Book via Google Meet
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </a>
               <a 
-                href="mailto:contact@trendev.fr"
+                href="mailto:contact@trendev.fr?subject=Consultation%20Request%20from%20TRENDev%20Website"
                 className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg hover:bg-white/20 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
               >
                 <Mail className="w-4 h-4" />
-                <span className="hidden sm:inline">contact@trendev.fr</span>
-                <span className="sm:hidden">Email us</span>
+                Email us
               </a>
             </div>
           </div>
