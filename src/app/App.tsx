@@ -558,7 +558,7 @@ export default function App() {
                 <ArrowRight className="w-4 h-4" />
               </a>
               <a 
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@trendev.fr&su=Consultation%20Request%20from%20TRENDev%20Website"
+                href="mailto:contact@trendev.fr?subject=Consultation%20Request%20from%20TRENDev%20Website"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg hover:bg-white/20 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
