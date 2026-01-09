@@ -360,18 +360,21 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div id="top" className="min-h-screen bg-white">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-border z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <a
+            href="#top"
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+          >
             <div className="flex items-center gap-1.5">
               <Code className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
               <span className="text-lg sm:text-xl">
                 TRENDev
               </span>
             </div>
-          </div>
+          </a>
           <nav className="hidden md:flex items-center gap-8">
             <a
               href="#expertise"
