@@ -981,6 +981,17 @@ export default function App() {
               © 2026 TRENDev Consulting. High-end technical
               solutions for modern businesses.
             </p>
+            <p className="text-sm mt-2 flex items-center justify-center gap-1">
+              Built with love ❤️ by{" "}
+              <a
+                href="https://www.linkedin.com/in/julien-sie-jsie/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline transition-all"
+              >
+                whyvrafvr
+              </a>
+            </p>
           </div>
         </div>
       </footer>
