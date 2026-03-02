@@ -359,6 +359,47 @@ export default function App() {
     },
   ];
 
+  const engagementModels = [
+    {
+      title: "Fractional CTO / CTO as a Service",
+      description:
+        "Executive technical leadership without full-time overhead: roadmap, hiring, architecture, and investor-ready technical communication.",
+    },
+    {
+      title: "Delivery Acceleration for Startups",
+      description:
+        "MVP-to-scale execution with full-stack engineering, cloud-native architecture, and DevOps automation to ship faster with less risk.",
+    },
+    {
+      title: "Modernization for Growing Companies",
+      description:
+        "Upgrade legacy systems through cloud migration, reliability engineering, and AI-enabled workflows that reduce cost and increase speed.",
+    },
+  ];
+
+  const faqs = [
+    {
+      question: "What is CTO as a Service and who needs it?",
+      answer:
+        "CTO as a Service gives you strategic technical leadership on-demand. It is ideal for startups and SMEs that need senior guidance on architecture, hiring, security, and roadmap execution without committing to a full-time CTO role.",
+    },
+    {
+      question: "Can you support both strategy and implementation?",
+      answer:
+        "Yes. We combine executive-level consulting with hands-on delivery across full-stack development, cloud/DevOps, AI integration, and blockchain engineering.",
+    },
+    {
+      question: "Do you provide smart contract development and security support?",
+      answer:
+        "Yes. We design and build smart contracts on major ecosystems, run security-focused reviews, and help teams improve reliability, gas efficiency, and operational safety.",
+    },
+    {
+      question: "How quickly can we start?",
+      answer:
+        "Most engagements start with a free discovery call, then a short technical assessment and action plan. Initial high-priority execution can usually begin within days.",
+    },
+  ];
+
   return (
     <div id="top" className="min-h-screen bg-white">
       {/* Header */}
@@ -409,48 +450,81 @@ export default function App() {
           </button>
         </div>
       </header>
-
-      {/* Hero Section */}
-      <section className="pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 border border-accent/20 rounded-full mb-6 sm:mb-8">
-            <span className="text-xs sm:text-sm">
-              Empowering Enterprises and Startups to Scale with
-              Confidence
-            </span>
+      <main>
+        {/* Hero Section */}
+        <section className="pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 border border-accent/20 rounded-full mb-6 sm:mb-8">
+              <span className="text-xs sm:text-sm">
+                Fractional CTO, AI, Cloud, DevOps, and Web3
+                Consulting
+              </span>
+            </div>
+            <h1 className="text-4xl sm:text-5xl md:text-7xl mb-4 sm:mb-6 tracking-tight max-w-4xl mx-auto px-4">
+              Technology consulting that drives measurable
+              business growth
+            </h1>
+            <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-3xl mx-auto px-4">
+              We help startups and enterprises ship faster with
+              CTO as a Service, full-stack product development,
+              cloud and DevOps optimization, AI integration, and
+              blockchain engineering.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
+              <button
+                onClick={() => setShowConsultationModal(true)}
+                className="px-5 sm:px-6 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
+                Schedule Free Consultation
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setShowProjectsModal(true)}
+                className="px-5 sm:px-6 py-2.5 sm:py-3 border border-border rounded-lg hover:bg-secondary transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
+                View Our Work
+              </button>
+            </div>
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl mb-4 sm:mb-6 tracking-tight max-w-4xl mx-auto px-4">
-            Technology solutions that drive real business value
-          </h1>
-          <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto px-4">
-            From MVP to enterprise scale, we transform your
-            technology challenges into competitive advantages.
-            Expert engineering, cloud infrastructure, AI
-            integration, and strategic leadership.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
-            <button
-              onClick={() => setShowConsultationModal(true)}
-              className="px-5 sm:px-6 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base"
-            >
-              Schedule Free Consultation
-              <ArrowRight className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setShowProjectsModal(true)}
-              className="px-5 sm:px-6 py-2.5 sm:py-3 border border-border rounded-lg hover:bg-secondary transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
-            >
-              View Our Work
-            </button>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Why Choose TRENDev */}
-      <section
-        id="why-choose"
-        className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50"
-      >
+        {/* SEO Content Section */}
+        <section className="pb-16 sm:pb-20 px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="bg-secondary/50 border border-border rounded-2xl p-6 sm:p-8">
+              <h2 className="text-2xl sm:text-3xl mb-4">
+                High-Impact Technology Consulting Services
+              </h2>
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                Our consulting model combines strategic leadership
+                with execution. Whether you need a fractional CTO,
+                AI consulting services, cloud and DevOps experts,
+                or blockchain product delivery, TRENDev provides
+                practical roadmaps and outcomes aligned to revenue,
+                speed, and resilience goals.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {engagementModels.map((model, index) => (
+                  <div
+                    key={index}
+                    className="bg-white rounded-xl border border-border p-5"
+                  >
+                    <h3 className="mb-2">{model.title}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {model.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose TRENDev */}
+        <section
+          id="why-choose"
+          className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50"
+        >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
@@ -483,13 +557,13 @@ export default function App() {
             })}
           </div>
         </div>
-      </section>
+        </section>
 
-      {/* Expertise Section */}
-      <section
-        id="expertise"
-        className="py-16 sm:py-24 px-4 sm:px-6"
-      >
+        {/* Expertise Section */}
+        <section
+          id="expertise"
+          className="py-16 sm:py-24 px-4 sm:px-6"
+        >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
@@ -528,13 +602,13 @@ export default function App() {
             })}
           </div>
         </div>
-      </section>
+        </section>
 
-      {/* Services Section */}
-      <section
-        id="services"
-        className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50"
-      >
+        {/* Services Section */}
+        <section
+          id="services"
+          className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50"
+        >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
@@ -573,7 +647,7 @@ export default function App() {
             })}
           </div>
         </div>
-      </section>
+        </section>
 
       {/* Detail Modal */}
       {selectedItem && (
@@ -861,8 +935,8 @@ export default function App() {
         </div>
       )}
 
-      {/* Technologies Section */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 bg-primary text-primary-foreground">
+        {/* Technologies Section */}
+        <section className="py-16 sm:py-24 px-4 sm:px-6 bg-primary text-primary-foreground">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl mb-4 sm:mb-6">
             Modern Technology Stack
@@ -889,13 +963,39 @@ export default function App() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
 
-      {/* CTA Section */}
-      <section
-        id="contact"
-        className="py-16 sm:py-24 px-4 sm:px-6"
-      >
+        {/* FAQ Section */}
+        <section className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-10 sm:mb-12">
+              <h2 className="text-3xl sm:text-4xl mb-3">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                Quick answers about our CTO, AI, cloud/DevOps, and
+                blockchain consulting engagements.
+              </p>
+            </div>
+            <div className="space-y-4">
+              {faqs.map((faq, index) => (
+                <article
+                  key={index}
+                  className="bg-white border border-border rounded-xl p-5 sm:p-6"
+                >
+                  <h3 className="text-lg mb-2">{faq.question}</h3>
+                  <p className="text-muted-foreground">{faq.answer}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section
+          id="contact"
+          className="py-16 sm:py-24 px-4 sm:px-6"
+        >
         <div className="max-w-4xl mx-auto">
           <div className="bg-gradient-to-br from-primary to-primary/80 rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-center text-white">
             <h2 className="text-3xl sm:text-4xl md:text-5xl mb-4 sm:mb-6">
@@ -928,7 +1028,8 @@ export default function App() {
             </div>
           </div>
         </div>
-      </section>
+        </section>
+      </main>
 
       {/* Footer */}
       <footer className="border-t border-border py-8 sm:py-12 px-4 sm:px-6">
