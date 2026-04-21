@@ -321,42 +321,6 @@ export default function App() {
         "Delivery",
       ],
     },
-    {
-      name: "UnleakTrade",
-      subtitle: "Confidential OTC Trading on Solana",
-      url: "https://unleak.trade",
-      tagline:
-        "How do you trade size on Solana without tipping the market?",
-      description:
-        "Execute large OTC trades on any Solana token using private RFQs, competitive pricing, and guaranteed settlement.",
-      tags: [
-        "Solana",
-        "Blockchain",
-        "ZK",
-        "DeFi",
-        "Liquidity",
-        "Institutional Trading",
-        "Crypto Markets",
-      ],
-    },
-    {
-      name: "PoLN",
-      subtitle: "Decentralized Work Protocol",
-      url: "https://poln.org",
-      tagline:
-        "What if coordinating work didn’t require trust?",
-      description:
-        "PoLN turns project execution into a decentralized protocol with on-chain commitment, accountability, and dispute resolution.",
-      tags: [
-        "Web3",
-        "Blockchain",
-        "DAO",
-        "Protocol",
-        "Work Coordination",
-        "Decentralized Governance",
-        "Collaboration",
-      ],
-    },
   ];
 
   const engagementModels = [
