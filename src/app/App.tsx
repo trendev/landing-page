@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   Code,
@@ -53,6 +53,17 @@ export default function App() {
     useState(false);
   const [showProjectsModal, setShowProjectsModal] =
     useState(false);
+
+  useEffect(() => {
+    const anyOpen =
+      selectedItem || showConsultationModal || showProjectsModal;
+    if (!anyOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [selectedItem, showConsultationModal, showProjectsModal]);
 
   const expertise: ServiceItem[] = [
     {
@@ -599,7 +610,7 @@ export default function App() {
                 <button
                   key={index}
                   onClick={() => setSelectedItem(item)}
-                  className="group p-6 sm:p-8 bg-white border border-border rounded-2xl hover:border-accent hover:shadow-lg transition-all duration-300 text-left w-full"
+                  className="group p-6 sm:p-8 bg-white border border-border rounded-2xl hover:border-accent hover:shadow-lg transition-[border-color,box-shadow,color] duration-300 text-left w-full"
                 >
                   <div className="w-12 h-12 sm:w-14 sm:h-14 mb-4 sm:mb-6 bg-accent/10 rounded-xl flex items-center justify-center group-hover:bg-accent/20 transition-colors">
                     <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />
@@ -644,7 +655,7 @@ export default function App() {
                 <button
                   key={index}
                   onClick={() => setSelectedItem(item)}
-                  className="group p-6 sm:p-8 bg-white border border-border rounded-2xl hover:border-accent hover:shadow-lg transition-all duration-300 text-left w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
+                  className="group p-6 sm:p-8 bg-white border border-border rounded-2xl hover:border-accent hover:shadow-lg transition-[border-color,box-shadow,color] duration-300 text-left w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
                 >
                   <div className="w-12 h-12 sm:w-14 sm:h-14 mb-4 sm:mb-6 bg-accent/10 rounded-xl flex items-center justify-center group-hover:bg-accent/20 transition-colors">
                     <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />
@@ -669,7 +680,7 @@ export default function App() {
       {/* Detail Modal */}
       {selectedItem && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedItem(null)}
         >
           <div
@@ -771,7 +782,7 @@ export default function App() {
       {/* Consultation Modal */}
       {showConsultationModal && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
           onClick={() => setShowConsultationModal(false)}
         >
           <div
@@ -870,7 +881,7 @@ export default function App() {
       {/* Projects Modal */}
       {showProjectsModal && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
           onClick={() => setShowProjectsModal(false)}
         >
           <div
@@ -901,7 +912,7 @@ export default function App() {
                 {projects.filter((p) => !p.hidden).map((project, index) => (
                   <div
                     key={index}
-                    className="group border border-border rounded-xl p-6 hover:border-accent hover:shadow-lg transition-all duration-300"
+                    className="group border border-border rounded-xl p-6 hover:border-accent hover:shadow-lg transition-[border-color,box-shadow,color] duration-300"
                   >
                     <div className="flex items-start justify-between gap-4 mb-3">
                       <div>
