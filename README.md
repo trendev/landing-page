@@ -1,11 +1,33 @@
+# TRENDev — Landing Page
 
-  # landing-page
+Marketing landing page for TRENDev Consulting (Fractional CTO, AI, Cloud,
+DevOps, and Web3 consulting).
 
-  This is a code bundle for landing-page. The original project is available at https://www.figma.com/design/Ba0a1DxdQyBAsVsyUsPQ6I/landing-page.
+## Stack
 
-  ## Running the code
+- [React 19](https://react.dev/)
+- [Vite](https://vite.dev/) (build & dev server)
+- [Tailwind CSS v4](https://tailwindcss.com/) (via `@tailwindcss/vite`)
+- [lucide-react](https://lucide.dev/) icons
+- TypeScript
 
-  Run `npm i` to install the dependencies.
+## Project structure
 
-  Run `npm run dev` to start the development server.
-  
+```
+src/
+  app/App.tsx        Composition root: modal state + section assembly
+  components/         Section + modal components (Header, Hero, Services, …)
+  data/content.ts     Page content (expertise, services, projects, FAQ, …)
+  hooks/              Reusable hooks (useBodyScrollLock)
+  types.ts            Shared TypeScript types
+  styles/             Tailwind entry + theme tokens
+```
+
+## Scripts
+
+```bash
+npm install        # install dependencies
+npm run dev        # start the dev server at http://localhost:3000
+npm run typecheck  # type-check with tsc (no emit)
+npm run build      # production build to ./build
+```
