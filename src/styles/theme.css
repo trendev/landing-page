@@ -10,7 +10,7 @@
   /* Surfaces */
   --background: #070C1C;        /* page base; also the WeaveBackground fallback */
   --card: #0A1430;              /* opaque dark surface (e.g. sticky modal header) */
-  --secondary: #0E1A3A;         /* faint section bands, used as bg-secondary/50 */
+  --secondary: #0E1A3A;         /* subtle chip/hover fill (e.g. modal tech badges) */
 
   /* Text */
   --foreground: #F1F4FF;        /* primary text */
