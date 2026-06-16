@@ -7,7 +7,7 @@ interface HeroProps {
 
 export function Hero({ onOpenConsultation, onOpenProjects }: HeroProps) {
   return (
-    <section className="pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6">
+    <section className="pt-24 sm:pt-32 pb-12 sm:pb-16 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 border border-accent/20 rounded-full mb-6 sm:mb-8">
           <span className="text-xs sm:text-sm">

@@ -2,7 +2,7 @@ import { engagementModels } from "@/data/content";
 
 export function EngagementModels() {
   return (
-    <section className="pb-16 sm:pb-20 px-4 sm:px-6">
+    <section className="pb-12 sm:pb-16 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
         <div className="glass rounded-2xl p-6 sm:p-8">
           <h2 className="text-2xl sm:text-3xl mb-4">

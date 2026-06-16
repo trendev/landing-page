@@ -2,7 +2,7 @@ import { whyChoose } from "@/data/content";
 
 export function WhyChoose() {
   return (
-    <section id="why-choose" className="py-16 sm:py-24 px-4 sm:px-6">
+    <section id="why-choose" className="py-12 sm:py-16 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">

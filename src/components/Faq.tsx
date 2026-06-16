@@ -2,7 +2,7 @@ import { faqs } from "@/data/content";
 
 export function Faq() {
   return (
-    <section className="py-16 sm:py-24 px-4 sm:px-6">
+    <section className="py-12 sm:py-16 px-4 sm:px-6">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-10 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl mb-3">

@@ -7,7 +7,7 @@ const TECH_CATEGORIES = [
 
 export function Technologies() {
   return (
-    <section className="py-16 sm:py-24 px-4 sm:px-6 text-foreground">
+    <section className="py-12 sm:py-16 px-4 sm:px-6 text-foreground">
       <div className="max-w-6xl mx-auto text-center">
         <h2 className="text-3xl sm:text-4xl mb-4 sm:mb-6">
           Modern Technology Stack

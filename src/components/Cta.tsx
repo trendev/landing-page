@@ -4,7 +4,7 @@ import { CALENDLY_URL, CONTACT_EMAIL } from "@/data/content";
 
 export function Cta() {
   return (
-    <section id="contact" className="py-16 sm:py-24 px-4 sm:px-6">
+    <section id="contact" className="py-12 sm:py-16 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
         <div className="glass rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-center text-foreground">
           <h2 className="text-3xl sm:text-4xl md:text-5xl mb-4 sm:mb-6">
