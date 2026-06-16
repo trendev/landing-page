@@ -63,14 +63,39 @@ glassmorphic** look with an animated woven-wave background. Visual reference
 - **Dark palette** (add as tokens, don't sprinkle literals): background layers
   `#0A1430` -> `#070C1C` -> `#04060D`; text `#F1F4FF` (primary) / `#9DAFD8`
   (secondary) / `#6F7EA6` (muted).
-- **Glass recipe** for panels/cards/nav: `bg-white/6` fill, `border-white/12`,
-  `backdrop-blur-xl`, soft dark drop shadow. Prefer one shared `Glass` wrapper
-  or a `.glass` utility over repeating the classes.
+- **Glass recipe** for panels/cards/nav: use the shared `.glass` utility
+  (`theme.css`) — a translucent dark fill (`bg-card/55`), `border-white/12`, soft
+  dark shadow. **No `backdrop-filter` in `.glass`.** `backdrop-blur` over the
+  animated `WeaveBackground` re-rasterizes every frame; with ~30 cards on the
+  page that pins the GPU and stalls the canvas. Only persistent/transient chrome
+  that overlaps *scrolling* content (Header, modal panels — one or two elements)
+  may add `backdrop-blur-md` locally.
 - **Going dark:** flip the tokens in `src/styles/theme.css` (and/or apply the
   `.dark` variant) and change the `App.tsx` root from `bg-white` to the dark
   background. Don't restyle per-component with literals.
 - **Verbatim copy stays.** The rebrand is visual only — do not rewrite the
   marketing copy in `src/data/content.ts`.
+- **Section rhythm.** Sections own their vertical spacing via `py-12 sm:py-16`
+  (bottom-only intro sections use `pb-12 sm:pb-16`); the background runs
+  continuously, so there are **no** per-section `bg-*` bands — the glass cards
+  separate content. Keep this scale when adding sections; adjacent sections
+  already stack their padding, so don't pile on more.
+
+## Keep Figma in sync
+
+The Figma file https://www.figma.com/design/tPzPmXtsgZpjji318sUPUU is the design
+counterpart of this site. **After any visual change (theme, layout, spacing, new
+section), mirror the result back into it** so design and code don't drift.
+
+- Use the Figma MCP `generate_figma_design` capture against this `fileKey` to add
+  a fresh page from the running dev server (`npm run dev`, http://localhost:3000).
+  It needs the capture script on the page: temporarily add
+  `<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>`
+  to `index.html`, then **hard-load** the URL with the capture hash (a hash-only
+  change won't reload an SPA, so the script never fires — add a throwaway query
+  like `?cap=1`). Revert the script tag afterwards.
+- The WebGL background only rasterizes for the first viewport; below the fold the
+  capture shows the flat dark `--background`, which is the correct still stand-in.
 
 ## Background: `WeaveBackground`
 
@@ -87,6 +112,12 @@ glassmorphic** look with an animated woven-wave background. Visual reference
 - Tunables live in the `CONFIG` object at the top of the component (`density`,
   `speed`, `twill`, `drapeScale`, `sheen`, `mouse`). It reads `--accent` from
   the document so it stays in sync with the brand token.
+- **Performance (a full-screen shader is the page's heaviest cost):** it renders
+  the canvas at **0.6x** internal resolution (soft weave hides the upscale),
+  caps the animation to **~30fps**, uploads static uniforms once, and **pauses
+  on `visibilitychange`** when the tab is hidden. Keep these. The other half of
+  the budget is the glass rule above — never reintroduce `backdrop-blur` on the
+  content cards that sit over this canvas.
 
 ## Gotchas
 

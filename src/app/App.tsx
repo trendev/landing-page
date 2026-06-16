@@ -9,6 +9,7 @@ import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
 import { Technologies } from "@/components/Technologies";
+import { WeaveBackground } from "@/components/WeaveBackground";
 import { WhyChoose } from "@/components/WhyChoose";
 import { ConsultationModal } from "@/components/modals/ConsultationModal";
 import { DetailModal } from "@/components/modals/DetailModal";
@@ -28,7 +29,10 @@ export default function App() {
   );
 
   return (
-    <div id="top" className="min-h-screen bg-white">
+    // Root stays transparent so the fixed, -z-10 WeaveBackground canvas shows
+    // through; the body's bg-background (theme.css) is the fallback behind it.
+    <div id="top" className="min-h-screen">
+      <WeaveBackground />
       <Header onOpenConsultation={openConsultation} />
 
       <main>

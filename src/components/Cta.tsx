@@ -4,13 +4,13 @@ import { CALENDLY_URL, CONTACT_EMAIL } from "@/data/content";
 
 export function Cta() {
   return (
-    <section id="contact" className="py-16 sm:py-24 px-4 sm:px-6">
+    <section id="contact" className="py-12 sm:py-16 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-gradient-to-br from-primary to-primary/80 rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-center text-white">
+        <div className="glass rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-center text-foreground">
           <h2 className="text-3xl sm:text-4xl md:text-5xl mb-4 sm:mb-6">
             Ready to scale your technology?
           </h2>
-          <p className="text-lg sm:text-xl opacity-90 mb-6 sm:mb-8 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto">
             Schedule a free consultation to discuss your project and explore how
             we can help achieve your goals.
           </p>
@@ -28,7 +28,7 @@ export function Cta() {
               href={CONTACT_EMAIL}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg hover:bg-white/20 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+              className="px-5 sm:px-6 py-2.5 sm:py-3 glass rounded-lg hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
             >
               <Mail className="w-4 h-4" />
               Email us

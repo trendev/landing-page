@@ -182,7 +182,12 @@ export function WeaveBackground() {
     let w = 0;
     let h = 0;
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Render the canvas BELOW screen resolution (0.6x) and let the browser
+      // upscale it for display. The weave is soft and out of focus, so the
+      // upscale is invisible — but the fragment shader (the dominant GPU cost)
+      // runs over ~64% fewer pixels than at 1x and ~4x fewer than retina. This
+      // is the single biggest lever for keeping the animation cheap on weak GPUs.
+      const dpr = 0.6;
       w = Math.floor(window.innerWidth * dpr);
       h = Math.floor(window.innerHeight * dpr);
       canvas.width = w;
@@ -212,35 +217,60 @@ export function WeaveBackground() {
       gl.uniform1f(U.sheen, CONFIG.sheen);
     };
 
+    // The accent/weave-shape uniforms never change at runtime — upload them
+    // once instead of re-sending five uniforms on every frame.
+    setStaticUniforms();
+
     const reduceMotion =
       window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let raf = 0;
+    let running = false;
+    let lastDraw = 0;
     const start = performance.now();
+    // Cap the background to ~30fps. The ripple is slow, so 30fps is visually
+    // indistinguishable from 60 but halves the per-second shading work and
+    // leaves the main thread free to scroll at full rate.
+    const FRAME_MS = 1000 / 30;
+
+    const frame = (now: number) => {
+      raf = requestAnimationFrame(frame);
+      if (now - lastDraw < FRAME_MS) return;
+      lastDraw = now;
+      mx += (tmx - mx) * 0.1;
+      my += (tmy - my) * 0.1;
+      gl.uniform2f(U.res, w, h);
+      gl.uniform2f(U.mouse, mx, my);
+      gl.uniform1f(U.time, ((now - start) / 1000) * CONFIG.speed * 6.0);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    };
+
+    const play = () => {
+      if (running) return;
+      running = true;
+      raf = requestAnimationFrame(frame);
+    };
+    const pause = () => {
+      running = false;
+      cancelAnimationFrame(raf);
+    };
+    // Don't burn the GPU animating a background the user can't see.
+    const onVisibility = () => (document.hidden ? pause() : play());
 
     if (reduceMotion) {
-      setStaticUniforms();
       gl.uniform2f(U.res, w, h);
       gl.uniform2f(U.mouse, 0, 0);
       gl.uniform1f(U.time, 3.0);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     } else {
-      const frame = (now: number) => {
-        mx += (tmx - mx) * 0.05;
-        my += (tmy - my) * 0.05;
-        setStaticUniforms();
-        gl.uniform2f(U.res, w, h);
-        gl.uniform2f(U.mouse, mx, my);
-        gl.uniform1f(U.time, ((now - start) / 1000) * CONFIG.speed * 6.0);
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-        raf = requestAnimationFrame(frame);
-      };
-      raf = requestAnimationFrame(frame);
+      document.addEventListener("visibilitychange", onVisibility);
+      play();
     }
 
     return () => {
-      cancelAnimationFrame(raf);
+      pause();
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);
       const lose = gl.getExtension("WEBGL_lose_context");

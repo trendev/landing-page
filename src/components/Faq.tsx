@@ -2,7 +2,7 @@ import { faqs } from "@/data/content";
 
 export function Faq() {
   return (
-    <section className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50">
+    <section className="py-12 sm:py-16 px-4 sm:px-6">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-10 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl mb-3">
@@ -17,7 +17,7 @@ export function Faq() {
           {faqs.map((faq, index) => (
             <article
               key={index}
-              className="bg-white border border-border rounded-xl p-5 sm:p-6"
+              className="glass rounded-xl p-5 sm:p-6"
             >
               <h3 className="text-lg mb-2">{faq.question}</h3>
               <p className="text-muted-foreground">{faq.answer}</p>

@@ -8,10 +8,7 @@ interface ServicesProps {
 
 export function Services({ onSelectItem }: ServicesProps) {
   return (
-    <section
-      id="services"
-      className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50"
-    >
+    <section id="services" className="py-12 sm:py-16 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">

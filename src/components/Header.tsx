@@ -8,7 +8,7 @@ interface HeaderProps {
 
 export function Header({ onOpenConsultation }: HeaderProps) {
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-border z-50">
+    <header className="fixed top-0 left-0 right-0 glass bg-card/70 backdrop-blur-md border-x-0 border-t-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
         <a
           href="#top"
@@ -32,7 +32,7 @@ export function Header({ onOpenConsultation }: HeaderProps) {
         </nav>
         <button
           onClick={onOpenConsultation}
-          className="px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base"
+          className="px-4 sm:px-5 py-2 sm:py-2.5 bg-accent text-accent-foreground rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base"
         >
           Free Consultation
         </button>

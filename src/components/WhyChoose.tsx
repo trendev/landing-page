@@ -2,10 +2,7 @@ import { whyChoose } from "@/data/content";
 
 export function WhyChoose() {
   return (
-    <section
-      id="why-choose"
-      className="py-16 sm:py-24 px-4 sm:px-6 bg-secondary/50"
-    >
+    <section id="why-choose" className="py-12 sm:py-16 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
@@ -23,9 +20,9 @@ export function WhyChoose() {
             return (
               <div
                 key={index}
-                className="text-center p-6 bg-white rounded-xl border border-border"
+                className="text-center p-6 glass rounded-xl"
               >
-                <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 bg-primary rounded-2xl flex items-center justify-center">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 bg-accent/10 border border-accent/20 rounded-2xl flex items-center justify-center">
                   <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-accent" />
                 </div>
                 <h3 className="mb-2 sm:mb-3">{item.title}</h3>
