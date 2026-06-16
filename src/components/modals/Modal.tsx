@@ -15,7 +15,7 @@ export function Modal({ onClose, panelClassName = "", children }: ModalProps) {
       onClick={onClose}
     >
       <div
-        className={`glass rounded-2xl w-full overflow-y-auto ${panelClassName}`}
+        className={`glass bg-card/90 backdrop-blur-md rounded-2xl w-full overflow-y-auto ${panelClassName}`}
         onClick={(e) => e.stopPropagation()}
       >
         {children}

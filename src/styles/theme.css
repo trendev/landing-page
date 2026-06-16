@@ -51,12 +51,19 @@
 
 @layer components {
   /**
-   * Shared glassmorphic surface for nav, cards, panels and modals.
-   * Translucent white fill over the dark page + the WeaveBackground canvas,
-   * a faint hairline border, heavy blur, and a soft dark drop shadow.
+   * Frosted surface for cards and panels.
+   *
+   * IMPORTANT: intentionally NO `backdrop-filter`. These render dozens of times
+   * over the animated WeaveBackground canvas, and a per-element backdrop-blur
+   * forces the browser to re-rasterize every one on every animation frame — a
+   * severe GPU cost that can stall the canvas and tank scrolling. A translucent
+   * dark fill gives the frosted look cheaply, keeps text readable, and still
+   * lets the weave glow softly through. Persistent chrome that overlaps
+   * *scrolling* content (the Header and modal panels) opts back into a real
+   * `backdrop-blur-md` locally — only one or two elements, so cost stays bounded.
    */
   .glass {
-    @apply bg-white/6 border border-white/12 backdrop-blur-xl shadow-[0_20px_60px_rgba(4,6,13,0.5)];
+    @apply bg-card/55 border border-white/12 shadow-[0_20px_60px_rgba(4,6,13,0.5)];
   }
 }
 

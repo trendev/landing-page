@@ -13,7 +13,7 @@ export function DetailModal({ item, onClose, onGetStarted }: DetailModalProps) {
   const Icon = item.icon;
   return (
     <Modal onClose={onClose} panelClassName="max-w-3xl max-h-[90vh]">
-      <div className="sticky top-0 bg-card/80 backdrop-blur-xl border-b border-border px-6 sm:px-8 py-4 sm:py-6 flex items-start justify-between">
+      <div className="sticky top-0 bg-card/90 backdrop-blur-md border-b border-border px-6 sm:px-8 py-4 sm:py-6 flex items-start justify-between">
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 sm:w-14 sm:h-14 bg-accent/10 rounded-xl flex items-center justify-center shrink-0">
             <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />

@@ -63,9 +63,13 @@ glassmorphic** look with an animated woven-wave background. Visual reference
 - **Dark palette** (add as tokens, don't sprinkle literals): background layers
   `#0A1430` -> `#070C1C` -> `#04060D`; text `#F1F4FF` (primary) / `#9DAFD8`
   (secondary) / `#6F7EA6` (muted).
-- **Glass recipe** for panels/cards/nav: `bg-white/6` fill, `border-white/12`,
-  `backdrop-blur-xl`, soft dark drop shadow. Prefer one shared `Glass` wrapper
-  or a `.glass` utility over repeating the classes.
+- **Glass recipe** for panels/cards/nav: use the shared `.glass` utility
+  (`theme.css`) — a translucent dark fill (`bg-card/55`), `border-white/12`, soft
+  dark shadow. **No `backdrop-filter` in `.glass`.** `backdrop-blur` over the
+  animated `WeaveBackground` re-rasterizes every frame; with ~30 cards on the
+  page that pins the GPU and stalls the canvas. Only persistent/transient chrome
+  that overlaps *scrolling* content (Header, modal panels — one or two elements)
+  may add `backdrop-blur-md` locally.
 - **Going dark:** flip the tokens in `src/styles/theme.css` (and/or apply the
   `.dark` variant) and change the `App.tsx` root from `bg-white` to the dark
   background. Don't restyle per-component with literals.
@@ -108,6 +112,12 @@ section), mirror the result back into it** so design and code don't drift.
 - Tunables live in the `CONFIG` object at the top of the component (`density`,
   `speed`, `twill`, `drapeScale`, `sheen`, `mouse`). It reads `--accent` from
   the document so it stays in sync with the brand token.
+- **Performance (a full-screen shader is the page's heaviest cost):** it renders
+  the canvas at **0.6x** internal resolution (soft weave hides the upscale),
+  caps the animation to **~30fps**, uploads static uniforms once, and **pauses
+  on `visibilitychange`** when the tab is hidden. Keep these. The other half of
+  the budget is the glass rule above — never reintroduce `backdrop-blur` on the
+  content cards that sit over this canvas.
 
 ## Gotchas
 
