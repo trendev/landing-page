@@ -23,9 +23,9 @@ export function WhyChoose() {
             return (
               <div
                 key={index}
-                className="text-center p-6 bg-white rounded-xl border border-border"
+                className="text-center p-6 glass rounded-xl"
               >
-                <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 bg-primary rounded-2xl flex items-center justify-center">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 bg-accent/10 border border-accent/20 rounded-2xl flex items-center justify-center">
                   <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-accent" />
                 </div>
                 <h3 className="mb-2 sm:mb-3">{item.title}</h3>

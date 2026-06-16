@@ -15,7 +15,7 @@ export function ServiceCard({ item, onClick, className = "" }: ServiceCardProps)
   return (
     <button
       onClick={onClick}
-      className={`group p-6 sm:p-8 bg-white border border-border rounded-2xl hover:border-accent hover:shadow-lg transition-[border-color,box-shadow,color] duration-300 text-left w-full ${className}`}
+      className={`group p-6 sm:p-8 glass rounded-2xl hover:border-accent hover:shadow-[0_0_30px_rgba(37,216,236,0.15)] transition-[border-color,box-shadow,color] duration-300 text-left w-full ${className}`}
     >
       <div className="w-12 h-12 sm:w-14 sm:h-14 mb-4 sm:mb-6 bg-accent/10 rounded-xl flex items-center justify-center group-hover:bg-accent/20 transition-colors">
         <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />

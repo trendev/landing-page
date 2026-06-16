@@ -25,14 +25,14 @@ export function Hero({ onOpenConsultation, onOpenProjects }: HeroProps) {
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
           <button
             onClick={onOpenConsultation}
-            className="px-5 sm:px-6 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+            className="px-5 sm:px-6 py-2.5 sm:py-3 bg-accent text-accent-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base"
           >
             Schedule Free Consultation
             <ArrowRight className="w-4 h-4" />
           </button>
           <button
             onClick={onOpenProjects}
-            className="px-5 sm:px-6 py-2.5 sm:py-3 border border-border rounded-lg hover:bg-secondary transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+            className="px-5 sm:px-6 py-2.5 sm:py-3 glass rounded-lg hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
           >
             View Our Work
           </button>

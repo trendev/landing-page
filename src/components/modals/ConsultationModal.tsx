@@ -10,7 +10,7 @@ interface ConsultationModalProps {
 export function ConsultationModal({ onClose }: ConsultationModalProps) {
   return (
     <Modal onClose={onClose} panelClassName="max-w-2xl max-h-[85vh]">
-      <div className="bg-gradient-to-br from-primary to-primary/80 px-6 sm:px-8 py-6 sm:py-8 text-white relative">
+      <div className="bg-accent/10 border-b border-border px-6 sm:px-8 py-6 sm:py-8 text-foreground relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -82,7 +82,7 @@ export function ConsultationModal({ onClose }: ConsultationModalProps) {
           </a>
           <button
             onClick={onClose}
-            className="w-full px-6 py-3 border border-border rounded-lg hover:bg-secondary transition-colors"
+            className="w-full px-6 py-3 glass rounded-lg hover:bg-white/10 transition-colors"
           >
             Maybe Later
           </button>

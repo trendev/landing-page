@@ -17,7 +17,7 @@ export function Faq() {
           {faqs.map((faq, index) => (
             <article
               key={index}
-              className="bg-white border border-border rounded-xl p-5 sm:p-6"
+              className="glass rounded-xl p-5 sm:p-6"
             >
               <h3 className="text-lg mb-2">{faq.question}</h3>
               <p className="text-muted-foreground">{faq.answer}</p>

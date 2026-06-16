@@ -12,7 +12,7 @@ export function ProjectsModal({ onClose }: ProjectsModalProps) {
 
   return (
     <Modal onClose={onClose} panelClassName="max-w-4xl max-h-[85vh]">
-      <div className="bg-gradient-to-br from-primary to-primary/80 px-6 sm:px-8 py-6 sm:py-8 text-white relative">
+      <div className="bg-accent/10 border-b border-border px-6 sm:px-8 py-6 sm:py-8 text-foreground relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-lg transition-colors"
