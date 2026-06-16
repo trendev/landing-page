@@ -29,6 +29,8 @@ export default function App() {
   );
 
   return (
+    // Root stays transparent so the fixed, -z-10 WeaveBackground canvas shows
+    // through; the body's bg-background (theme.css) is the fallback behind it.
     <div id="top" className="min-h-screen">
       <WeaveBackground />
       <Header onOpenConsultation={openConsultation} />
