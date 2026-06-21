@@ -32,6 +32,24 @@ export interface EngagementModel {
   description: string;
 }
 
+export interface MethodologyStep {
+  icon: LucideIcon;
+  /** Display order label, e.g. "01". */
+  step: string;
+  title: string;
+  summary: string;
+  points: string[];
+}
+
+export interface ProductizedOffer {
+  icon: LucideIcon;
+  name: string;
+  /** Short engagement length, e.g. "2-week assessment". */
+  duration: string;
+  summary: string;
+  deliverables: string[];
+}
+
 export interface Faq {
   question: string;
   answer: string;

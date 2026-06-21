@@ -1,11 +1,17 @@
 import {
   Award,
   Brain,
+  BrainCircuit,
+  CalendarRange,
+  ClipboardCheck,
   Cloud,
   Code,
   Coins,
+  Compass,
   Layers,
+  ListChecks,
   Rocket,
+  Search,
   Shield,
   Target,
   TrendingUp,
@@ -15,7 +21,9 @@ import {
 import type {
   EngagementModel,
   Faq,
+  MethodologyStep,
   Project,
+  ProductizedOffer,
   ServiceItem,
   WhyChooseItem,
 } from "@/types";
@@ -359,6 +367,79 @@ export const engagementModels: EngagementModel[] = [
   },
 ];
 
+/** The repeatable engagement system shown in the Methodology section. */
+export const methodologySteps: MethodologyStep[] = [
+  {
+    icon: Search,
+    step: "01",
+    title: "Understand",
+    summary: "Understand reality before changing it.",
+    points: ["Technology and architecture", "Team and delivery process", "Risks, constraints, and goals"],
+  },
+  {
+    icon: ListChecks,
+    step: "02",
+    title: "Prioritize",
+    summary: "Decide what matters most, first.",
+    points: ["Roadmap and sequencing", "Architecture decisions", "AI and automation opportunities"],
+  },
+  {
+    icon: Rocket,
+    step: "03",
+    title: "Execute",
+    summary: "Deliver change, hands-on.",
+    points: ["Technical leadership", "Delivery and shipping", "Hiring and team enablement"],
+  },
+  {
+    icon: TrendingUp,
+    step: "04",
+    title: "Scale",
+    summary: "Make it sustainable without you.",
+    points: ["Systems and governance", "Operating model", "Team autonomy"],
+  },
+];
+
+/** Qualitative outcomes shown under the methodology — no numeric claims. */
+export const outcomes: string[] = [
+  "Deployments from days to minutes",
+  "Higher, safer release frequency",
+  "Leaner cloud infrastructure",
+  "Engineering teams that scale cleanly",
+  "Production AI delivered in weeks, not months",
+];
+
+/** Named, fixed-scope entry points shown in the Offers section. */
+export const offers: ProductizedOffer[] = [
+  {
+    icon: ClipboardCheck,
+    name: "CTO Audit",
+    duration: "2-week assessment",
+    summary: "A fast, senior read on the state of your technology and engineering.",
+    deliverables: ["Architecture review", "Engineering review", "Prioritized action plan"],
+  },
+  {
+    icon: BrainCircuit,
+    name: "AI Readiness Assessment",
+    duration: "Focused engagement",
+    summary: "Where AI creates real leverage in your product and operations.",
+    deliverables: ["AI opportunities map", "Risk analysis", "Implementation roadmap"],
+  },
+  {
+    icon: Compass,
+    name: "Engineering Scale Blueprint",
+    duration: "Strategic engagement",
+    summary: "A clear path to scale delivery as the organization grows.",
+    deliverables: ["Operating model", "Org recommendations", "Execution roadmap"],
+  },
+  {
+    icon: CalendarRange,
+    name: "90-Day Transformation Plan",
+    duration: "90-day plan",
+    summary: "A concrete first quarter of measurable technical change.",
+    deliverables: ["Prioritized initiatives", "Milestones", "Leadership plan"],
+  },
+];
+
 export const faqs: Faq[] = [
   {
     question: "What is CTO as a Service and who needs it?",
@@ -385,6 +466,7 @@ export const faqs: Faq[] = [
 
 /** In-page navigation shared by the header and footer. */
 export const navLinks = [
+  { href: "#how-we-work", label: "How We Work" },
   { href: "#expertise", label: "Expertise" },
   { href: "#services", label: "Services" },
   { href: "#why-choose", label: "Why Us" },
