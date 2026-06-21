@@ -3,15 +3,12 @@ import { Check, ChevronDown, ChevronRight } from "lucide-react";
 import { methodologySteps, outcomes } from "@/data/content";
 import type { MethodologyStep } from "@/types";
 
-/** Circular timeline marker: the step icon with a small numeric badge. */
+/** Circular timeline marker: just the step icon. */
 function StepNode({ step }: { step: MethodologyStep }) {
   const Icon = step.icon;
   return (
     <div className="relative z-10 w-16 h-16 rounded-full bg-card/80 border border-accent/40 flex items-center justify-center shadow-[0_0_24px_rgba(37,216,236,0.18)] shrink-0">
       <Icon className="w-7 h-7 text-accent" />
-      <span className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-accent text-accent-foreground text-xs flex items-center justify-center tabular-nums">
-        {Number(step.step)}
-      </span>
     </div>
   );
 }
@@ -20,10 +17,12 @@ function StepNode({ step }: { step: MethodologyStep }) {
 function StepContent({ step }: { step: MethodologyStep }) {
   return (
     <>
-      <p className="text-xs uppercase tracking-[0.2em] text-accent mb-2">
-        Step {step.step}
-      </p>
-      <h3 className="mb-1.5">{step.title}</h3>
+      <div className="flex items-baseline gap-2.5 mb-1.5">
+        <span className="text-3xl sm:text-4xl text-accent tabular-nums leading-none">
+          {step.step}
+        </span>
+        <h3>{step.title}</h3>
+      </div>
       <p className="text-sm text-muted-foreground mb-4">{step.summary}</p>
       <ul className="space-y-2">
         {step.points.map((point) => (
