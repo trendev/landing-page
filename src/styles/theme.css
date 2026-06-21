@@ -1,6 +1,6 @@
 :root {
   /* ── Dark navy glassmorphic palette (2026 rebrand) ───────────────────────
-     Single dark theme — no light mode, no toggle. Components reference these
+     Single dark theme, no light mode, no toggle. Components reference these
      tokens (bg-accent, text-foreground, border-border, …) and never raw hexes,
      so the whole site re-skins from here. Figma comp background layers run
      #0A1430 → #070C1C → #04060D; #070C1C is the page base.
@@ -16,7 +16,7 @@
   --foreground: #F1F4FF;        /* primary text */
   --muted-foreground: #9DAFD8;  /* secondary / dim text */
 
-  /* Brand accent — single source of truth, also read by WeaveBackground */
+  /* Brand accent, single source of truth, also read by WeaveBackground */
   --accent: #25D8EC;
   --accent-foreground: #04141A; /* dark ink for text on accent fills */
 
@@ -55,15 +55,62 @@
    *
    * IMPORTANT: intentionally NO `backdrop-filter`. These render dozens of times
    * over the animated WeaveBackground canvas, and a per-element backdrop-blur
-   * forces the browser to re-rasterize every one on every animation frame — a
+   * forces the browser to re-rasterize every one on every animation frame, a
    * severe GPU cost that can stall the canvas and tank scrolling. A translucent
    * dark fill gives the frosted look cheaply, keeps text readable, and still
    * lets the weave glow softly through. Persistent chrome that overlaps
    * *scrolling* content (the Header and modal panels) opts back into a real
-   * `backdrop-blur-md` locally — only one or two elements, so cost stays bounded.
+   * `backdrop-blur-md` locally. Only one or two elements, so cost stays bounded.
    */
   .glass {
     @apply bg-card/55 border border-white/12 shadow-[0_20px_60px_rgba(4,6,13,0.5)];
+  }
+
+  /**
+   * Methodology timeline connector. A faint static hairline (the track) with an
+   * accent "comet" that sweeps along it to read as forward progression over
+   * time. `.timeline-line` flows left to right (desktop row); `.timeline-line-v`
+   * flows top to bottom (mobile column). Pure CSS gradient animation on a few
+   * thin elements, so it stays cheap over the WeaveBackground canvas.
+   */
+  .timeline-line,
+  .timeline-line-v {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .timeline-line::after,
+  .timeline-line-v::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-repeat: no-repeat;
+  }
+  .timeline-line::after {
+    background-image: linear-gradient(90deg, transparent, var(--accent), transparent);
+    background-size: 50% 100%;
+    animation: timeline-flow 2.4s linear infinite;
+  }
+  .timeline-line-v::after {
+    background-image: linear-gradient(180deg, transparent, var(--accent), transparent);
+    background-size: 100% 50%;
+    animation: timeline-flow-v 2.4s linear infinite;
+  }
+}
+
+@keyframes timeline-flow {
+  from { background-position: -50% 0; }
+  to   { background-position: 150% 0; }
+}
+@keyframes timeline-flow-v {
+  from { background-position: 0 -50%; }
+  to   { background-position: 0 150%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .timeline-line::after,
+  .timeline-line-v::after {
+    animation: none;
+    background-position: center;
   }
 }
 

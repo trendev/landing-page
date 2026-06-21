@@ -11,16 +11,16 @@ export function Hero({ onOpenConsultation, onOpenProjects }: HeroProps) {
       <div className="max-w-6xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 border border-accent/20 rounded-full mb-6 sm:mb-8">
           <span className="text-xs sm:text-sm">
-            Fractional CTO, AI, Cloud, DevOps, and Web3 Consulting
+            Fractional CTO · AI &amp; Engineering Transformation
           </span>
         </div>
         <h1 className="text-4xl sm:text-5xl md:text-7xl mb-4 sm:mb-6 tracking-tight max-w-4xl mx-auto px-4">
           Technology consulting that drives measurable business growth
         </h1>
         <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-3xl mx-auto px-4">
-          We help startups and enterprises ship faster with CTO as a Service,
-          full-stack product development, cloud and DevOps optimization, AI
-          integration, and blockchain engineering.
+          Fractional CTO leadership and hands-on delivery across AI adoption,
+          product execution, and engineering transformation. Cloud, DevOps, and
+          Web3 as supporting expertise.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
           <button

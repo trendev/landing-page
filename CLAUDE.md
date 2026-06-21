@@ -28,15 +28,19 @@ There are no tests and no linter configured.
 - `src/app/App.tsx` — **composition root only**: holds the three modal state
   vars and assembles sections + modals. Keep it thin; don't add markup here.
 - `src/components/` — one component per page section (Header, Hero,
-  EngagementModels, WhyChoose, Expertise, Services, Technologies, Faq, Cta,
-  Footer). `ServiceCard` is the shared card for the Expertise + Services grids.
+  Methodology, Offers, EngagementModels, WhyChoose, Expertise, Services,
+  Technologies, Faq, Cta, Footer). `ServiceCard` is the shared card for the
+  Expertise + Services grids. `Methodology` (the `Understand → Prioritize →
+  Execute → Scale` step indicator + qualitative outcomes) and `Offers` (named
+  productized entry points) carry the buying-journey content added for issue #8.
 - `src/components/modals/` — `Modal` is the shared backdrop wrapper;
   `DetailModal` / `ConsultationModal` / `ProjectsModal` build on it.
 - `src/components/icons/GithubIcon.tsx` — inline GitHub mark (lucide v1 dropped
   brand icons; do not re-add an icon dependency for it).
 - `src/data/content.ts` — **all page copy lives here** (expertise, services,
-  whyChoose, projects, engagementModels, faqs) plus `navLinks`, `CALENDLY_URL`,
-  `CONTACT_EMAIL`, `GITHUB_URL`. Edit content here, not in components.
+  whyChoose, projects, engagementModels, methodologySteps, outcomes, offers,
+  faqs) plus `navLinks`, `CALENDLY_URL`, `CONTACT_EMAIL`, `GITHUB_URL`. Edit
+  content here, not in components.
 - `src/types.ts` — shared types. `src/hooks/useBodyScrollLock.ts` — scroll lock.
 
 ## Conventions
@@ -73,8 +77,10 @@ glassmorphic** look with an animated woven-wave background. Visual reference
 - **Going dark:** flip the tokens in `src/styles/theme.css` (and/or apply the
   `.dark` variant) and change the `App.tsx` root from `bg-white` to the dark
   background. Don't restyle per-component with literals.
-- **Verbatim copy stays.** The rebrand is visual only — do not rewrite the
-  marketing copy in `src/data/content.ts`.
+- **Verbatim copy stays *for the rebrand*.** The dark-theme rebrand is visual
+  only — do not rewrite marketing copy as part of it. (Intentional positioning
+  changes — e.g. the hero eyebrow/subhead and the Methodology/Offers sections
+  added for issue #8 — are a separate, deliberate exception.)
 - **Section rhythm.** Sections own their vertical spacing via `py-12 sm:py-16`
   (bottom-only intro sections use `pb-12 sm:pb-16`); the background runs
   continuously, so there are **no** per-section `bg-*` bands — the glass cards

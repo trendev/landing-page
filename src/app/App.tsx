@@ -7,6 +7,8 @@ import { Faq } from "@/components/Faq";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { Methodology } from "@/components/Methodology";
+import { Offers } from "@/components/Offers";
 import { Services } from "@/components/Services";
 import { Technologies } from "@/components/Technologies";
 import { WeaveBackground } from "@/components/WeaveBackground";
@@ -40,6 +42,8 @@ export default function App() {
           onOpenConsultation={openConsultation}
           onOpenProjects={() => setShowProjectsModal(true)}
         />
+        <Methodology />
+        <Offers onOpenConsultation={openConsultation} />
         <EngagementModels />
         <WhyChoose />
         <Expertise onSelectItem={setSelectedItem} />
