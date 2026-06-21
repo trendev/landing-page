@@ -18,9 +18,9 @@ export function Hero({ onOpenConsultation, onOpenProjects }: HeroProps) {
           Technology consulting that drives measurable business growth
         </h1>
         <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-3xl mx-auto px-4">
-          Fractional CTO leadership and hands-on delivery — AI adoption, product
-          execution, and engineering transformation. Cloud, DevOps, and Web3 as
-          supporting expertise.
+          Fractional CTO leadership and hands-on delivery across AI adoption,
+          product execution, and engineering transformation. Cloud, DevOps, and
+          Web3 as supporting expertise.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
           <button

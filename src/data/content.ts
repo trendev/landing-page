@@ -399,7 +399,7 @@ export const methodologySteps: MethodologyStep[] = [
   },
 ];
 
-/** Qualitative outcomes shown under the methodology — no numeric claims. */
+/** Qualitative outcomes shown under the methodology, no numeric claims. */
 export const outcomes: string[] = [
   "Deployments from days to minutes",
   "Higher, safer release frequency",

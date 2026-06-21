@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 /**
- * WeaveBackground — animated WebGL "draped woven fabric" background.
+ * WeaveBackground: animated WebGL "draped woven fabric" background.
  *
  * A single full-screen fragment shader renders a rippling cloth height-field
  * with per-pixel lighting: a satin highlight rolls across the folds and the
@@ -184,7 +184,7 @@ export function WeaveBackground() {
     const resize = () => {
       // Render the canvas BELOW screen resolution (0.6x) and let the browser
       // upscale it for display. The weave is soft and out of focus, so the
-      // upscale is invisible — but the fragment shader (the dominant GPU cost)
+      // upscale is invisible, but the fragment shader (the dominant GPU cost)
       // runs over ~64% fewer pixels than at 1x and ~4x fewer than retina. This
       // is the single biggest lever for keeping the animation cheap on weak GPUs.
       const dpr = 0.6;
@@ -217,7 +217,7 @@ export function WeaveBackground() {
       gl.uniform1f(U.sheen, CONFIG.sheen);
     };
 
-    // The accent/weave-shape uniforms never change at runtime — upload them
+    // The accent/weave-shape uniforms never change at runtime, so upload them
     // once instead of re-sending five uniforms on every frame.
     setStaticUniforms();
 

@@ -15,7 +15,7 @@ export function Offers({ onOpenConsultation }: OffersProps) {
             Where to start
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-            Named, fixed-scope entry points with clear deliverables — so you
+            Named, fixed-scope entry points with clear deliverables, so you
             know exactly what a first engagement looks like.
           </p>
         </div>
