@@ -1,4 +1,4 @@
-import { Check, ChevronDown, ChevronRight } from "lucide-react";
+import { Check, ChevronsDown, ChevronsRight } from "lucide-react";
 
 import { methodologySteps, outcomes } from "@/data/content";
 import type { MethodologyStep } from "@/types";
@@ -64,10 +64,12 @@ export function Methodology() {
                 {i < lastIndex && (
                   <>
                     <div className="timeline-line absolute top-1/2 left-1/2 w-full h-0.5 -translate-y-1/2 rounded-full" />
-                    <ChevronRight
-                      className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-5 h-5 text-accent z-20"
-                      strokeWidth={2.5}
-                    />
+                    <span className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-9 h-9 rounded-full bg-accent/15 border border-accent/50 shadow-[0_0_18px_rgba(37,216,236,0.45)]">
+                      <ChevronsRight
+                        className="w-5 h-5 text-accent"
+                        strokeWidth={2.75}
+                      />
+                    </span>
                   </>
                 )}
                 <StepNode step={step} />
@@ -88,10 +90,12 @@ export function Methodology() {
                 {i < lastIndex && (
                   <div className="relative flex-1 w-0.5 mt-2">
                     <div className="timeline-line-v absolute inset-0 rounded-full" />
-                    <ChevronDown
-                      className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 text-accent"
-                      strokeWidth={2.5}
-                    />
+                    <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center w-8 h-8 rounded-full bg-accent/15 border border-accent/50 shadow-[0_0_16px_rgba(37,216,236,0.45)]">
+                      <ChevronsDown
+                        className="w-4 h-4 text-accent"
+                        strokeWidth={2.75}
+                      />
+                    </span>
                   </div>
                 )}
               </div>
