@@ -25,23 +25,47 @@ There are no tests and no linter configured.
 ## Architecture
 
 - `src/main.tsx` — React entry; mounts `App`, imports `styles/index.css`.
-- `src/app/App.tsx` — **composition root only**: holds the three modal state
-  vars and assembles sections + modals. Keep it thin; don't add markup here.
+- `src/app/App.tsx` — **composition root only**: route switch (`useRoute`) +
+  the consultation-modal state shared by Header and all pages, plus
+  WeaveBackground/Header/Footer chrome. Keep it thin; don't add markup here.
+- `src/app/router.tsx` — hand-rolled client router (**do not add
+  react-router**): `useRoute()`, `navigate()`, `Link`, flat route table
+  (`/`, `/services/:slug`, `/terms`, `/terms/:date`, `/legal`, `/privacy`).
+  Handles `/#section` hash links from subpages, scroll-to-top, and GA SPA
+  pageviews (via `useDocumentMeta`). GH Pages serves deep links through
+  per-route `index.html` copies created in `.github/workflows/deploy.yml` —
+  **keep that route list in sync with the router and the terms registry**.
+- `src/pages/` — one component per route: `LandingPage` (owns the
+  landing-only modal state: DetailModal, ProjectsModal), `ServicePage`
+  (data-driven by slug), `TermsPage` (versioned), `LegalPage`, `PrivacyPage`,
+  `NotFoundPage`; `legalLayout.tsx` is the shared legal-page shell.
 - `src/components/` — one component per page section (Header, Hero,
-  Methodology, Offers, EngagementModels, WhyChoose, Expertise, Services,
-  Technologies, Faq, Cta, Footer). `ServiceCard` is the shared card for the
-  Expertise + Services grids. `Methodology` (the `Understand → Prioritize →
-  Execute → Scale` step indicator + qualitative outcomes) and `Offers` (named
-  productized entry points) carry the buying-journey content added for issue #8.
+  Methodology, Pricing + ComparisonTable, Offers, EngagementModels, WhyChoose,
+  Expertise, Services, Technologies, Faq, Cta, Footer). `ServiceCard` is the
+  shared card for the Expertise + Services grids. `Methodology` (the
+  `Understand → Prioritize → Execute → Scale` step indicator + qualitative
+  outcomes) and `Offers` (named productized entry points) carry the
+  buying-journey content added for issue #8. `Pricing` renders the three
+  premium tiers (epic #12); Offers/EngagementModels are kept until issue #19
+  decides their fate.
 - `src/components/modals/` — `Modal` is the shared backdrop wrapper;
   `DetailModal` / `ConsultationModal` / `ProjectsModal` build on it.
 - `src/components/icons/GithubIcon.tsx` — inline GitHub mark (lucide v1 dropped
   brand icons; do not re-add an icon dependency for it).
-- `src/data/content.ts` — **all page copy lives here** (expertise, services,
-  whyChoose, projects, engagementModels, methodologySteps, outcomes, offers,
-  faqs) plus `navLinks`, `CALENDLY_URL`, `CONTACT_EMAIL`, `GITHUB_URL`. Edit
-  content here, not in components.
-- `src/types.ts` — shared types. `src/hooks/useBodyScrollLock.ts` — scroll lock.
+- **All page copy lives under `src/data/`**, not in components:
+  - `content.ts` — landing sections (expertise, services, whyChoose, projects,
+    engagementModels, methodologySteps, outcomes, offers, faqs) plus
+    `navLinks`, `legalLinks`, `CALENDLY_URL`, `CONTACT_EMAIL`, `GITHUB_URL`.
+  - `pricing.ts` — the 3 frozen premium tiers, comparison table,
+    `STRIPE_PAYMENT_LINKS` (empty until issue #16; empty ⇒ purchase CTAs fall
+    back to the consultation modal), `PRIMARY_CTA_LABEL`, `PREREQUISITE_NOTE`.
+  - `serviceDescriptions.ts` — versioned service definitions (issue #14).
+  - `terms/` — dated, **immutable** Terms of Service versions + registry
+    (issue #15; see `docs/legal-versioning.md` before touching anything here).
+  - `legalPages.ts` — legal notice + privacy content.
+- `src/types.ts` — shared types. `src/hooks/` — `useBodyScrollLock` (scroll
+  lock), `useDocumentMeta` (per-route title/description/canonical + GA SPA
+  pageview; `index.html` stays the SEO source of truth for `/` and OG/JSON-LD).
 
 ## Conventions
 
@@ -53,6 +77,27 @@ There are no tests and no linter configured.
   picked up automatically.
 - The `projects` array has `hidden: true` entries (WIP: UnleakTrade, PoLN);
   `ProjectsModal` filters them out. Keep the data, flip the flag to publish.
+
+## Commercial & legal guardrails (epic #12)
+
+- Exactly **3 public offers**: CTO Advisor €1,500/mo · CTO Advisor+ €2,500/mo
+  (recommended) · Fractional CTO from €6,000/mo (contact-only, never
+  self-service). Names and prices are frozen (issue #13).
+- Every displayed price carries **"excluding applicable taxes"** — never
+  present 20% French VAT as universal.
+- The internal maximum day rate is deliberately **not published anywhere in
+  this repo** — do not add it.
+- The prerequisite note ("please schedule your free CTO consultation before
+  subscribing") must stay adjacent to the Advisor purchase CTAs.
+- Terms versions are immutable once their PDF is committed: publishing a
+  change means a new dated module under `src/data/terms/`, a new PDF
+  (`node scripts/generate-terms-pdf.mjs <date>`), and a new deploy.yml route —
+  never edit an accepted version. Full workflow: `docs/legal-versioning.md`.
+- The Terms/legal/privacy pages ship as **drafts with `[TO BE COMPLETED]`
+  placeholders** until lawyer review + entity details land (issue #15); the
+  draft banner must stay until the version is approved as effective.
+- What Stripe checkout must record (issue #16 input):
+  `docs/stripe-acceptance-evidence.md`.
 
 ## Design direction (2026 dark rebrand)
 
@@ -131,5 +176,7 @@ section), mirror the result back into it** so design and code don't drift.
   structure above. If you find a giant inline file or a Figma artifact, it's
   drift — prefer the decomposed pattern.
 - `index.html` carries the SEO/OpenGraph/schema.org markup and the Google
-  Analytics snippet — update meta there, not in React. When the dark theme
+  Analytics snippet — update site-wide meta there, not in React. The one
+  exception: subpages override title/description/canonical at runtime via
+  `useDocumentMeta` (which also fires GA SPA pageviews). When the dark theme
   lands, also update the `theme-color` meta to a dark navy (e.g. `#070C1C`).

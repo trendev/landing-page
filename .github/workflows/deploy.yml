@@ -41,6 +41,17 @@ jobs:
       - name: Add SPA fallback
         run: cp build/index.html build/404.html
 
+      # Real HTTP 200 entry points for the router's static routes (Stripe and
+      # legal references must not resolve through the 404-status SPA fallback).
+      # Keep this list in sync with src/app/router.tsx and src/data/terms/.
+      - name: Add per-route entry points
+        run: |
+          for route in services/cto-advisor services/cto-advisor-plus services/fractional-cto \
+                       terms terms/2026-09-01 legal privacy; do
+            mkdir -p "build/$route"
+            cp build/index.html "build/$route/index.html"
+          done
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
