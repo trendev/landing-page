@@ -1,0 +1,66 @@
+import { useEffect } from "react";
+
+/**
+ * Per-route document meta. index.html stays the SEO source of truth for the
+ * landing page and all OG/JSON-LD markup; subpages only override title,
+ * description and canonical at runtime. The landing defaults are captured
+ * once at module load and restored when a page passes no overrides.
+ */
+
+const SITE_ORIGIN = "https://trendev.fr";
+
+const defaults = {
+  title: typeof document !== "undefined" ? document.title : "",
+  description:
+    typeof document !== "undefined"
+      ? (document.querySelector<HTMLMetaElement>('meta[name="description"]')
+          ?.content ?? "")
+      : "",
+  canonical:
+    typeof document !== "undefined"
+      ? (document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+          ?.href ?? `${SITE_ORIGIN}/`)
+      : `${SITE_ORIGIN}/`,
+};
+
+// The gtag config call in index.html already reports the initial pageview;
+// only report subsequent SPA navigations, once per path.
+let lastTrackedPath =
+  typeof window !== "undefined" ? window.location.pathname : "";
+
+interface DocumentMetaOptions {
+  title: string;
+  description?: string;
+  /** Path (e.g. "/terms") appended to the site origin for the canonical URL. */
+  canonicalPath?: string;
+}
+
+export function useDocumentMeta(options?: DocumentMetaOptions): void {
+  const title = options?.title ?? defaults.title;
+  const description = options?.description ?? defaults.description;
+  const canonical = options?.canonicalPath
+    ? `${SITE_ORIGIN}${options.canonicalPath}`
+    : defaults.canonical;
+
+  useEffect(() => {
+    document.title = title;
+    const meta = document.querySelector<HTMLMetaElement>(
+      'meta[name="description"]',
+    );
+    if (meta) meta.content = description;
+    const link = document.querySelector<HTMLLinkElement>(
+      'link[rel="canonical"]',
+    );
+    if (link) link.href = canonical;
+
+    const path = window.location.pathname;
+    if (path !== lastTrackedPath) {
+      lastTrackedPath = path;
+      window.gtag?.("event", "page_view", {
+        page_path: path + window.location.search,
+        page_location: window.location.href,
+        page_title: title,
+      });
+    }
+  }, [title, description, canonical]);
+}
