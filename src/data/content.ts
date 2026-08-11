@@ -464,13 +464,23 @@ export const faqs: Faq[] = [
   },
 ];
 
-/** In-page navigation shared by the header and footer. */
+/**
+ * In-page navigation shared by the header and footer. Route-aware ("/#id")
+ * so the links work from subpages (/services/*, /terms, …) via the router.
+ */
 export const navLinks = [
-  { href: "#how-we-work", label: "How We Work" },
-  { href: "#expertise", label: "Expertise" },
-  { href: "#services", label: "Services" },
-  { href: "#why-choose", label: "Why Us" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#how-we-work", label: "How We Work" },
+  { href: "/#plans", label: "Plans" },
+  { href: "/#expertise", label: "Expertise" },
+  { href: "/#services", label: "Services" },
+  { href: "/#contact", label: "Contact" },
+];
+
+/** Legal/contractual routes shown in the footer. */
+export const legalLinks = [
+  { href: "/terms", label: "Terms of Service" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/legal", label: "Legal Notice" },
 ];
 
 /** Shared external links used across CTAs. */

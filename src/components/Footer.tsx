@@ -1,11 +1,12 @@
 import { Code } from "lucide-react";
 
-import { GITHUB_URL, navLinks } from "@/data/content";
+import { Link } from "@/app/router";
+import { GITHUB_URL, legalLinks, navLinks } from "@/data/content";
 import { GithubIcon } from "./icons/GithubIcon";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border py-8 sm:py-12 px-4 sm:px-6">
+    <footer className="border-t border-border py-8 sm:py-12 px-4 sm:px-6 print:hidden">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-6 sm:mb-8">
           <div className="flex items-center gap-3">
@@ -14,13 +15,13 @@ export function Footer() {
           </div>
           <nav className="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm sm:text-base">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
             <a
               href={GITHUB_URL}
@@ -34,6 +35,17 @@ export function Footer() {
           </nav>
         </div>
         <div className="text-center text-muted-foreground border-t border-border pt-6 sm:pt-8">
+          <nav className="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm mb-4">
+            {legalLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
           <p className="text-sm sm:text-base">
             © 2026 TRENDev Consulting. High-end technical solutions for modern
             businesses.
