@@ -114,6 +114,32 @@
   }
 }
 
+/* ── Print (Terms PDF) ──────────────────────────────────────────────────
+   The committed Terms PDFs are produced by printing the dated /terms route
+   (scripts/generate-terms-pdf.mjs), so print output is a legal artifact:
+   light re-skin via the same tokens, chrome hidden with `print:hidden` at
+   the component level (Header, Footer, WeaveBackground canvas, Download
+   button, version-history nav). The DRAFT banner intentionally stays
+   visible — the PDF must carry the draft status honestly. */
+@media print {
+  :root {
+    --background: #ffffff;
+    --card: #ffffff;
+    --secondary: #f1f5f9;
+    --foreground: #0b1220;
+    --muted-foreground: #374357;
+    --accent: #0e7490;
+    --accent-foreground: #ffffff;
+    --border: rgba(15, 23, 42, 0.25);
+    --ring: #0e7490;
+  }
+
+  .glass {
+    box-shadow: none;
+    background: #ffffff;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
