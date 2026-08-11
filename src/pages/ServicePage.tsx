@@ -1,6 +1,7 @@
 import { CalendarCheck } from "lucide-react";
 
 import { Link } from "@/app/router";
+import { ComparisonTable } from "@/components/ComparisonTable";
 import { TierCta } from "@/components/Pricing";
 import { legalLinks } from "@/data/content";
 import { PREREQUISITE_NOTE, pricingTiers } from "@/data/pricing";
@@ -109,6 +110,13 @@ export function ServicePage({ slug, onOpenConsultation }: ServicePageProps) {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-xl mx-auto">
             <TierCta tier={tier} onOpenConsultation={onOpenConsultation} />
           </div>
+        </div>
+
+        <div className="mt-12 sm:mt-16">
+          <h2 className="text-xl sm:text-2xl text-center mb-6">
+            Compare the three engagements
+          </h2>
+          <ComparisonTable />
         </div>
 
         <footer className="mt-10 sm:mt-12 border-t border-border pt-6 text-center">

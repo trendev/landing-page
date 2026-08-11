@@ -59,6 +59,11 @@ export const pricingTiers: PricingTier[] = [
       "Typically 2 strategic sessions per month",
       "Up to 4 hours/month of advisory capacity",
     ],
+    highlights: [
+      "Up to 4 hours/month of advisory capacity",
+      "Typically 2 strategic sessions per month",
+      "Substantive async advice between sessions",
+    ],
     billingNotes: [
       "Monthly subscription, billed in advance",
       "Cancel anytime — effective at the end of the current paid period",
@@ -85,6 +90,11 @@ export const pricingTiers: PricingTier[] = [
       "Quarterly Technology Review within included capacity",
       "Executive and board preparation where appropriate",
       "Up to 8 hours/month of advisory capacity",
+    ],
+    highlights: [
+      "Up to 8 hours/month of advisory capacity",
+      "Weekly or biweekly strategic sessions",
+      "Priority async advisory + Quarterly Technology Review",
     ],
     billingNotes: [
       "Monthly subscription, billed in advance",

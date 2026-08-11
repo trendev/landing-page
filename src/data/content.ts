@@ -470,7 +470,7 @@ export const faqs: Faq[] = [
  */
 export const navLinks = [
   { href: "/#how-we-work", label: "How We Work" },
-  { href: "/#plans", label: "Plans" },
+  { href: "/#plans", label: "Advisory" },
   { href: "/#expertise", label: "Expertise" },
   { href: "/#services", label: "Services" },
   { href: "/#contact", label: "Contact" },

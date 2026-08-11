@@ -45,9 +45,11 @@ There are no tests and no linter configured.
   shared card for the Expertise + Services grids. `Methodology` (the
   `Understand → Prioritize → Execute → Scale` step indicator + qualitative
   outcomes) and `Offers` (named productized entry points) carry the
-  buying-journey content added for issue #8. `Pricing` renders the three
-  premium tiers (epic #12); Offers/EngagementModels are kept until issue #19
-  decides their fate.
+  buying-journey content added for issue #8. `Pricing` is a **compact** CTA
+  section for the two Advisor subscriptions (epic #12) — the landing page
+  deliberately stays Fractional-CTO-oriented, so the full 3-tier detail and
+  `ComparisonTable` live on the /services/* pages, not on the landing page.
+  Offers/EngagementModels are kept until issue #19 decides their fate.
 - `src/components/modals/` — `Modal` is the shared backdrop wrapper;
   `DetailModal` / `ConsultationModal` / `ProjectsModal` build on it.
 - `src/components/icons/GithubIcon.tsx` — inline GitHub mark (lucide v1 dropped

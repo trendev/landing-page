@@ -73,6 +73,11 @@ export interface PricingTier {
   tagline: string;
   /** Includes the capacity boundary as one bullet among the features. */
   features: string[];
+  /**
+   * Short bullet list for the compact landing CTA card (the landing page
+   * stays Fractional-CTO-oriented; full detail lives on the service pages).
+   */
+  highlights?: string[];
   /** Billing/cancellation small print shown on the card. */
   billingNotes: string[];
   recommended?: boolean;

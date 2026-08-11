@@ -1,6 +1,5 @@
 import { ArrowRight, CalendarCheck, Check } from "lucide-react";
 
-import { ComparisonTable } from "@/components/ComparisonTable";
 import { Link } from "@/app/router";
 import {
   PREREQUISITE_NOTE,
@@ -58,90 +57,91 @@ export function TierCta({
   );
 }
 
+/**
+ * Compact call-to-action for the two Advisor subscriptions. The landing page
+ * deliberately stays Fractional-CTO-oriented — this section introduces the
+ * subscriptions without taking the page over; the full 3-tier detail and the
+ * comparison table live on the /services/* pages.
+ */
 export function Pricing({ onOpenConsultation }: PricingProps) {
+  const advisorTiers = pricingTiers.filter(
+    (tier) => tier.cta.kind === "checkout",
+  );
+  const fractional = pricingTiers.find((tier) => tier.id === "fractional-cto");
+
   return (
     <section id="plans" className="py-12 sm:py-16 px-4 sm:px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12 sm:mb-16">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-10 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
-            Senior CTO leadership, on your terms
+            Ongoing CTO advisory, as a subscription
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-            Three ways to put executive technology judgment behind your
-            decisions: recurring advisory for founders and executives, or
-            embedded fractional leadership for organisations in transformation.
+            When you need recurring senior judgment rather than embedded
+            leadership, two subscription offers put a CTO's counsel behind
+            your decisions on a simple monthly basis.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
-          {pricingTiers.map((tier) => {
-            const Icon = tier.icon;
-            return (
-              <div
-                key={tier.id}
-                className={`relative p-6 sm:p-8 glass rounded-2xl flex flex-col ${
-                  tier.recommended ? "border-accent/40" : ""
-                }`}
-              >
-                {tier.recommended && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs whitespace-nowrap">
-                    Recommended
-                  </span>
-                )}
-                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center mb-4">
-                  <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />
-                </div>
-                <h3 className="mb-2">{tier.name}</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  {tier.tagline}
-                </p>
-                <div className="mb-1">
-                  <span className="text-3xl sm:text-4xl text-foreground">
-                    {tier.price}
-                  </span>
-                  <span className="text-muted-foreground">
-                    {tier.priceSuffix}
-                  </span>
-                </div>
-                <p className="text-xs text-muted-foreground mb-5">
-                  {tier.taxNote}
-                </p>
-                <ul className="space-y-2 mb-6">
-                  {tier.features.map((feature) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch max-w-3xl mx-auto">
+          {advisorTiers.map((tier) => (
+            <div
+              key={tier.id}
+              className={`relative p-6 sm:p-8 glass rounded-2xl flex flex-col ${
+                tier.recommended ? "border-accent/40" : ""
+              }`}
+            >
+              {tier.recommended && (
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs whitespace-nowrap">
+                  Recommended
+                </span>
+              )}
+              <h3 className="mb-1">{tier.name}</h3>
+              <div className="mb-1">
+                <span className="text-2xl sm:text-3xl text-foreground">
+                  {tier.price}
+                </span>
+                <span className="text-muted-foreground">
+                  {tier.priceSuffix}
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground mb-4">
+                {tier.taxNote}
+              </p>
+              <ul className="space-y-2 mb-5">
+                {(tier.highlights ?? tier.features.slice(0, 3)).map(
+                  (highlight) => (
                     <li
-                      key={feature}
+                      key={highlight}
                       className="flex items-start gap-2 text-sm text-muted-foreground"
                     >
                       <Check className="w-4 h-4 mt-0.5 text-accent shrink-0" />
-                      <span>{feature}</span>
+                      <span>{highlight}</span>
                     </li>
-                  ))}
-                </ul>
-                <div className="mt-auto">
-                  <ul className="space-y-1 mb-5 border-t border-border pt-4">
-                    {tier.billingNotes.map((note) => (
-                      <li key={note} className="text-xs text-muted-foreground">
-                        {note}
-                      </li>
-                    ))}
-                  </ul>
-                  <TierCta tier={tier} onOpenConsultation={onOpenConsultation} />
-                  <div className="text-center mt-3">
-                    <Link
-                      href={tier.servicePath}
-                      className="text-sm text-accent hover:opacity-80 transition-opacity inline-flex items-center gap-1"
-                    >
-                      View full service description
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
+                  ),
+                )}
+              </ul>
+              <p className="text-xs text-muted-foreground mb-5">
+                Billed monthly in advance · cancel anytime, effective at the
+                end of the paid period · no refunds, no rollover
+              </p>
+              <div className="mt-auto">
+                <TierCta tier={tier} onOpenConsultation={onOpenConsultation} />
+                <div className="text-center mt-3">
+                  <Link
+                    href={tier.servicePath}
+                    className="text-sm text-accent hover:opacity-80 transition-opacity inline-flex items-center gap-1"
+                  >
+                    View full service description
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
 
-        <div className="mt-8 sm:mt-10 mb-12 sm:mb-16 max-w-3xl mx-auto">
+        <div className="mt-6 sm:mt-8 max-w-3xl mx-auto">
           <div className="glass rounded-xl px-5 py-4 flex items-start sm:items-center gap-3">
             <CalendarCheck className="w-5 h-5 text-accent shrink-0" />
             <p className="text-sm sm:text-base text-muted-foreground">
@@ -154,9 +154,21 @@ export function Pricing({ onOpenConsultation }: PricingProps) {
               </button>
             </p>
           </div>
+          {fractional && (
+            <p className="text-center text-sm sm:text-base text-muted-foreground mt-6">
+              Need embedded leadership instead? {fractional.name} —{" "}
+              {fractional.price.toLowerCase()}
+              {fractional.priceSuffix}, {fractional.taxNote}, tailored to your
+              context.{" "}
+              <Link
+                href={fractional.servicePath}
+                className="text-accent hover:opacity-80 transition-opacity"
+              >
+                Discuss your context →
+              </Link>
+            </p>
+          )}
         </div>
-
-        <ComparisonTable />
       </div>
     </section>
   );

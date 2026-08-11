@@ -36,8 +36,8 @@ export function LandingPage({ onOpenConsultation }: LandingPageProps) {
         onOpenProjects={() => setShowProjectsModal(true)}
       />
       <Methodology />
-      <Pricing onOpenConsultation={onOpenConsultation} />
       <Offers onOpenConsultation={onOpenConsultation} />
+      <Pricing onOpenConsultation={onOpenConsultation} />
       <EngagementModels />
       <WhyChoose />
       <Expertise onSelectItem={setSelectedItem} />
