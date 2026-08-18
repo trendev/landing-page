@@ -2,7 +2,7 @@ import { CalendarCheck } from "lucide-react";
 
 import { Link } from "@/app/router";
 import { ComparisonTable } from "@/components/ComparisonTable";
-import { TierCta } from "@/components/Pricing";
+import { TierCta } from "@/components/TierCta";
 import { legalLinks } from "@/data/content";
 import { PREREQUISITE_NOTE, pricingTiers } from "@/data/pricing";
 import { getServiceDescription } from "@/data/serviceDescriptions";

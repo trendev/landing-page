@@ -41,17 +41,18 @@ There are no tests and no linter configured.
   (data-driven by slug), `TermsPage` (versioned), `LegalPage`, `PrivacyPage`,
   `NotFoundPage`; `legalLayout.tsx` is the shared legal-page shell.
 - `src/components/` — one component per page section (Header, Hero,
-  Methodology, Pricing + ComparisonTable, Offers, EngagementModels, WhyChoose,
-  Expertise, Services, Technologies, Faq, Cta, Footer). `ServiceCard` is the
-  shared card for the Expertise + Services grids. `Methodology` (the
+  Methodology, Offers, EngagementModels, WhyChoose, Expertise, Services,
+  Technologies, Faq, Cta, Footer). `ServiceCard` is the shared card for the
+  Expertise + Services grids. `Methodology` (the
   `Understand → Prioritize → Execute → Scale` step indicator + qualitative
   outcomes) and `Offers` (named productized entry points) carry the
-  buying-journey content added for issue #8. `Pricing` is a **compact** CTA
-  section for the two Advisor subscriptions (epic #12) — the landing page
-  deliberately stays Fractional-CTO-oriented, so the full 3-tier detail and
-  `ComparisonTable` live on the /services/* pages, not on the landing page.
+  buying-journey content added for issue #8.
   Offers/EngagementModels are kept until issue #19 decides their fate.
   `ConsentBanner` is the cookie banner (see the consent section below).
+  `TierCta` is the shared Advisor/Fractional purchase CTA, and
+  `ComparisonTable` the 3-tier comparison; both are used by `/services/*`
+  only. **The landing page has no pricing/subscription section** — see the
+  commercial guardrails below.
 - `src/components/modals/` — `Modal` is the shared backdrop wrapper;
   `DetailModal` / `ConsultationModal` / `ProjectsModal` build on it.
 - `src/components/icons/GithubIcon.tsx` — inline GitHub mark (lucide v1 dropped
@@ -95,6 +96,13 @@ There are no tests and no linter configured.
   this repo** — do not add it.
 - The prerequisite note ("please schedule your free CTO consultation before
   subscribing") must stay adjacent to the Advisor purchase CTAs.
+- **Do not put a pricing/subscription section on the landing page.** The
+  landing page stays Fractional-CTO-oriented end to end; a subscription block
+  mid-page confuses the narrative. The Advisor offers are revealed when the
+  visitor acts on a CTA: `ConsultationModal` lists the two subscriptions with
+  their prices and links to the full descriptions, and `/services/*` carries
+  the detail plus `ComparisonTable`. This was tried the other way and reverted
+  twice — keep the discovery path CTA-first.
 - Terms versions are immutable once their PDF is committed: publishing a
   change means a new dated module under `src/data/terms/`, a new PDF
   (`node scripts/generate-terms-pdf.mjs <date>`), and a new deploy.yml route —

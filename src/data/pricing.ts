@@ -21,6 +21,13 @@ export const TAX_NOTE = "excluding applicable taxes";
 /** Frozen site-wide primary CTA copy (issue #13). */
 export const PRIMARY_CTA_LABEL = "Book a free CTO consultation";
 
+/**
+ * Short form for the sticky header on phones. The full label is 225px wide,
+ * which leaves no room beside the logo under ~360px and collides with it below
+ * 320px. Same action, same promise, fewer words.
+ */
+export const PRIMARY_CTA_LABEL_SHORT = "Free consultation";
+
 /** Shown adjacent to the Advisor/Advisor+ purchase CTAs — keep them together. */
 export const PREREQUISITE_NOTE =
   "Prerequisite: please schedule your free CTO consultation before subscribing.";

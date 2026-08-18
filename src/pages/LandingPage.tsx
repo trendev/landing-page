@@ -7,7 +7,6 @@ import { Faq } from "@/components/Faq";
 import { Hero } from "@/components/Hero";
 import { Methodology } from "@/components/Methodology";
 import { Offers } from "@/components/Offers";
-import { Pricing } from "@/components/Pricing";
 import { Services } from "@/components/Services";
 import { Technologies } from "@/components/Technologies";
 import { WhyChoose } from "@/components/WhyChoose";
@@ -37,7 +36,6 @@ export function LandingPage({ onOpenConsultation }: LandingPageProps) {
       />
       <Methodology />
       <Offers onOpenConsultation={onOpenConsultation} />
-      <Pricing onOpenConsultation={onOpenConsultation} />
       <EngagementModels />
       <WhyChoose />
       <Expertise onSelectItem={setSelectedItem} />
