@@ -7,11 +7,6 @@ Guidance for working in this repo.
 Single-page marketing landing page for **TRENDev Consulting** (Fractional CTO,
 AI, Cloud, DevOps, Web3). Static site, no backend.
 
-## Stack
-
-React 19 · Vite 8 · Tailwind CSS v4 (`@tailwindcss/vite`) · TypeScript ·
-`lucide-react` icons. Output goes to `./build` (gitignored).
-
 ## Commands
 
 ```bash
@@ -190,22 +185,6 @@ glassmorphic** look with an animated woven-wave background. Visual reference
   continuously, so there are **no** per-section `bg-*` bands — the glass cards
   separate content. Keep this scale when adding sections; adjacent sections
   already stack their padding, so don't pile on more.
-
-## Keep Figma in sync
-
-The Figma file https://www.figma.com/design/tPzPmXtsgZpjji318sUPUU is the design
-counterpart of this site. **After any visual change (theme, layout, spacing, new
-section), mirror the result back into it** so design and code don't drift.
-
-- Use the Figma MCP `generate_figma_design` capture against this `fileKey` to add
-  a fresh page from the running dev server (`npm run dev`, http://localhost:3000).
-  It needs the capture script on the page: temporarily add
-  `<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>`
-  to `index.html`, then **hard-load** the URL with the capture hash (a hash-only
-  change won't reload an SPA, so the script never fires — add a throwaway query
-  like `?cap=1`). Revert the script tag afterwards.
-- The WebGL background only rasterizes for the first viewport; below the fold the
-  capture shows the flat dark `--background`, which is the correct still stand-in.
 
 ## Background: `WeaveBackground`
 
