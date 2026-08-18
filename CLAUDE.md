@@ -60,8 +60,16 @@ There are no tests and no linter configured.
     engagementModels, methodologySteps, outcomes, offers, faqs) plus
     `navLinks`, `legalLinks`, `CALENDLY_URL`, `CONTACT_EMAIL`, `GITHUB_URL`.
   - `pricing.ts` — the 3 frozen premium tiers, comparison table,
-    `STRIPE_PAYMENT_LINKS` (empty until issue #16; empty ⇒ purchase CTAs fall
-    back to the consultation modal), `PRIMARY_CTA_LABEL`, `PREREQUISITE_NOTE`.
+    `PRIMARY_CTA_LABEL`, `PREREQUISITE_NOTE`.
+  - `stripe.ts` — `STRIPE_PAYMENT_LINKS`, **selected by environment**: test
+    links under `vite` (dev), live links under `vite build` (what
+    `deploy.yml` runs). `VITE_STRIPE_MODE=test|live` overrides — use it when
+    previewing a production build locally, which would otherwise point at real
+    checkout. Live links stay empty until issue #16 clears its gates; empty ⇒
+    purchase CTAs fall back to the consultation modal. Payment Links are public
+    URLs, **not secrets** — do not move them into `.env` (it is gitignored, so
+    CI would need secrets for values that aren't secret, and the deployed link
+    set would stop being reviewable in the diff).
   - `serviceDescriptions.ts` — versioned service definitions (issue #14).
   - `terms/` — dated, **immutable** Terms of Service versions + registry
     (issue #15; see `docs/legal-versioning.md` before touching anything here).

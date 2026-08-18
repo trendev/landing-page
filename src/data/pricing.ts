@@ -1,6 +1,6 @@
 import { Building2, Gem, MessagesSquare } from "lucide-react";
 
-import type { ComparisonRow, PricingTier, TierId } from "@/types";
+import type { ComparisonRow, PricingTier } from "@/types";
 
 /**
  * The three public premium CTO offers (epic #12, frozen in issue #13).
@@ -41,19 +41,10 @@ export const PREREQUISITE_NOTE =
   "Prerequisite: please schedule your free CTO consultation before subscribing.";
 
 /**
- * Stripe-hosted checkout links, filled in by issue #16 once products, tax
- * collection and Terms acceptance are configured and validated. While a link
- * is an empty string, the purchase CTA renders with its real label but opens
- * the consultation modal instead (the consultation is the mandatory first
- * step of the purchase flow, so this is the honest fallback).
+ * Stripe checkout links moved to `@/data/stripe` (issue #16): they are now
+ * environment-selected (test in dev, live in a production build), which is
+ * plumbing rather than frozen commercial copy.
  */
-export const STRIPE_PAYMENT_LINKS: Record<
-  Exclude<TierId, "fractional-cto">,
-  string
-> = {
-  "cto-advisor": "",
-  "cto-advisor-plus": "",
-};
 
 export const pricingTiers: PricingTier[] = [
   {

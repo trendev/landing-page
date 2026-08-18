@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 
-import { STRIPE_PAYMENT_LINKS } from "@/data/pricing";
+import { STRIPE_PAYMENT_LINKS } from "@/data/stripe";
 import type { PricingTier } from "@/types";
 
 /**
