@@ -22,6 +22,14 @@ export const TAX_NOTE = "excluding applicable taxes";
 export const PRIMARY_CTA_LABEL = "Book a free CTO consultation";
 
 /**
+ * Second funnel entry point (issue #13). Booking a consultation and
+ * subscribing are different intents, so they get different buttons: this one
+ * is for the visitor who already knows what they want.
+ */
+export const ADVISORY_PATH = "/advisory";
+export const SECONDARY_CTA_LABEL = "See CTO advisory plans";
+
+/**
  * Short form for the sticky header on phones. The full label is 225px wide,
  * which leaves no room beside the logo under ~360px and collides with it below
  * 320px. Same action, same promise, fewer words.

@@ -31,13 +31,15 @@ There are no tests and no linter configured.
   WeaveBackground/Header/Footer chrome. Keep it thin; don't add markup here.
 - `src/app/router.tsx` — hand-rolled client router (**do not add
   react-router**): `useRoute()`, `navigate()`, `Link`, flat route table
-  (`/`, `/services/:slug`, `/terms`, `/terms/:date`, `/legal`, `/privacy`).
+  (`/`, `/advisory`, `/services/:slug`, `/terms`, `/terms/:date`, `/legal`,
+  `/privacy`).
   Handles `/#section` hash links from subpages, scroll-to-top, and GA SPA
   pageviews (via `useDocumentMeta`). GH Pages serves deep links through
   per-route `index.html` copies created in `.github/workflows/deploy.yml` —
   **keep that route list in sync with the router and the terms registry**.
 - `src/pages/` — one component per route: `LandingPage` (owns the
-  landing-only modal state: DetailModal, ProjectsModal), `ServicePage`
+  landing-only modal state: DetailModal, ProjectsModal), `AdvisoryPage` (the
+  subscription funnel: 3 tiers + `ComparisonTable`), `ServicePage`
   (data-driven by slug), `TermsPage` (versioned), `LegalPage`, `PrivacyPage`,
   `NotFoundPage`; `legalLayout.tsx` is the shared legal-page shell.
 - `src/components/` — one component per page section (Header, Hero,
@@ -96,13 +98,22 @@ There are no tests and no linter configured.
   this repo** — do not add it.
 - The prerequisite note ("please schedule your free CTO consultation before
   subscribing") must stay adjacent to the Advisor purchase CTAs.
+- **Two funnels, two buttons — never merge them.** Booking a consultation and
+  subscribing are different intents:
+  - "Book a free CTO consultation" / "Schedule Free Consultation"
+    (`PRIMARY_CTA_LABEL`) opens `ConsultationModal`, which must stay purely
+    about booking the call. **Do not put offers, prices or subscribe links in
+    it** — that was tried and it made the funnel ambiguous.
+  - "See CTO advisory plans" (`SECONDARY_CTA_LABEL` → `ADVISORY_PATH`) is the
+    separate, visually distinct CTA for a visitor who already knows what they
+    want. It lives in the Hero, the closing `Cta` section and the nav, and
+    lands on `/advisory`.
 - **Do not put a pricing/subscription section on the landing page.** The
   landing page stays Fractional-CTO-oriented end to end; a subscription block
-  mid-page confuses the narrative. The Advisor offers are revealed when the
-  visitor acts on a CTA: `ConsultationModal` lists the two subscriptions with
-  their prices and links to the full descriptions, and `/services/*` carries
-  the detail plus `ComparisonTable`. This was tried the other way and reverted
-  twice — keep the discovery path CTA-first.
+  mid-page confuses the narrative. The offers live on `/advisory` (all three
+  tiers + `ComparisonTable`) and `/services/*` (full descriptions). This was
+  tried the other way and reverted twice — the landing page links out, it does
+  not host the plans.
 - Terms versions are immutable once their PDF is committed: publishing a
   change means a new dated module under `src/data/terms/`, a new PDF
   (`node scripts/generate-terms-pdf.mjs <date>`), and a new deploy.yml route —

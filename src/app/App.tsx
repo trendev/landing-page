@@ -8,6 +8,7 @@ import { WeaveBackground } from "@/components/WeaveBackground";
 import { ConsultationModal } from "@/components/modals/ConsultationModal";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { readConsent, setConsent } from "@/lib/analytics";
+import { AdvisoryPage } from "@/pages/AdvisoryPage";
 import { LandingPage } from "@/pages/LandingPage";
 import { LegalPage } from "@/pages/LegalPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
@@ -25,6 +26,8 @@ function Page({
   switch (route.kind) {
     case "landing":
       return <LandingPage onOpenConsultation={onOpenConsultation} />;
+    case "advisory":
+      return <AdvisoryPage onOpenConsultation={onOpenConsultation} />;
     case "service":
       return (
         <ServicePage

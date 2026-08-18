@@ -1,22 +1,11 @@
 import { ArrowRight, Target, X } from "lucide-react";
 
-import { Link } from "@/app/router";
 import { CALENDLY_URL } from "@/data/content";
-import { pricingTiers } from "@/data/pricing";
 import { Modal } from "./Modal";
 
 interface ConsultationModalProps {
   onClose: () => void;
 }
-
-/**
- * The two self-service Advisor subscriptions. They are deliberately NOT a
- * section of the landing page: the landing page stays Fractional-CTO-oriented
- * and a subscription block mid-page reads as confusing. They surface here
- * instead, at the moment the visitor acts on a CTA.
- */
-const advisorTiers = pricingTiers.filter((tier) => tier.cta.kind === "checkout");
-const fractionalTier = pricingTiers.find((tier) => tier.id === "fractional-cto");
 
 export function ConsultationModal({ onClose }: ConsultationModalProps) {
   return (
@@ -79,56 +68,6 @@ export function ConsultationModal({ onClose }: ConsultationModalProps) {
               Get expert insights and actionable recommendations
             </p>
           </div>
-        </div>
-
-        <div className="glass rounded-xl p-4 sm:p-5 mb-6">
-          <p className="text-sm sm:text-base text-foreground mb-1">
-            Prefer ongoing advisory?
-          </p>
-          <p className="text-xs sm:text-sm text-muted-foreground mb-4">
-            The consultation is also the first step into a recurring CTO
-            advisory subscription. Have a look before we talk.
-          </p>
-          <div className="space-y-2">
-            {advisorTiers.map((tier) => (
-              <Link
-                key={tier.id}
-                href={tier.servicePath}
-                onClick={onClose}
-                className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2.5 hover:bg-white/10 transition-colors"
-              >
-                <span className="min-w-0">
-                  <span className="flex items-center gap-2 text-sm text-foreground">
-                    {tier.name}
-                    {tier.recommended && (
-                      <span className="px-2 py-0.5 rounded-full bg-accent text-accent-foreground text-[0.65rem] whitespace-nowrap">
-                        Recommended
-                      </span>
-                    )}
-                  </span>
-                  <span className="block text-xs text-muted-foreground">
-                    {tier.price}
-                    {tier.priceSuffix}, {tier.taxNote}
-                  </span>
-                </span>
-                <ArrowRight className="w-4 h-4 text-accent shrink-0" />
-              </Link>
-            ))}
-          </div>
-          {fractionalTier && (
-            <p className="text-xs text-muted-foreground mt-3">
-              Need embedded leadership instead?{" "}
-              <Link
-                href={fractionalTier.servicePath}
-                onClick={onClose}
-                className="text-accent hover:opacity-80 transition-opacity"
-              >
-                Fractional CTO
-              </Link>{" "}
-              is scoped individually: {fractionalTier.price}
-              {fractionalTier.priceSuffix}, {fractionalTier.taxNote}.
-            </p>
-          )}
         </div>
 
         <div className="flex flex-col gap-3">

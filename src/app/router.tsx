@@ -14,6 +14,7 @@ import {
 
 export type Route =
   | { kind: "landing" }
+  | { kind: "advisory" }
   | { kind: "service"; slug: string }
   | { kind: "terms"; date?: string }
   | { kind: "legal" }
@@ -29,6 +30,7 @@ function normalize(pathname: string): string {
 export function matchRoute(pathname: string): Route {
   const path = normalize(pathname);
   if (path === "/") return { kind: "landing" };
+  if (path === "/advisory") return { kind: "advisory" };
   if (path === "/legal") return { kind: "legal" };
   if (path === "/privacy") return { kind: "privacy" };
   if (path === "/terms") return { kind: "terms" };
