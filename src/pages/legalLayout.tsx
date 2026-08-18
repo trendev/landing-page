@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { BackLink } from "@/components/BackLink";
 import type { ContentSection } from "@/types";
 
 /** Shared shell for the Legal Notice and Privacy pages. */
@@ -17,6 +18,7 @@ export function LegalPageLayout({
   return (
     <section className="pt-28 sm:pt-32 pb-12 sm:pb-16 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
+        <BackLink className="mb-6" />
         <header className="mb-8 sm:mb-10 text-center">
           <h1 className="text-3xl sm:text-4xl mb-2">{title}</h1>
           {subtitle && <p className="text-muted-foreground">{subtitle}</p>}
@@ -25,6 +27,9 @@ export function LegalPageLayout({
           </p>
         </header>
         <div className="space-y-6">{children}</div>
+        <div className="mt-10 text-center">
+          <BackLink />
+        </div>
       </div>
     </section>
   );

@@ -1,10 +1,11 @@
 import { CalendarCheck } from "lucide-react";
 
 import { Link } from "@/app/router";
+import { BackLink } from "@/components/BackLink";
 import { ComparisonTable } from "@/components/ComparisonTable";
 import { TierCta } from "@/components/TierCta";
 import { legalLinks } from "@/data/content";
-import { PREREQUISITE_NOTE, pricingTiers } from "@/data/pricing";
+import { ADVISORY_PATH, PREREQUISITE_NOTE, pricingTiers } from "@/data/pricing";
 import { getServiceDescription } from "@/data/serviceDescriptions";
 import { useDocumentMeta } from "@/hooks/useDocumentMeta";
 import { NotFoundPage } from "@/pages/NotFoundPage";
@@ -67,6 +68,11 @@ export function ServicePage({ slug, onOpenConsultation }: ServicePageProps) {
   return (
     <section className="pt-28 sm:pt-32 pb-12 sm:pb-16 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
+        <BackLink
+          href={ADVISORY_PATH}
+          label="Back to advisory plans"
+          className="mb-6"
+        />
         <header className="text-center mb-10 sm:mb-14">
           <p className="text-xs sm:text-sm text-muted-foreground mb-3">
             Service description · version {service.version} · effective{" "}
@@ -119,6 +125,9 @@ export function ServicePage({ slug, onOpenConsultation }: ServicePageProps) {
             accepted at purchase governs your subscription, together with the
             Terms of Service. Professional clients only.
           </p>
+          <div className="mb-4">
+            <BackLink />
+          </div>
           <nav className="flex flex-wrap justify-center gap-4 text-sm">
             {legalLinks.map((link) => (
               <Link

@@ -1,6 +1,7 @@
 import { ArrowRight, CalendarCheck, Check } from "lucide-react";
 
 import { Link } from "@/app/router";
+import { BackLink } from "@/components/BackLink";
 import { ComparisonTable } from "@/components/ComparisonTable";
 import { TierCta } from "@/components/TierCta";
 import { PREREQUISITE_NOTE, pricingTiers } from "@/data/pricing";
@@ -28,6 +29,7 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
   return (
     <section className="pt-28 sm:pt-32 pb-12 sm:pb-16 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
+        <BackLink className="mb-6" />
         <header className="text-center mb-10 sm:mb-14">
           <h1 className="text-4xl sm:text-5xl md:text-6xl mb-4 tracking-tight">
             Ongoing CTO advisory, as a subscription
@@ -122,6 +124,10 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
             Compare the three engagements
           </h2>
           <ComparisonTable />
+        </div>
+
+        <div className="mt-10 sm:mt-12 text-center">
+          <BackLink />
         </div>
       </div>
     </section>

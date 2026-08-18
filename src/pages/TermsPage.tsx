@@ -1,6 +1,7 @@
 import { Download, TriangleAlert } from "lucide-react";
 
 import { Link } from "@/app/router";
+import { BackLink } from "@/components/BackLink";
 import {
   currentTermsVersion,
   termsVersionDates,
@@ -32,6 +33,7 @@ export function TermsPage({ date }: TermsPageProps) {
   return (
     <section className="pt-28 sm:pt-32 pb-12 sm:pb-16 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
+        <BackLink className="mb-6" />
         <header className="glass rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl md:text-4xl mb-4">
             TRENDev Professional Services — Terms of Service

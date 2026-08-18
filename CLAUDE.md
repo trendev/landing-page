@@ -51,6 +51,7 @@ There are no tests and no linter configured.
   buying-journey content added for issue #8.
   Offers/EngagementModels are kept until issue #19 decides their fate.
   `ConsentBanner` is the cookie banner (see the consent section below).
+  `BackLink` is the return path every subpage must render (see below).
   `TierCta` is the shared Advisor/Fractional purchase CTA, and
   `ComparisonTable` the 3-tier comparison; both are used by `/services/*`
   only. **The landing page has no pricing/subscription section** — see the
@@ -98,6 +99,17 @@ There are no tests and no linter configured.
   this repo** — do not add it.
 - The prerequisite note ("please schedule your free CTO consultation before
   subscribing") must stay adjacent to the Advisor purchase CTAs.
+- **Every subpage renders a `BackLink`.** The site is a single-page app with
+  deep-linkable routes, so a visitor can land on `/advisory`, `/services/*`,
+  `/terms`, `/legal` or `/privacy` straight from search or a shared link with
+  no history to go back to. The header logo goes home too, but it is not an
+  obvious affordance. `/services/*` points back at its parent `/advisory`;
+  everything else points at `/`. `BackLink` is `print:hidden`, so it never
+  reaches the Terms PDF.
+- **The Hero's commercial CTAs come first.** Two buttons (consultation +
+  advisory plans) carry the hero; "View our work" is a subdued text link
+  underneath and must not be promoted back to a third button competing with
+  them.
 - **Two funnels, two buttons — never merge them.** Booking a consultation and
   subscribing are different intents:
   - "Book a free CTO consultation" / "Schedule Free Consultation"
