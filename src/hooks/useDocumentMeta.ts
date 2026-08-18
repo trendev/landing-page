@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 
+import { trackPageView } from "@/lib/analytics";
+
 /**
  * Per-route document meta. index.html stays the SEO source of truth for the
  * landing page and all OG/JSON-LD markup; subpages only override title,
@@ -23,8 +25,9 @@ const defaults = {
       : `${SITE_ORIGIN}/`,
 };
 
-// The gtag config call in index.html already reports the initial pageview;
-// only report subsequent SPA navigations, once per path.
+// The gtag config call fired when consent is granted (or restored on boot)
+// reports the initial pageview; only report subsequent SPA navigations, once
+// per path. trackPageView is itself a no-op without analytics consent.
 let lastTrackedPath =
   typeof window !== "undefined" ? window.location.pathname : "";
 
@@ -56,11 +59,7 @@ export function useDocumentMeta(options?: DocumentMetaOptions): void {
     const path = window.location.pathname;
     if (path !== lastTrackedPath) {
       lastTrackedPath = path;
-      window.gtag?.("event", "page_view", {
-        page_path: path + window.location.search,
-        page_location: window.location.href,
-        page_title: title,
-      });
+      trackPageView(path + window.location.search, title);
     }
   }, [title, description, canonical]);
 }

@@ -143,3 +143,5 @@ vite.config.ts.timestamp-*
 
 # MacOS files
 .DS_Store
+# Playwright MCP screenshots / snapshots
+.playwright-mcp/

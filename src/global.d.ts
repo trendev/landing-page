@@ -1,4 +1,5 @@
-/** Google Analytics (gtag.js) is loaded by index.html; the router fires SPA pageviews. */
+/** gtag stub is defined in index.html; gtag.js itself loads only after the
+ *  visitor accepts analytics cookies (src/lib/analytics.ts). */
 interface Window {
   gtag?: (...args: unknown[]) => void;
 }

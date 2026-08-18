@@ -3,26 +3,28 @@ import type { ContentSection } from "@/types";
 /**
  * Legal notice (mentions légales) and privacy policy content (issue #15).
  *
- * [TO BE COMPLETED] placeholders await the legal entity details from the
- * owner — the pages ship with the placeholders visible so nothing false is
- * published. Both documents should be reviewed alongside the Terms by the
- * French IT/commercial lawyer before production launch.
+ * Entity details were confirmed by the owner on 2026-08-18 against the public
+ * registers (RCS Meaux 821 442 290) and are no longer placeholders. Both
+ * documents should still be reviewed alongside the Terms by the French
+ * IT/commercial lawyer before production launch.
  */
 
-export const LEGAL_LAST_UPDATED = "2026-08-11";
+export const LEGAL_LAST_UPDATED = "2026-08-18";
 
 export const legalNoticeSections: ContentSection[] = [
   {
     id: "editor",
     heading: "Site publisher (Éditeur)",
     bullets: [
-      "Company name: TRENDev [TO BE COMPLETED: exact legal name]",
-      "Legal form: [TO BE COMPLETED: e.g. SASU]",
-      "Share capital: [TO BE COMPLETED]",
-      "Registered office: [TO BE COMPLETED]",
-      "SIREN / SIRET: [TO BE COMPLETED]",
-      "VAT number: [TO BE COMPLETED]",
-      "Publication director (Directeur de la publication): [TO BE COMPLETED]",
+      "Company name: TRENDev (trading as TRENDev Consulting)",
+      "Legal form: Société par actions simplifiée à associé unique (SASU)",
+      "Share capital: €10,000",
+      "Registered office: 7 avenue Christian Doppler, 77700 Serris, France",
+      "SIREN: 821 442 290 — SIRET (registered office): 821 442 290 00028",
+      "Trade and Companies Register: RCS Meaux 821 442 290",
+      "Intra-Community VAT number: FR75 821 442 290",
+      "APE/NAF code: 6201Z — Programmation informatique",
+      "Publication director (Directeur de la publication): Julien Sié, Président",
       "Contact: contact@trendev.fr",
     ],
   },
@@ -54,7 +56,7 @@ export const privacySections: ContentSection[] = [
     id: "controller",
     heading: "Data controller",
     paragraphs: [
-      "The data controller for this site is TRENDev [TO BE COMPLETED: exact legal name and registered office] — contact@trendev.fr.",
+      "The data controller for this site is TRENDev, a société par actions simplifiée à associé unique (SASU) registered with the Trade and Companies Register of Meaux under number 821 442 290, whose registered office is at 7 avenue Christian Doppler, 77700 Serris, France — contact@trendev.fr.",
       "This policy describes the processing of personal data carried out through the trendev.fr website. It is directed at professional visitors and clients.",
     ],
   },
@@ -72,7 +74,7 @@ export const privacySections: ContentSection[] = [
     id: "legal-bases",
     heading: "Legal bases",
     bullets: [
-      "Audience measurement: consent and/or legitimate interest in measuring site usage, as applicable.",
+      "Audience measurement: your consent, collected through the cookie banner before any analytics script is loaded (Article 6(1)(a) GDPR and Article 82 of the French Data Protection Act).",
       "Booking and email contact: steps taken at your request prior to entering into a contract, and legitimate interest in responding to professional enquiries.",
       "Subscriptions and billing (future): performance of the contract and compliance with legal (accounting, tax) obligations.",
     ],
@@ -103,7 +105,9 @@ export const privacySections: ContentSection[] = [
     id: "cookies",
     heading: "Cookies and analytics choices",
     paragraphs: [
-      "This site uses Google Analytics cookies for audience measurement. You can block cookies through your browser settings, use Google's opt-out browser add-on (tools.google.com/dlpage/gaoptout), or enable relevant tracking-protection features of your browser.",
+      "This site uses Google Analytics cookies for audience measurement, and asks for your consent before doing so. Until you accept, the Google Analytics script is not loaded, no request is sent to Google, and no analytics cookie is written. Refusing leaves the site fully usable.",
+      "You can change or withdraw your choice at any time via the \"Cookie settings\" link in the site footer. Withdrawing deletes the Google Analytics cookies previously set on this browser. Your choice is stored locally in your browser, so it applies to that browser only.",
+      "You can also block cookies through your browser settings, use Google's opt-out browser add-on (tools.google.com/dlpage/gaoptout), or enable your browser's tracking-protection features.",
     ],
   },
 ];

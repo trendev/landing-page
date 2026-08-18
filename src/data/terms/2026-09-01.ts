@@ -11,14 +11,18 @@ import type { TermsVersion } from "@/types";
  *
  * DRAFT STATUS: this text has NOT been reviewed by a French IT/commercial
  * lawyer. It must not be marked "effective" before lawyer review and owner
- * approval (issue #15). [TO BE COMPLETED] placeholders await the legal
- * entity details.
+ * approval (issue #15).
+ *
+ * Legal entity details confirmed by the owner on 2026-08-18 from the public
+ * registers (RCS Meaux 821 442 290); the 2026-09-01 effective date is also
+ * confirmed. The jurisdiction clause in section 14 still needs the lawyer's
+ * sign-off, which is why this version stays a draft.
  */
 export const termsV20260901: TermsVersion = {
   version: "1.0",
   status: "draft",
   effectiveDate: "2026-09-01",
-  lastUpdated: "2026-08-11",
+  lastUpdated: "2026-08-18",
   pdfPath: "/terms/trendev-terms-of-service-2026-09-01.pdf",
   sections: [
     {
@@ -26,7 +30,7 @@ export const termsV20260901: TermsVersion = {
       number: 1,
       heading: "Scope and eligibility",
       paragraphs: [
-        'These Terms of Service (the "Terms") govern the professional services provided by TRENDev — [TO BE COMPLETED: legal form, share capital, registered office, SIREN/SIRET, VAT number] (the "Provider") — to its clients (each, the "Client").',
+        'These Terms of Service (the "Terms") govern the professional services provided by TRENDev, a société par actions simplifiée à associé unique (SASU) with share capital of €10,000, having its registered office at 7 avenue Christian Doppler, 77700 Serris, France, registered with the Trade and Companies Register (RCS) of Meaux under number 821 442 290 (SIRET 821 442 290 00028), intra-Community VAT number FR75 821 442 290 (the "Provider"), to its clients (each, the "Client").',
         "The Provider's services are offered exclusively to professional and business customers acting in the course of their business activity, worldwide. They are not offered to consumers, and consumer-protection rules — including consumer withdrawal rights — do not apply.",
         "By subscribing to a service, the person completing the purchase confirms that they act in a professional capacity, on behalf of the Client entity, and that they have authority to bind that entity to these Terms.",
         "These Terms apply to the CTO Advisor and CTO Advisor+ subscription services and, as supplemented by an engagement-specific agreement, to Fractional CTO engagements.",
@@ -170,7 +174,7 @@ export const termsV20260901: TermsVersion = {
       heading: "Governing law, disputes and general provisions",
       paragraphs: [
         "These Terms and the agreement they govern are governed by French law, excluding its conflict-of-law rules. The United Nations Convention on Contracts for the International Sale of Goods does not apply.",
-        "The parties shall first attempt to resolve any dispute amicably within thirty (30) days of written notice. Failing amicable resolution, the courts of [TO BE COMPLETED: competent jurisdiction, e.g. the place of the Provider's registered office] have exclusive jurisdiction, including for interim and emergency proceedings, notwithstanding multiple defendants or third-party claims.",
+        "The parties shall first attempt to resolve any dispute amicably within thirty (30) days of written notice. Failing amicable resolution, the competent courts of Meaux, France — the place of the Provider's registered office — have exclusive jurisdiction, including for interim and emergency proceedings, notwithstanding multiple defendants or third-party claims.",
         "If any provision of these Terms is held invalid, the remainder stays in force, and the invalid provision is replaced by a valid provision closest to its intent. The Provider's failure to enforce a provision is not a waiver. The Client may not assign the agreement without the Provider's prior written consent. These Terms, the applicable Service Description and the checkout record constitute the entire agreement for the subscribed service.",
         "The Provider may publish new versions of these Terms. A new version applies to a running subscription only from the next Billing Period, and the Client is informed before it applies; the version accepted at purchase remains accessible at its dated address.",
       ],

@@ -13,14 +13,7 @@ import type { ContentSection } from "@/types";
 function Section({ section }: { section: ContentSection }) {
   return (
     <article className="glass rounded-2xl p-6 sm:p-8">
-      <div className="flex flex-wrap items-center gap-3 mb-4">
-        <h2 className="text-xl sm:text-2xl">{section.heading}</h2>
-        {section.pendingDefault && (
-          <span className="px-2.5 py-0.5 rounded-full border border-accent/30 text-accent text-xs">
-            default terms — pending confirmation
-          </span>
-        )}
-      </div>
+      <h2 className="text-xl sm:text-2xl mb-4">{section.heading}</h2>
       {section.paragraphs?.map((paragraph) => (
         <p
           key={paragraph}

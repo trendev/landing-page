@@ -1,11 +1,13 @@
 import { useState } from "react";
 
 import { useRoute, type Route } from "@/app/router";
+import { ConsentBanner } from "@/components/ConsentBanner";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { WeaveBackground } from "@/components/WeaveBackground";
 import { ConsultationModal } from "@/components/modals/ConsultationModal";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { readConsent, setConsent } from "@/lib/analytics";
 import { LandingPage } from "@/pages/LandingPage";
 import { LegalPage } from "@/pages/LegalPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
@@ -44,6 +46,11 @@ function Page({
 export default function App() {
   const route = useRoute();
   const [showConsultationModal, setShowConsultationModal] = useState(false);
+  // Shown until the visitor answers it, and reopened from the footer so the
+  // choice can be changed or withdrawn at any time.
+  const [showConsentBanner, setShowConsentBanner] = useState(
+    () => readConsent() === null,
+  );
 
   const openConsultation = () => setShowConsultationModal(true);
 
@@ -60,7 +67,18 @@ export default function App() {
         <Page route={route} onOpenConsultation={openConsultation} />
       </main>
 
-      <Footer />
+      <Footer onOpenCookieSettings={() => setShowConsentBanner(true)} />
+
+      {showConsentBanner && (
+        <ConsentBanner
+          reopened={readConsent() !== null}
+          onDecide={(choice) => {
+            setConsent(choice);
+            setShowConsentBanner(false);
+          }}
+          onDismiss={() => setShowConsentBanner(false)}
+        />
+      )}
 
       {showConsultationModal && (
         <ConsultationModal onClose={() => setShowConsultationModal(false)} />

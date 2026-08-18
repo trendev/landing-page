@@ -12,8 +12,12 @@ import type { ServiceDescription } from "@/types";
  * docs/service-descriptions/<slug>-vX.Y.md, and record the change in
  * docs/legal-versioning.md.
  *
- * Sections marked `pendingDefault: true` use the recommended defaults from
- * issue #14 and still await the owner's confirmation.
+ * The four open decisions of issue #14 (async response target, async
+ * accounting increment, Quarterly Technology Review wording, and whether to
+ * cap the number of designated contacts) were confirmed by the owner on
+ * 2026-08-18: the recommended defaults stand, and designated contacts stay
+ * uncapped. The `-draft` version suffix stays until the lawyer review of
+ * issue #15 completes.
  */
 
 const SHARED_BILLING_BULLETS = [
@@ -36,7 +40,7 @@ export const serviceDescriptions: ServiceDescription[] = [
     title: "CTO Advisor",
     version: "1.0-draft",
     effectiveDate: "2026-09-01",
-    lastUpdated: "2026-08-11",
+    lastUpdated: "2026-08-18",
     metaDescription:
       "CTO Advisor — recurring senior CTO advisory for founders and executives. €1,500/month excluding applicable taxes, up to 4h/month advisory capacity, cancel anytime.",
     sections: [
@@ -74,12 +78,11 @@ export const serviceDescriptions: ServiceDescription[] = [
           "Capacity covers meetings, preparation, substantive async advice, and architecture or document review.",
           "Short administrative exchanges (scheduling, logistics, quick confirmations) do not consume capacity.",
           "Typical cadence: around 2 strategic sessions per month, plus async advice between sessions.",
-          "Substantive async work is accounted in 15-minute increments (default, pending confirmation).",
-          "Async requests are normally answered within 1 business day (default, pending confirmation). Advisory capacity is not an on-call or emergency-response service.",
-          "Advice is provided to your designated contacts.",
+          "Substantive async work is accounted in 15-minute increments.",
+          "Async requests are normally answered within 1 business day. Advisory capacity is not an on-call or emergency-response service.",
+          "Advice is provided to your designated contacts; the number of designated contacts is not capped.",
           "Unused capacity does not roll over; work beyond the included capacity requires explicit prior agreement or a separate scope.",
         ],
-        pendingDefault: true,
       },
       {
         id: "exclusions",
@@ -122,7 +125,7 @@ export const serviceDescriptions: ServiceDescription[] = [
     title: "CTO Advisor+",
     version: "1.0-draft",
     effectiveDate: "2026-09-01",
-    lastUpdated: "2026-08-11",
+    lastUpdated: "2026-08-18",
     metaDescription:
       "CTO Advisor+ — deeper recurring CTO governance with priority access. €2,500/month excluding applicable taxes, up to 8h/month advisory capacity, cancel anytime.",
     sections: [
@@ -155,9 +158,8 @@ export const serviceDescriptions: ServiceDescription[] = [
         id: "quarterly-review",
         heading: "Quarterly Technology Review",
         paragraphs: [
-          "Once per quarter, a structured review of your architecture, roadmap, delivery and technical risks, concluded with prioritised written recommendations for the next quarter. The review is delivered within your included monthly capacity, not in addition to it. (Wording is a recommended default, pending confirmation.)",
+          "Once per quarter, a structured review of your architecture, roadmap, delivery and technical risks, concluded with prioritised written recommendations for the next quarter. The review is delivered within your included monthly capacity, not in addition to it.",
         ],
-        pendingDefault: true,
       },
       {
         id: "capacity",
@@ -169,12 +171,11 @@ export const serviceDescriptions: ServiceDescription[] = [
           "Up to 8 hours per month of advisory capacity.",
           "Capacity covers meetings, preparation, substantive async advice, architecture and document review, and the Quarterly Technology Review.",
           "Short administrative exchanges (scheduling, logistics, quick confirmations) do not consume capacity.",
-          "Substantive async work is accounted in 15-minute increments (default, pending confirmation).",
-          "Priority async requests are normally answered within 1 business day (default, pending confirmation). Advisory capacity is not an on-call or emergency-response service.",
-          "Advice is provided to your designated contacts.",
+          "Substantive async work is accounted in 15-minute increments.",
+          "Priority async requests are normally answered within 1 business day. Advisory capacity is not an on-call or emergency-response service.",
+          "Advice is provided to your designated contacts; the number of designated contacts is not capped.",
           "Unused capacity does not roll over; work beyond the included capacity requires explicit prior agreement or a separate scope.",
         ],
-        pendingDefault: true,
       },
       {
         id: "exclusions",
@@ -217,7 +218,7 @@ export const serviceDescriptions: ServiceDescription[] = [
     title: "Fractional CTO",
     version: "1.0-draft",
     effectiveDate: "2026-09-01",
-    lastUpdated: "2026-08-11",
+    lastUpdated: "2026-08-18",
     metaDescription:
       "Fractional CTO — embedded, tailored CTO leadership for transformation, governance, due diligence and board-facing work. From €6,000/month excluding applicable taxes.",
     sections: [

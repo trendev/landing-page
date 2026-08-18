@@ -4,7 +4,11 @@ import { Link } from "@/app/router";
 import { GITHUB_URL, legalLinks, navLinks } from "@/data/content";
 import { GithubIcon } from "./icons/GithubIcon";
 
-export function Footer() {
+interface FooterProps {
+  onOpenCookieSettings: () => void;
+}
+
+export function Footer({ onOpenCookieSettings }: FooterProps) {
   return (
     <footer className="border-t border-border py-8 sm:py-12 px-4 sm:px-6 print:hidden">
       <div className="max-w-7xl mx-auto">
@@ -45,6 +49,12 @@ export function Footer() {
                 {link.label}
               </Link>
             ))}
+            <button
+              onClick={onOpenCookieSettings}
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Cookie settings
+            </button>
           </nav>
           <p className="text-sm sm:text-base">
             © 2026 TRENDev Consulting. High-end technical solutions for modern

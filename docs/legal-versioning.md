@@ -64,12 +64,26 @@ Each checkout (issue #16) must record, at minimum:
 
 ## Launch checklist for the first production versions
 
-- [ ] Owner supplies legal entity details (replaces `[TO BE COMPLETED]` in
-      the Terms, `/legal` and `/privacy`).
+- [x] Owner supplies legal entity details — done 2026-08-18 from the public
+      registers (RCS Meaux 821 442 290). No `[TO BE COMPLETED]` placeholder
+      remains in the Terms, `/legal` or `/privacy`.
+- [x] Owner confirms the four open service-description decisions of issue #14
+      and the 2026-09-01 effective date — done 2026-08-18; the
+      `pendingDefault` tags are gone.
 - [ ] French IT/commercial lawyer reviews Terms + service descriptions +
-      acceptance model; comments resolved.
+      acceptance model; comments resolved. **Flag for the lawyer:** the
+      jurisdiction clause (Terms §14) now names the courts of Meaux, chosen as
+      the place of the registered office, and needs sign-off.
 - [ ] Accountant validates VAT/late-payment/invoice wording.
 - [ ] Owner approves; Terms `status` flips `"draft"` → `"effective"`; service
-      descriptions drop the `-draft` suffix and the `pendingDefault` flags.
+      descriptions drop the `-draft` version suffix.
 - [ ] PDF regenerated and committed; deploy verified (dated route + PDF
       return HTTP 200 in production).
+
+## Cookie consent
+
+`/privacy` describes the consent banner, and the banner is what makes the
+Google Analytics claims on that page true. Analytics is consent-gated in code
+(`src/lib/analytics.ts`): `index.html` carries only the gtag stub and a denied
+Consent Mode default, and `gtag.js` is injected only after an accept. If that
+gating is ever changed, `/privacy` has to change with it.

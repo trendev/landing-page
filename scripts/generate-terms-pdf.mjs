@@ -30,11 +30,19 @@ function findChrome() {
   if (process.env.CHROME_BIN && existsSync(process.env.CHROME_BIN)) {
     return process.env.CHROME_BIN;
   }
+  const home = process.env.HOME ?? "";
   const candidates = [
+    // Linux (CI containers and dev boxes)
     ...globSync("/opt/pw-browsers/chromium-*/chrome-linux/chrome"),
     "/usr/bin/chromium",
     "/usr/bin/chromium-browser",
     "/usr/bin/google-chrome",
+    // macOS
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "/Applications/Chromium.app/Contents/MacOS/Chromium",
+    ...globSync(
+      `${home}/Library/Caches/ms-playwright/chromium-*/chrome-mac/Chromium.app/Contents/MacOS/Chromium`,
+    ),
   ];
   const found = candidates.find((path) => existsSync(path));
   if (!found) {

@@ -103,8 +103,6 @@ export interface ContentSection {
   heading: string;
   paragraphs?: string[];
   bullets?: string[];
-  /** Copy using a recommended default still awaiting owner confirmation (issue #14). */
-  pendingDefault?: boolean;
 }
 
 export interface ServiceDescription {
