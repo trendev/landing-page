@@ -37,7 +37,7 @@ export interface TermsVersionSummary {
  * entry, and `loadTermsVersion` warns about it in dev.
  */
 export const termsVersionSummaries: TermsVersionSummary[] = [
-  { date: "2026-09-01", version: "1.0", status: "draft" },
+  { date: "2026-09-01", version: "1.0", status: "effective" },
 ];
 
 /**

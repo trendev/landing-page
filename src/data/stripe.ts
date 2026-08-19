@@ -23,10 +23,16 @@ type PaymentLinks = Record<CheckoutTierId, string>;
 /**
  * Test mode. Safe to commit and safe to click: test mode moves no real money
  * and is fed by Stripe's test cards. Created against acct_1QNvN0Hxg3uOgAWo.
+ *
+ * These links require Terms of Service acceptance at checkout. Note that
+ * `consent_collection` is create-only in the Stripe API (it is absent from the
+ * payment-link update endpoint), so a link can never be repointed at new
+ * Terms, only replaced. Publishing a Terms version therefore means new links
+ * and new URLs here; docs/legal-versioning.md step 6 has the procedure.
  */
 const TEST_PAYMENT_LINKS: PaymentLinks = {
-  "cto-advisor": "https://buy.stripe.com/test_bJe3cv0SB8bA8TE6oN5AQ03",
-  "cto-advisor-plus": "https://buy.stripe.com/test_14A4gzcBjgI6b1M6oN5AQ04",
+  "cto-advisor": "https://buy.stripe.com/test_00wbJ1atb8bA4Do28x5AQ05",
+  "cto-advisor-plus": "https://buy.stripe.com/test_eVq9AT9p7dvU3zk7sR5AQ06",
 };
 
 /**

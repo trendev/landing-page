@@ -65,7 +65,7 @@ able to re-read what they accepted.
 ## Service descriptions
 
 - Content lives in `src/data/serviceDescriptions.ts`; each service carries a
-  `version` (e.g. `1.0-draft`) and `effectiveDate` displayed in the page
+  `version` (e.g. `1.0`) and `effectiveDate` displayed in the page
   header and footer ("the version accepted at purchase governs your
   subscription").
 - Versions are recorded in git; on a version bump, archive the outgoing text
@@ -91,15 +91,17 @@ Each checkout (issue #16) must record, at minimum:
 - [x] Owner confirms the four open service-description decisions of issue #14
       and the 2026-09-01 effective date — done 2026-08-18; the
       `pendingDefault` tags are gone.
-- [ ] French IT/commercial lawyer reviews Terms + service descriptions +
-      acceptance model; comments resolved. **Flag for the lawyer:** the
-      jurisdiction clause (Terms §14) now names the courts of Meaux, chosen as
-      the place of the registered office, and needs sign-off.
-- [ ] Accountant validates VAT/late-payment/invoice wording.
-- [ ] Owner approves; Terms `status` flips `"draft"` → `"effective"`; service
-      descriptions drop the `-draft` version suffix.
-- [ ] PDF regenerated and committed; deploy verified (dated route + PDF
-      return HTTP 200 in production).
+- [x] French IT/commercial lawyer reviews Terms + service descriptions +
+      acceptance model; comments resolved — confirmed by the owner 2026-08-19,
+      including the jurisdiction clause (Terms §14, courts of Meaux).
+- [x] Accountant validates VAT/late-payment/invoice wording — confirmed by the
+      owner 2026-08-19.
+- [x] Owner approves; Terms `status` flipped `"draft"` → `"effective"`;
+      service descriptions dropped the `-draft` version suffix — 2026-08-19.
+- [x] PDF regenerated and committed (213,195 → 194,026 bytes, the difference
+      being the removed DRAFT banner).
+- [ ] Deploy verified: dated route + PDF return HTTP 200 in production and the
+      page no longer shows the draft banner.
 
 ## Cookie consent
 

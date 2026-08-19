@@ -103,6 +103,14 @@ There are no tests and no linter configured.
   self-service). Names and prices are frozen (issue #13).
 - Every displayed price carries **"excluding applicable taxes"** — never
   present 20% French VAT as universal.
+- **Stripe Tax is registration-gated, and registrations are per-mode.**
+  `automatic_tax[enabled]=true` only runs the calculator; with no active
+  `tax.registration` for the customer's jurisdiction it returns 0% and
+  `taxability_reason: not_collecting`, and `tax.settings.status: "active"`
+  still reads healthy. Test-mode registrations never apply to live mode, so a
+  passing test purchase is not evidence about live. Before touching anything
+  tax-related, check `GET /v1/tax/registrations` in **both** modes. Full
+  verified state: `docs/stripe-acceptance-evidence.md`.
 - The internal maximum day rate is deliberately **not published anywhere in
   this repo** — do not add it.
 - The prerequisite note ("please schedule your free CTO consultation before
@@ -138,9 +146,12 @@ There are no tests and no linter configured.
   change means a new dated module under `src/data/terms/`, a new PDF
   (`node scripts/generate-terms-pdf.mjs <date>`), and a new deploy.yml route —
   never edit an accepted version. Full workflow: `docs/legal-versioning.md`.
-- The Terms/legal/privacy pages ship as **drafts with `[TO BE COMPLETED]`
-  placeholders** until lawyer review + entity details land (issue #15); the
-  draft banner must stay until the version is approved as effective.
+- Terms v1.0 (2026-09-01) is **effective** since 2026-08-19: lawyer-reviewed,
+  accountant-validated, owner-approved. Its text is now frozen absolutely, and
+  `status` is the only field that may ever change again, only to
+  `"superseded"`. The service descriptions are v1.0 for the same reason. A
+  future version that is not yet approved ships as `status: "draft"`, which
+  renders a pending-legal-review banner that must stay until approval.
 - What Stripe checkout must record (issue #16 input):
   `docs/stripe-acceptance-evidence.md`.
 

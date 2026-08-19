@@ -16,8 +16,8 @@ import type { ServiceDescription } from "@/types";
  * accounting increment, Quarterly Technology Review wording, and whether to
  * cap the number of designated contacts) were confirmed by the owner on
  * 2026-08-18: the recommended defaults stand, and designated contacts stay
- * uncapped. The `-draft` version suffix stays until the lawyer review of
- * issue #15 completes.
+ * uncapped. The lawyer review of issue #15 completed on 2026-08-19, so these
+ * are version 1.0 rather than 1.0-draft.
  */
 
 const SHARED_BILLING_BULLETS = [
@@ -38,7 +38,7 @@ export const serviceDescriptions: ServiceDescription[] = [
     slug: "cto-advisor",
     tierId: "cto-advisor",
     title: "CTO Advisor",
-    version: "1.0-draft",
+    version: "1.0",
     effectiveDate: "2026-09-01",
     lastUpdated: "2026-08-18",
     metaDescription:
@@ -123,7 +123,7 @@ export const serviceDescriptions: ServiceDescription[] = [
     slug: "cto-advisor-plus",
     tierId: "cto-advisor-plus",
     title: "CTO Advisor+",
-    version: "1.0-draft",
+    version: "1.0",
     effectiveDate: "2026-09-01",
     lastUpdated: "2026-08-18",
     metaDescription:
@@ -216,7 +216,7 @@ export const serviceDescriptions: ServiceDescription[] = [
     slug: "fractional-cto",
     tierId: "fractional-cto",
     title: "Fractional CTO",
-    version: "1.0-draft",
+    version: "1.0",
     effectiveDate: "2026-09-01",
     lastUpdated: "2026-08-18",
     metaDescription:
