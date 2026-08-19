@@ -15,7 +15,11 @@ able to re-read what they accepted.
 ## Terms of Service
 
 - Content lives in dated modules: `src/data/terms/<effective-date>.ts`,
-  registered in `src/data/terms/index.ts`.
+  registered in `src/data/terms/index.ts`. The registry loads each version's
+  text through `import()`, so a version only reaches the browser when someone
+  actually opens `/terms`; the cheap `termsVersionSummaries` list stays eager
+  because the version-history nav and the dated-route 404 check need it before
+  any text is loaded.
 - Routes: `/terms` serves the current version; `/terms/<effective-date>`
   serves each version immutably (e.g. `/terms/2026-09-01`).
 - Each version has a committed PDF at
@@ -32,13 +36,30 @@ able to re-read what they accepted.
 
 1. Add `src/data/terms/<new-date>.ts` with the new content (`status: "draft"`
    until lawyer-reviewed and owner-approved, then `"effective"`).
-2. Register it in `src/data/terms/index.ts` and point `currentTermsVersion`
-   at it; set the outgoing version's `status` to `"superseded"` (status flag
-   only — never touch its text).
+2. Register it in `src/data/terms/index.ts`, in two places that must agree:
+   a `loaders` entry (the `import()` specifier has to be a literal, so it
+   cannot be generated) and a `termsVersionSummaries` row. The list is newest
+   first, so putting the new row at the top is what makes it the version
+   served at `/terms`. Set the outgoing version's `status` to `"superseded"`
+   in its module **and** in its summary row (status flag only, never touch its
+   text). Opening the page in `npm run dev` warns in the console if the two
+   disagree.
 3. Generate and commit the PDF: `node scripts/generate-terms-pdf.mjs <new-date>`.
 4. Add `terms/<new-date>` to the per-route entry-point list in
    `.github/workflows/deploy.yml`.
-5. Existing subscribers must be informed before a new version applies to them
+5. Deploy, and confirm the new dated route returns HTTP 200 **before** the next
+   step: Stripe checkout will link buyers straight at it.
+6. Repoint Stripe at the new dated route:
+   - Dashboard → Settings → Public business details → *Terms of service* URL =
+     `https://trendev.fr/terms/<new-date>`. This is a single account-wide
+     setting and there is no API for it.
+   - Recreate the Payment Links with the new `subscription_data.metadata`
+     (`terms_version`, `terms_url`) and deactivate the old ones.
+     `consent_collection` is **create-only**: it is absent from the
+     payment-link update endpoint, so an existing link can never be repointed
+     to new Terms, only replaced.
+   - Update `src/data/stripe.ts` with the new link URLs.
+7. Existing subscribers must be informed before a new version applies to them
    (see Terms §14); the version they accepted stays online at its dated route.
 
 ## Service descriptions

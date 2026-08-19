@@ -73,6 +73,11 @@ There are no tests and no linter configured.
   - `serviceDescriptions.ts` — versioned service definitions (issue #14).
   - `terms/` — dated, **immutable** Terms of Service versions + registry
     (issue #15; see `docs/legal-versioning.md` before touching anything here).
+    The registry is **lazy**: each version's text is a separate `import()`
+    chunk, so the ~14 kB of legal prose per version never lands in the main
+    bundle. Only `termsVersionSummaries` (date/version/status, used by the
+    history nav and the dated-route 404 check) is eager, and it has to be kept
+    in sync with its module by hand.
   - `legalPages.ts` — legal notice + privacy content.
 - `src/types.ts` — shared types. `src/hooks/` — `useBodyScrollLock` (scroll
   lock), `useDocumentMeta` (per-route title/description/canonical + GA SPA
