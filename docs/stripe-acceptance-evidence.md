@@ -100,6 +100,18 @@ Supplying that message **replaces** Stripe's default "I agree to the Terms of
 Service" line, including its hyperlink, so the markdown links are not a nicety:
 without them the checkbox would carry no clickable Terms at all.
 
+Both products are classified `txcd_20060048` ("Consulting Services": *the
+provision of expertise or strategic advice that is presented for consideration
+and decision-making*). That is the most specific code Stripe publishes for this
+work; there is no IT-consulting or management-consulting sub-code. It was
+picked over `txcd_20030000` ("General - Services"), whose own Stripe
+description says to use it only when no more specific category exists. Under
+the EU B2B place-of-supply general rule both codes behave identically
+(destination taxation, so reverse charge for EU businesses with a valid VAT
+ID), so the choice matters for US state sales-tax variation and for the audit
+position rather than for the three planned test purchases. `tax_code` is
+mutable on a Product, so this needed no recreation.
+
 Metadata on both the link and `subscription_data` (so it lands on the durable
 subscription record):
 
@@ -117,6 +129,7 @@ service_description=<slug> 1.0-draft, service_description_url=<service route>
   BNPL product and an odd fit for a €1,500-2,500/month B2B subscription;
   restricting `payment_method_types` is a commercial decision for the owner.
 - Account default tax category is still `txcd_10000000` (Electronically
-  Supplied Services). Both products override it with `txcd_20030000` (General
-  Services), so nothing is mispriced today, but a future product would inherit
-  the wrong one.
+  Supplied Services), which is the wrong regime for human advisory work. Both
+  products override it explicitly with `txcd_20060048`, so nothing is
+  mispriced today, but a future product would inherit the wrong one. Changing
+  the default is a Dashboard action (Tax -> Settings -> Default tax category).
