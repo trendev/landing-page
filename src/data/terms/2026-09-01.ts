@@ -1,7 +1,7 @@
 import type { TermsVersion } from "@/types";
 
 /**
- * TRENDev Professional Services — Terms of Service, version 1.0 (DRAFT).
+ * TRENDev Professional Services — Terms of Service, version 1.0.
  *
  * IMMUTABILITY: once this version's PDF is committed and the version is
  * purchasable, this file must NEVER be edited in substance. Changes require a
@@ -9,18 +9,18 @@ import type { TermsVersion } from "@/types";
  * docs/legal-versioning.md). While status is "draft", pre-review corrections
  * are allowed but must regenerate the PDF.
  *
- * DRAFT STATUS: this text has NOT been reviewed by a French IT/commercial
- * lawyer. It must not be marked "effective" before lawyer review and owner
- * approval (issue #15).
+ * EFFECTIVE. Lawyer review and accountant validation completed, and the owner
+ * approved and froze this version on 2026-08-19 (issue #15). From this point
+ * the immutability rule above is absolute: only `status` may ever change
+ * again, and only to "superseded".
  *
  * Legal entity details confirmed by the owner on 2026-08-18 from the public
  * registers (RCS Meaux 821 442 290); the 2026-09-01 effective date is also
- * confirmed. The jurisdiction clause in section 14 still needs the lawyer's
- * sign-off, which is why this version stays a draft.
+ * confirmed.
  */
 export const termsV20260901: TermsVersion = {
   version: "1.0",
-  status: "draft",
+  status: "effective",
   effectiveDate: "2026-09-01",
   lastUpdated: "2026-08-18",
   pdfPath: "/terms/trendev-terms-of-service-2026-09-01.pdf",

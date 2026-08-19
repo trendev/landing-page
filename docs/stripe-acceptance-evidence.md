@@ -92,7 +92,7 @@ than only recorded in metadata afterwards:
 
 > By subscribing you accept the [TRENDev Professional Services Terms of Service
 > v1.0 (2026-09-01)](https://trendev.fr/terms/2026-09-01) and the [CTO Advisor
-> service description v1.0-draft](https://trendev.fr/services/cto-advisor).
+> service description v1.0](https://trendev.fr/services/cto-advisor).
 > Those exact versions govern your subscription and stay retrievable at those
 > addresses.
 
@@ -118,7 +118,7 @@ subscription record):
 ```
 tier_id, terms_version=1.0, terms_date=2026-09-01,
 terms_url=https://trendev.fr/terms/2026-09-01,
-service_description=<slug> 1.0-draft, service_description_url=<service route>
+service_description=<slug> 1.0, service_description_url=<service route>
 ```
 
 ### Known gaps
