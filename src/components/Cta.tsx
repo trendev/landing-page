@@ -1,6 +1,12 @@
-import { ArrowRight, Mail } from "lucide-react";
+import { ArrowRight, Mail, Repeat } from "lucide-react";
 
+import { Link } from "@/app/router";
 import { CALENDLY_URL, CONTACT_EMAIL } from "@/data/content";
+import {
+  ADVISORY_PATH,
+  PRIMARY_CTA_LABEL,
+  SECONDARY_CTA_LABEL,
+} from "@/data/pricing";
 
 export function Cta() {
   return (
@@ -21,9 +27,16 @@ export function Cta() {
               rel="noopener noreferrer"
               className="px-5 sm:px-6 py-2.5 sm:py-3 bg-accent text-accent-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base"
             >
-              Book via Google Meet
+              {PRIMARY_CTA_LABEL}
               <ArrowRight className="w-4 h-4" />
             </a>
+            <Link
+              href={ADVISORY_PATH}
+              className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg border border-accent/50 text-accent hover:bg-accent/10 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+            >
+              <Repeat className="w-4 h-4" />
+              {SECONDARY_CTA_LABEL}
+            </Link>
             <a
               href={CONTACT_EMAIL}
               target="_blank"

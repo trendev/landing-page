@@ -59,8 +59,9 @@
    * severe GPU cost that can stall the canvas and tank scrolling. A translucent
    * dark fill gives the frosted look cheaply, keeps text readable, and still
    * lets the weave glow softly through. Persistent chrome that overlaps
-   * *scrolling* content (the Header and modal panels) opts back into a real
-   * `backdrop-blur-md` locally. Only one or two elements, so cost stays bounded.
+   * *scrolling* content (the Header, modal panels, the consent banner strip)
+   * opts back into a real `backdrop-blur-md` locally. A handful of small
+   * elements at most, so the cost stays bounded.
    */
   .glass {
     @apply bg-card/55 border border-white/12 shadow-[0_20px_60px_rgba(4,6,13,0.5)];
@@ -111,6 +112,32 @@
   .timeline-line-v::after {
     animation: none;
     background-position: center;
+  }
+}
+
+/* ── Print (Terms PDF) ──────────────────────────────────────────────────
+   The committed Terms PDFs are produced by printing the dated /terms route
+   (scripts/generate-terms-pdf.mjs), so print output is a legal artifact:
+   light re-skin via the same tokens, chrome hidden with `print:hidden` at
+   the component level (Header, Footer, WeaveBackground canvas, Download
+   button, version-history nav). The DRAFT banner intentionally stays
+   visible — the PDF must carry the draft status honestly. */
+@media print {
+  :root {
+    --background: #ffffff;
+    --card: #ffffff;
+    --secondary: #f1f5f9;
+    --foreground: #0b1220;
+    --muted-foreground: #374357;
+    --accent: #0e7490;
+    --accent-foreground: #ffffff;
+    --border: rgba(15, 23, 42, 0.25);
+    --ring: #0e7490;
+  }
+
+  .glass {
+    box-shadow: none;
+    background: #ffffff;
   }
 }
 

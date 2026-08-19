@@ -1,4 +1,7 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Repeat } from "lucide-react";
+
+import { Link } from "@/app/router";
+import { ADVISORY_PATH, SECONDARY_CTA_LABEL } from "@/data/pricing";
 
 interface HeroProps {
   onOpenConsultation: () => void;
@@ -30,11 +33,25 @@ export function Hero({ onOpenConsultation, onOpenProjects }: HeroProps) {
             Schedule Free Consultation
             <ArrowRight className="w-4 h-4" />
           </button>
+          {/* Distinct intent, distinct button: booking a call and subscribing
+              are different journeys and must not share a CTA. Accent outline
+              reads as invitation without competing with the primary fill. */}
+          <Link
+            href={ADVISORY_PATH}
+            className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg border border-accent/50 text-accent hover:bg-accent/10 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+          >
+            <Repeat className="w-4 h-4" />
+            {SECONDARY_CTA_LABEL}
+          </Link>
+        </div>
+        {/* Deliberately a text link, not a third button: the two CTAs above are
+            the commercial paths and must not compete with a portfolio view. */}
+        <div className="mt-5 sm:mt-6 px-4">
           <button
             onClick={onOpenProjects}
-            className="px-5 sm:px-6 py-2.5 sm:py-3 glass rounded-lg hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+            className="text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
           >
-            View Our Work
+            View our work
           </button>
         </div>
       </div>

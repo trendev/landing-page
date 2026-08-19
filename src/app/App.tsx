@@ -1,34 +1,63 @@
 import { useState } from "react";
 
-import { Cta } from "@/components/Cta";
-import { EngagementModels } from "@/components/EngagementModels";
-import { Expertise } from "@/components/Expertise";
-import { Faq } from "@/components/Faq";
+import { useRoute, type Route } from "@/app/router";
+import { ConsentBanner } from "@/components/ConsentBanner";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { Hero } from "@/components/Hero";
-import { Methodology } from "@/components/Methodology";
-import { Offers } from "@/components/Offers";
-import { Services } from "@/components/Services";
-import { Technologies } from "@/components/Technologies";
 import { WeaveBackground } from "@/components/WeaveBackground";
-import { WhyChoose } from "@/components/WhyChoose";
 import { ConsultationModal } from "@/components/modals/ConsultationModal";
-import { DetailModal } from "@/components/modals/DetailModal";
-import { ProjectsModal } from "@/components/modals/ProjectsModal";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
-import type { ServiceItem } from "@/types";
+import { readConsent, setConsent } from "@/lib/analytics";
+import { AdvisoryPage } from "@/pages/AdvisoryPage";
+import { LandingPage } from "@/pages/LandingPage";
+import { LegalPage } from "@/pages/LegalPage";
+import { NotFoundPage } from "@/pages/NotFoundPage";
+import { PrivacyPage } from "@/pages/PrivacyPage";
+import { ServicePage } from "@/pages/ServicePage";
+import { TermsPage } from "@/pages/TermsPage";
+
+function Page({
+  route,
+  onOpenConsultation,
+}: {
+  route: Route;
+  onOpenConsultation: () => void;
+}) {
+  switch (route.kind) {
+    case "landing":
+      return <LandingPage onOpenConsultation={onOpenConsultation} />;
+    case "advisory":
+      return <AdvisoryPage onOpenConsultation={onOpenConsultation} />;
+    case "service":
+      return (
+        <ServicePage
+          slug={route.slug}
+          onOpenConsultation={onOpenConsultation}
+        />
+      );
+    case "terms":
+      return <TermsPage date={route.date} />;
+    case "legal":
+      return <LegalPage />;
+    case "privacy":
+      return <PrivacyPage />;
+    case "notFound":
+      return <NotFoundPage />;
+  }
+}
 
 export default function App() {
-  const [selectedItem, setSelectedItem] = useState<ServiceItem | null>(null);
+  const route = useRoute();
   const [showConsultationModal, setShowConsultationModal] = useState(false);
-  const [showProjectsModal, setShowProjectsModal] = useState(false);
+  // Shown until the visitor answers it, and reopened from the footer so the
+  // choice can be changed or withdrawn at any time.
+  const [showConsentBanner, setShowConsentBanner] = useState(
+    () => readConsent() === null,
+  );
 
   const openConsultation = () => setShowConsultationModal(true);
 
-  useBodyScrollLock(
-    Boolean(selectedItem) || showConsultationModal || showProjectsModal,
-  );
+  useBodyScrollLock(showConsultationModal);
 
   return (
     // Root stays transparent so the fixed, -z-10 WeaveBackground canvas shows
@@ -38,40 +67,24 @@ export default function App() {
       <Header onOpenConsultation={openConsultation} />
 
       <main>
-        <Hero
-          onOpenConsultation={openConsultation}
-          onOpenProjects={() => setShowProjectsModal(true)}
-        />
-        <Methodology />
-        <Offers onOpenConsultation={openConsultation} />
-        <EngagementModels />
-        <WhyChoose />
-        <Expertise onSelectItem={setSelectedItem} />
-        <Services onSelectItem={setSelectedItem} />
-        <Technologies />
-        <Faq />
-        <Cta />
+        <Page route={route} onOpenConsultation={openConsultation} />
       </main>
 
-      <Footer />
+      <Footer onOpenCookieSettings={() => setShowConsentBanner(true)} />
 
-      {selectedItem && (
-        <DetailModal
-          item={selectedItem}
-          onClose={() => setSelectedItem(null)}
-          onGetStarted={() => {
-            setSelectedItem(null);
-            openConsultation();
+      {showConsentBanner && (
+        <ConsentBanner
+          reopened={readConsent() !== null}
+          onDecide={(choice) => {
+            setConsent(choice);
+            setShowConsentBanner(false);
           }}
+          onDismiss={() => setShowConsentBanner(false)}
         />
       )}
 
       {showConsultationModal && (
         <ConsultationModal onClose={() => setShowConsultationModal(false)} />
-      )}
-
-      {showProjectsModal && (
-        <ProjectsModal onClose={() => setShowProjectsModal(false)} />
       )}
     </div>
   );

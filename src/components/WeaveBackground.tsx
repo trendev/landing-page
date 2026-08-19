@@ -282,7 +282,7 @@ export function WeaveBackground() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="fixed inset-0 -z-10 h-full w-full"
+      className="fixed inset-0 -z-10 h-full w-full print:hidden"
     />
   );
 }

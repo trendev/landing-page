@@ -7,11 +7,6 @@ Guidance for working in this repo.
 Single-page marketing landing page for **TRENDev Consulting** (Fractional CTO,
 AI, Cloud, DevOps, Web3). Static site, no backend.
 
-## Stack
-
-React 19 · Vite 8 · Tailwind CSS v4 (`@tailwindcss/vite`) · TypeScript ·
-`lucide-react` icons. Output goes to `./build` (gitignored).
-
 ## Commands
 
 ```bash
@@ -25,23 +20,70 @@ There are no tests and no linter configured.
 ## Architecture
 
 - `src/main.tsx` — React entry; mounts `App`, imports `styles/index.css`.
-- `src/app/App.tsx` — **composition root only**: holds the three modal state
-  vars and assembles sections + modals. Keep it thin; don't add markup here.
+- `src/app/App.tsx` — **composition root only**: route switch (`useRoute`) +
+  the consultation-modal state shared by Header and all pages + the
+  cookie-consent banner state (Footer reopens it), plus
+  WeaveBackground/Header/Footer chrome. Keep it thin; don't add markup here.
+- `src/app/router.tsx` — hand-rolled client router (**do not add
+  react-router**): `useRoute()`, `navigate()`, `Link`, flat route table
+  (`/`, `/advisory`, `/services/:slug`, `/terms`, `/terms/:date`, `/legal`,
+  `/privacy`).
+  Handles `/#section` hash links from subpages, scroll-to-top, and GA SPA
+  pageviews (via `useDocumentMeta`). GH Pages serves deep links through
+  per-route `index.html` copies created in `.github/workflows/deploy.yml` —
+  **keep that route list in sync with the router and the terms registry**.
+- `src/pages/` — one component per route: `LandingPage` (owns the
+  landing-only modal state: DetailModal, ProjectsModal), `AdvisoryPage` (the
+  subscription funnel: 3 tiers + `ComparisonTable`), `ServicePage`
+  (data-driven by slug), `TermsPage` (versioned), `LegalPage`, `PrivacyPage`,
+  `NotFoundPage`; `legalLayout.tsx` is the shared legal-page shell.
 - `src/components/` — one component per page section (Header, Hero,
   Methodology, Offers, EngagementModels, WhyChoose, Expertise, Services,
   Technologies, Faq, Cta, Footer). `ServiceCard` is the shared card for the
-  Expertise + Services grids. `Methodology` (the `Understand → Prioritize →
-  Execute → Scale` step indicator + qualitative outcomes) and `Offers` (named
-  productized entry points) carry the buying-journey content added for issue #8.
+  Expertise + Services grids. `Methodology` (the
+  `Understand → Prioritize → Execute → Scale` step indicator + qualitative
+  outcomes) and `Offers` (named productized entry points) carry the
+  buying-journey content added for issue #8.
+  Offers/EngagementModels are kept until issue #19 decides their fate.
+  `ConsentBanner` is the cookie banner (see the consent section below).
+  `BackLink` is the return path every subpage must render (see below).
+  `TierCta` is the shared Advisor/Fractional purchase CTA, and
+  `ComparisonTable` the 3-tier comparison; both are used by `/services/*`
+  only. **The landing page has no pricing/subscription section** — see the
+  commercial guardrails below.
 - `src/components/modals/` — `Modal` is the shared backdrop wrapper;
   `DetailModal` / `ConsultationModal` / `ProjectsModal` build on it.
 - `src/components/icons/GithubIcon.tsx` — inline GitHub mark (lucide v1 dropped
   brand icons; do not re-add an icon dependency for it).
-- `src/data/content.ts` — **all page copy lives here** (expertise, services,
-  whyChoose, projects, engagementModels, methodologySteps, outcomes, offers,
-  faqs) plus `navLinks`, `CALENDLY_URL`, `CONTACT_EMAIL`, `GITHUB_URL`. Edit
-  content here, not in components.
-- `src/types.ts` — shared types. `src/hooks/useBodyScrollLock.ts` — scroll lock.
+- **All page copy lives under `src/data/`**, not in components:
+  - `content.ts` — landing sections (expertise, services, whyChoose, projects,
+    engagementModels, methodologySteps, outcomes, offers, faqs) plus
+    `navLinks`, `legalLinks`, `CALENDLY_URL`, `CONTACT_EMAIL`, `GITHUB_URL`.
+  - `pricing.ts` — the 3 frozen premium tiers, comparison table,
+    `PRIMARY_CTA_LABEL`, `PREREQUISITE_NOTE`.
+  - `stripe.ts` — `STRIPE_PAYMENT_LINKS`, **selected by environment**: test
+    links under `vite` (dev), live links under `vite build` (what
+    `deploy.yml` runs). `VITE_STRIPE_MODE=test|live` overrides — use it when
+    previewing a production build locally, which would otherwise point at real
+    checkout. Live links stay empty until issue #16 clears its gates; empty ⇒
+    purchase CTAs fall back to the consultation modal. Payment Links are public
+    URLs, **not secrets** — do not move them into `.env` (it is gitignored, so
+    CI would need secrets for values that aren't secret, and the deployed link
+    set would stop being reviewable in the diff).
+  - `serviceDescriptions.ts` — versioned service definitions (issue #14).
+  - `terms/` — dated, **immutable** Terms of Service versions + registry
+    (issue #15; see `docs/legal-versioning.md` before touching anything here).
+    The registry is **lazy**: each version's text is a separate `import()`
+    chunk, so the ~14 kB of legal prose per version never lands in the main
+    bundle. Only `termsVersionSummaries` (date/version/status, used by the
+    history nav and the dated-route 404 check) is eager, and it has to be kept
+    in sync with its module by hand.
+  - `legalPages.ts` — legal notice + privacy content.
+- `src/types.ts` — shared types. `src/hooks/` — `useBodyScrollLock` (scroll
+  lock), `useDocumentMeta` (per-route title/description/canonical + GA SPA
+  pageview; `index.html` stays the SEO source of truth for `/` and OG/JSON-LD).
+- `src/lib/analytics.ts` — consent-gated Google Analytics loading. See
+  **Cookie consent** below before touching anything analytics-related.
 
 ## Conventions
 
@@ -53,6 +95,75 @@ There are no tests and no linter configured.
   picked up automatically.
 - The `projects` array has `hidden: true` entries (WIP: UnleakTrade, PoLN);
   `ProjectsModal` filters them out. Keep the data, flip the flag to publish.
+
+## Commercial & legal guardrails (epic #12)
+
+- Exactly **3 public offers**: CTO Advisor €1,500/mo · CTO Advisor+ €2,500/mo
+  (recommended) · Fractional CTO from €6,000/mo (contact-only, never
+  self-service). Names and prices are frozen (issue #13).
+- Every displayed price carries **"excluding applicable taxes"** — never
+  present 20% French VAT as universal.
+- The internal maximum day rate is deliberately **not published anywhere in
+  this repo** — do not add it.
+- The prerequisite note ("please schedule your free CTO consultation before
+  subscribing") must stay adjacent to the Advisor purchase CTAs.
+- **Every subpage renders a `BackLink`.** The site is a single-page app with
+  deep-linkable routes, so a visitor can land on `/advisory`, `/services/*`,
+  `/terms`, `/legal` or `/privacy` straight from search or a shared link with
+  no history to go back to. The header logo goes home too, but it is not an
+  obvious affordance. `/services/*` points back at its parent `/advisory`;
+  everything else points at `/`. `BackLink` is `print:hidden`, so it never
+  reaches the Terms PDF.
+- **The Hero's commercial CTAs come first.** Two buttons (consultation +
+  advisory plans) carry the hero; "View our work" is a subdued text link
+  underneath and must not be promoted back to a third button competing with
+  them.
+- **Two funnels, two buttons — never merge them.** Booking a consultation and
+  subscribing are different intents:
+  - "Book a free CTO consultation" / "Schedule Free Consultation"
+    (`PRIMARY_CTA_LABEL`) opens `ConsultationModal`, which must stay purely
+    about booking the call. **Do not put offers, prices or subscribe links in
+    it** — that was tried and it made the funnel ambiguous.
+  - "See CTO advisory plans" (`SECONDARY_CTA_LABEL` → `ADVISORY_PATH`) is the
+    separate, visually distinct CTA for a visitor who already knows what they
+    want. It lives in the Hero, the closing `Cta` section and the nav, and
+    lands on `/advisory`.
+- **Do not put a pricing/subscription section on the landing page.** The
+  landing page stays Fractional-CTO-oriented end to end; a subscription block
+  mid-page confuses the narrative. The offers live on `/advisory` (all three
+  tiers + `ComparisonTable`) and `/services/*` (full descriptions). This was
+  tried the other way and reverted twice — the landing page links out, it does
+  not host the plans.
+- Terms versions are immutable once their PDF is committed: publishing a
+  change means a new dated module under `src/data/terms/`, a new PDF
+  (`node scripts/generate-terms-pdf.mjs <date>`), and a new deploy.yml route —
+  never edit an accepted version. Full workflow: `docs/legal-versioning.md`.
+- The Terms/legal/privacy pages ship as **drafts with `[TO BE COMPLETED]`
+  placeholders** until lawyer review + entity details land (issue #15); the
+  draft banner must stay until the version is approved as effective.
+- What Stripe checkout must record (issue #16 input):
+  `docs/stripe-acceptance-evidence.md`.
+
+## Cookie consent (CNIL / GDPR)
+
+Analytics is **opt-in**, and the implementation has to stay that way:
+
+- `index.html` defines only `dataLayer` + the `gtag` stub and calls
+  `gtag('consent','default', …)` with everything **denied**. It must not load
+  `gtag.js` and must not call `gtag('config', …)`.
+- `src/lib/analytics.ts` is the only place that injects the Google script, and
+  only after an explicit accept. Consent Mode alone is not enough: with
+  `analytics_storage: denied` gtag.js still loads and still pings Google, and
+  GA4 is not a CNIL-exempt audience-measurement tool. Refusing must mean **no
+  request to Google at all**.
+- Refusing must be as easy as accepting: keep the two `ConsentBanner` buttons
+  the same size, side by side, one click each. No pre-ticked state, no
+  dismiss-as-consent (the banner only offers Cancel once a choice exists).
+- Withdrawal must stay reachable: the footer "Cookie settings" button reopens
+  the banner, and choosing Refuse deletes the `_ga*` cookies.
+- The choice lives in `localStorage` under `trendev.analytics-consent`.
+- `/privacy` (`src/data/legalPages.ts`) describes all of the above. **Change
+  the gating and you must change that copy in the same commit.**
 
 ## Design direction (2026 dark rebrand)
 
@@ -72,8 +183,9 @@ glassmorphic** look with an animated woven-wave background. Visual reference
   dark shadow. **No `backdrop-filter` in `.glass`.** `backdrop-blur` over the
   animated `WeaveBackground` re-rasterizes every frame; with ~30 cards on the
   page that pins the GPU and stalls the canvas. Only persistent/transient chrome
-  that overlaps *scrolling* content (Header, modal panels — one or two elements)
-  may add `backdrop-blur-md` locally.
+  that overlaps *scrolling* content (Header, modal panels, the consent banner
+  strip — a handful of small elements at most) may add `backdrop-blur-md`
+  locally.
 - **Going dark:** flip the tokens in `src/styles/theme.css` (and/or apply the
   `.dark` variant) and change the `App.tsx` root from `bg-white` to the dark
   background. Don't restyle per-component with literals.
@@ -86,22 +198,6 @@ glassmorphic** look with an animated woven-wave background. Visual reference
   continuously, so there are **no** per-section `bg-*` bands — the glass cards
   separate content. Keep this scale when adding sections; adjacent sections
   already stack their padding, so don't pile on more.
-
-## Keep Figma in sync
-
-The Figma file https://www.figma.com/design/tPzPmXtsgZpjji318sUPUU is the design
-counterpart of this site. **After any visual change (theme, layout, spacing, new
-section), mirror the result back into it** so design and code don't drift.
-
-- Use the Figma MCP `generate_figma_design` capture against this `fileKey` to add
-  a fresh page from the running dev server (`npm run dev`, http://localhost:3000).
-  It needs the capture script on the page: temporarily add
-  `<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>`
-  to `index.html`, then **hard-load** the URL with the capture hash (a hash-only
-  change won't reload an SPA, so the script never fires — add a throwaway query
-  like `?cap=1`). Revert the script tag afterwards.
-- The WebGL background only rasterizes for the first viewport; below the fold the
-  capture shows the flat dark `--background`, which is the correct still stand-in.
 
 ## Background: `WeaveBackground`
 
@@ -130,6 +226,10 @@ section), mirror the result back into it** so design and code don't drift.
 - This repo was originally generated by Figma Make and later refactored into the
   structure above. If you find a giant inline file or a Figma artifact, it's
   drift — prefer the decomposed pattern.
-- `index.html` carries the SEO/OpenGraph/schema.org markup and the Google
-  Analytics snippet — update meta there, not in React. When the dark theme
-  lands, also update the `theme-color` meta to a dark navy (e.g. `#070C1C`).
+- `index.html` carries the SEO/OpenGraph/schema.org markup — update site-wide
+  meta there, not in React. The one exception: subpages override
+  title/description/canonical at runtime via `useDocumentMeta` (which also
+  fires GA SPA pageviews). `index.html` holds only the gtag **stub** and a
+  denied Consent Mode default; `gtag.js` itself is loaded from
+  `src/lib/analytics.ts` after consent — do not re-add the `<script async
+  src="…googletagmanager…">` tag there.

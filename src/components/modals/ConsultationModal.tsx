@@ -77,7 +77,7 @@ export function ConsultationModal({ onClose }: ConsultationModalProps) {
             rel="noopener noreferrer"
             className="w-full px-6 py-3 bg-accent text-accent-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 font-medium"
           >
-            Book Your Free Consultation
+            Book a free CTO consultation
             <ArrowRight className="w-4 h-4" />
           </a>
           <button
