@@ -70,14 +70,22 @@ There are no tests and no linter configured.
     URLs, **not secrets** — do not move them into `.env` (it is gitignored, so
     CI would need secrets for values that aren't secret, and the deployed link
     set would stop being reviewable in the diff).
-  - `serviceDescriptions.ts` — versioned service definitions (issue #14).
+  - `serviceDescriptions.ts` — versioned service definitions (issue #14),
+    v1.0 (2026-09-01). The Advisor/Advisor+ text must stay word for word
+    identical to Annex A/B of the current Terms version; a parity check is
+    cheap to re-derive, a silent divergence is a contractual problem.
   - `terms/` — dated, **immutable** Terms of Service versions + registry
     (issue #15; see `docs/legal-versioning.md` before touching anything here).
     The registry is **lazy**: each version's text is a separate `import()`
     chunk, so the ~14 kB of legal prose per version never lands in the main
     bundle. Only `termsVersionSummaries` (date/version/status, used by the
     history nav and the dated-route 404 check) is eager, and it has to be kept
-    in sync with its module by hand.
+    in sync with its module by hand. Each version ends with **Annex A/B**, a
+    frozen copy of the CTO Advisor and CTO Advisor+ service descriptions, which
+    is how the accepted scope stays immutable without a dated `/services`
+    route. Never replace those copies with an import from
+    `serviceDescriptions.ts`: live data inside an immutable contract defeats
+    the point.
   - `legalPages.ts` — legal notice + privacy content.
 - `src/types.ts` — shared types. `src/hooks/` — `useBodyScrollLock` (scroll
   lock), `useDocumentMeta` (per-route title/description/canonical + GA SPA
@@ -146,12 +154,32 @@ There are no tests and no linter configured.
   change means a new dated module under `src/data/terms/`, a new PDF
   (`node scripts/generate-terms-pdf.mjs <date>`), and a new deploy.yml route —
   never edit an accepted version. Full workflow: `docs/legal-versioning.md`.
-- Terms v1.0 (2026-09-01) is **effective** since 2026-08-19: lawyer-reviewed,
-  accountant-validated, owner-approved. Its text is now frozen absolutely, and
-  `status` is the only field that may ever change again, only to
-  `"superseded"`. The service descriptions are v1.0 for the same reason. A
-  future version that is not yet approved ships as `status: "draft"`, which
-  renders a pending-legal-review banner that must stay until approval.
+- **Terms v1.0 (2026-09-01) is the one published version**, and there is only
+  one. It was frozen on 2026-08-19, then rewritten **in place** on 2026-08-21
+  after the deep legal review of 2026-08-19 and the owner's decisions on it:
+  same version, same date, same route, same PDF filename. That was legitimate
+  only because the version had not yet reached its effective date and had never
+  been accepted (`LIVE_PAYMENT_LINKS` is empty, so no purchase has ever been
+  possible). **Do not do it again.** From now on the text is frozen absolutely:
+  `status` is the only field that may change, only to `"superseded"`, and any
+  correction means a new dated module with this one left online. A version that
+  is not yet approved ships as `status: "draft"`, which renders a
+  pending-legal-review banner that must stay until approval.
+- **Publishing a new Terms version does not require recreating the Stripe
+  Payment Links.** Only `consent_collection` is create-only; `metadata`,
+  `subscription_data.metadata` and `custom_text` are all accepted by
+  `POST /v1/payment_links/{id}`, so the recorded URL and the consent message
+  repoint in place and the `buy.stripe.com` URLs survive.
+- **The online Terms cover the Advisor tiers only.** Per §1, Fractional
+  CTO is out of scope: it is contact-only and contracted per engagement. Don't
+  reintroduce Fractional CTO clauses into the Terms or an Annex C.
+- The owner's standing steer on legal scope, from the 2026-08-19 review: keep
+  it simple and proportionate to a small consultancy selling advice. Approved
+  changes were the ones above; expressly declined were lawyer/accountant
+  registers, per-purchase evidence schedules beyond what Stripe already stores,
+  approved-country and multi-country tax policy, arbitration, rewording the
+  Meaux jurisdiction clause, extending confidentiality past 5 years, and extra
+  boilerplate (force majeure, order of precedence). Don't re-propose them.
 - What Stripe checkout must record (issue #16 input):
   `docs/stripe-acceptance-evidence.md`.
 

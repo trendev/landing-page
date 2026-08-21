@@ -124,9 +124,20 @@ export interface ServiceDescription {
 export interface TermsSection {
   id: string;
   number: number;
+  /**
+   * Rendered in place of "{number}." when set, for sections that are numbered
+   * differently from the body of the contract (e.g. "Annex A").
+   */
+  label?: string;
   heading: string;
   paragraphs: string[];
   bullets?: string[];
+  /**
+   * Nested headed blocks, rendered below the section's own paragraphs/bullets.
+   * Annexes reproduce a service description, which is itself a list of headed
+   * blocks, so this reuses ContentSection rather than inventing a second shape.
+   */
+  subsections?: ContentSection[];
 }
 
 export interface TermsVersion {

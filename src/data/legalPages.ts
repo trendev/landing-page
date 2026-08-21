@@ -4,12 +4,18 @@ import type { ContentSection } from "@/types";
  * Legal notice (mentions légales) and privacy policy content (issue #15).
  *
  * Entity details were confirmed by the owner on 2026-08-18 against the public
- * registers (RCS Meaux 821 442 290) and are no longer placeholders. Both
- * documents should still be reviewed alongside the Terms by the French
- * IT/commercial lawyer before production launch.
+ * registers (RCS Meaux 821 442 290) and are no longer placeholders. The lawyer
+ * review of issue #15 completed on 2026-08-19.
+ *
+ * 2026-08-21: Stripe is described as a current processor rather than a future
+ * one. Stripe checkout is wired up and reachable from the Advisor CTAs, and
+ * this policy promised to be updated "before that processing begins".
+ *
+ * If the analytics consent gating in src/lib/analytics.ts ever changes, the
+ * cookies section below must change in the same commit.
  */
 
-export const LEGAL_LAST_UPDATED = "2026-08-18";
+export const LEGAL_LAST_UPDATED = "2026-08-21";
 
 export const legalNoticeSections: ContentSection[] = [
   {
@@ -20,10 +26,10 @@ export const legalNoticeSections: ContentSection[] = [
       "Legal form: Société par actions simplifiée à associé unique (SASU)",
       "Share capital: €10,000",
       "Registered office: 7 avenue Christian Doppler, 77700 Serris, France",
-      "SIREN: 821 442 290 — SIRET (registered office): 821 442 290 00028",
+      "SIREN: 821 442 290. SIRET (registered office): 821 442 290 00028",
       "Trade and Companies Register: RCS Meaux 821 442 290",
       "Intra-Community VAT number: FR75 821 442 290",
-      "APE/NAF code: 6201Z — Programmation informatique",
+      "APE/NAF code: 6201Z (Programmation informatique)",
       "Publication director (Directeur de la publication): Julien Sié, Président",
       "Contact: contact@trendev.fr",
     ],
@@ -32,7 +38,7 @@ export const legalNoticeSections: ContentSection[] = [
     id: "hosting",
     heading: "Hosting (Hébergeur)",
     paragraphs: [
-      "This site is hosted by GitHub, Inc. (GitHub Pages), 88 Colin P. Kelly Jr Street, San Francisco, CA 94107, United States — https://pages.github.com.",
+      "This site is hosted by GitHub, Inc. (GitHub Pages), 88 Colin P. Kelly Jr Street, San Francisco, CA 94107, United States (https://pages.github.com).",
     ],
   },
   {
@@ -56,7 +62,7 @@ export const privacySections: ContentSection[] = [
     id: "controller",
     heading: "Data controller",
     paragraphs: [
-      "The data controller for this site is TRENDev, a société par actions simplifiée à associé unique (SASU) registered with the Trade and Companies Register of Meaux under number 821 442 290, whose registered office is at 7 avenue Christian Doppler, 77700 Serris, France — contact@trendev.fr.",
+      "The data controller for this site is TRENDev, a société par actions simplifiée à associé unique (SASU) registered with the Trade and Companies Register of Meaux under number 821 442 290, whose registered office is at 7 avenue Christian Doppler, 77700 Serris, France. Contact: contact@trendev.fr.",
       "This policy describes the processing of personal data carried out through the trendev.fr website. It is directed at professional visitors and clients.",
     ],
   },
@@ -64,10 +70,10 @@ export const privacySections: ContentSection[] = [
     id: "data-collected",
     heading: "Data we process and why",
     bullets: [
-      "Audience measurement — Google Analytics 4 (property G-G6NP1YWXS0) processes device and usage data (pages viewed, approximate location, browser and device identifiers, cookies) to measure how the site is used.",
-      "Consultation booking — when you book a consultation via Calendly, Calendly collects the identification and scheduling details you submit (name, email, chosen slot, context you provide).",
-      "Email contact — when you write to contact@trendev.fr, we process your name, email address and the content of your message to respond to you.",
-      "Subscriptions and billing — when self-service subscriptions launch, payment, billing and tax data will be processed by Stripe as payment processor; this policy will be updated before that processing begins.",
+      "Audience measurement: Google Analytics 4 (property G-G6NP1YWXS0) processes device and usage data (pages viewed, approximate location, browser and device identifiers, cookies) to measure how the site is used.",
+      "Consultation booking: when you book a consultation via Calendly, Calendly collects the identification and scheduling details you submit (name, email, chosen slot, context you provide).",
+      "Email contact: when you write to contact@trendev.fr, we process your name, email address and the content of your message to respond to you.",
+      "Subscriptions and billing: when you subscribe to a CTO Advisor or CTO Advisor+ plan, checkout and payment are handled by Stripe Payments Europe, Ltd. as payment processor. Stripe processes your business name and billing address, your VAT or tax identification number where you provide one, your email address, your payment details, and the record of your purchase, including the Terms of Service version you accepted and the timestamp of acceptance. TRENDev receives and keeps that purchase and billing record for contractual, accounting and tax purposes. TRENDev never receives your full card details.",
     ],
   },
   {
@@ -76,21 +82,21 @@ export const privacySections: ContentSection[] = [
     bullets: [
       "Audience measurement: your consent, collected through the cookie banner before any analytics script is loaded (Article 6(1)(a) GDPR and Article 82 of the French Data Protection Act).",
       "Booking and email contact: steps taken at your request prior to entering into a contract, and legitimate interest in responding to professional enquiries.",
-      "Subscriptions and billing (future): performance of the contract and compliance with legal (accounting, tax) obligations.",
+      "Subscriptions and billing: performance of the contract and compliance with legal (accounting, tax) obligations.",
     ],
   },
   {
     id: "recipients-transfers",
     heading: "Recipients and international transfers",
     paragraphs: [
-      "Personal data is processed by TRENDev and by the service providers named above (Google, Calendly, GitHub as site host, and later Stripe), acting for the purposes described. Some of these providers are established in the United States; transfers rely on the EU–US Data Privacy Framework and/or Standard Contractual Clauses, as applicable to each provider.",
+      "Personal data is processed by TRENDev and by the service providers named above (Google, Calendly, GitHub as site host, and Stripe as payment processor), acting for the purposes described. Some of these providers are established in the United States; transfers rely on the EU–US Data Privacy Framework and/or Standard Contractual Clauses, as applicable to each provider.",
     ],
   },
   {
     id: "retention",
     heading: "Retention",
     paragraphs: [
-      "Analytics data is retained for the duration configured in Google Analytics. Enquiry and booking data is kept for the time needed to handle the relationship and then archived or deleted. Contractual and billing records are kept for the durations required by French commercial and tax law.",
+      "Analytics data is retained for 14 months from collection, the retention period configured in Google Analytics. Enquiry and booking data is kept for 3 years from our last contact with you, and then deleted. Contractual, checkout-acceptance and billing records are kept for 10 years from the end of the financial year concerned, the period required of us by French commercial and tax law (Article L. 123-22 of the French Commercial Code).",
     ],
   },
   {
