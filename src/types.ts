@@ -119,6 +119,26 @@ export interface ServiceDescription {
   sections: ContentSection[];
 }
 
+/* ── Post-purchase onboarding (/welcome, issue #18) ────────────────────── */
+
+export interface WelcomeStep {
+  id: string;
+  icon: LucideIcon;
+  /** Step ordinal shown beside the heading, e.g. "01". */
+  step: string;
+  heading: string;
+  paragraphs?: string[];
+  bullets?: string[];
+  /** Cautionary line rendered under the bullets, e.g. do not send secrets. */
+  note?: string;
+  cta?: {
+    label: string;
+    href: string;
+    /** Accent styling; at most one step should claim it. */
+    primary?: boolean;
+  };
+}
+
 /* ── Terms of Service versioning (issue #15) ───────────────────────────── */
 
 export interface TermsSection {

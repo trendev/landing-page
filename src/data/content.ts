@@ -486,6 +486,9 @@ export const legalLinks = [
 /** Shared external links used across CTAs. */
 export const CALENDLY_URL =
   "https://calendly.com/whyvrafvr/trendev-consult";
+/** Bare address, for display and for pages that build their own mailto. */
+export const CONTACT_ADDRESS = "contact@trendev.fr";
+/** Prefilled consultation mailto used by the contact CTAs. */
 export const CONTACT_EMAIL =
-  "mailto:contact@trendev.fr?subject=Consultation%20Request%20from%20TRENDev%20Website";
+  `mailto:${CONTACT_ADDRESS}?subject=Consultation%20Request%20from%20TRENDev%20Website`;
 export const GITHUB_URL = "https://github.com/trendev";

@@ -23,6 +23,11 @@ const defaults = {
       ? (document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
           ?.href ?? `${SITE_ORIGIN}/`)
       : `${SITE_ORIGIN}/`,
+  robots:
+    typeof document !== "undefined"
+      ? (document.querySelector<HTMLMetaElement>('meta[name="robots"]')
+          ?.content ?? "index, follow")
+      : "index, follow",
 };
 
 // The gtag config call fired when consent is granted (or restored on boot)
@@ -36,6 +41,13 @@ interface DocumentMetaOptions {
   description?: string;
   /** Path (e.g. "/terms") appended to the site origin for the canonical URL. */
   canonicalPath?: string;
+  /**
+   * Overrides the document-wide robots directive, e.g. "noindex". deploy.yml
+   * gives every route a real crawlable entry point, so a route that should not
+   * surface in search has to say so itself. Restored to the index.html default
+   * when a page passes nothing.
+   */
+  robots?: string;
 }
 
 export function useDocumentMeta(options?: DocumentMetaOptions): void {
@@ -44,6 +56,7 @@ export function useDocumentMeta(options?: DocumentMetaOptions): void {
   const canonical = options?.canonicalPath
     ? `${SITE_ORIGIN}${options.canonicalPath}`
     : defaults.canonical;
+  const robots = options?.robots ?? defaults.robots;
 
   useEffect(() => {
     document.title = title;
@@ -55,11 +68,15 @@ export function useDocumentMeta(options?: DocumentMetaOptions): void {
       'link[rel="canonical"]',
     );
     if (link) link.href = canonical;
+    const robotsTag = document.querySelector<HTMLMetaElement>(
+      'meta[name="robots"]',
+    );
+    if (robotsTag) robotsTag.content = robots;
 
     const path = window.location.pathname;
     if (path !== lastTrackedPath) {
       lastTrackedPath = path;
       trackPageView(path + window.location.search, title);
     }
-  }, [title, description, canonical]);
+  }, [title, description, canonical, robots]);
 }
