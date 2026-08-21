@@ -119,10 +119,18 @@ inside the Terms version the buyer accepts.
 - [x] Owner approves v1.0, effective 2026-09-01.
 - [x] PDF regenerated from the built dated route and committed.
 - [x] Stripe consent message and metadata match v1.0 (2026-09-01).
-- [ ] Deploy verified: `/terms/2026-09-01` and its PDF return HTTP 200 in
-      production.
-- [ ] Account-wide Stripe *Terms of service* URL confirmed as
-      `https://trendev.fr/terms/2026-09-01` (Dashboard only, no API).
+- [x] Deploy verified 2026-08-21 (commit `35bdecf`): `/terms`,
+      `/terms/2026-09-01`, both `/services/*` routes, `/advisory`, `/legal` and
+      `/privacy` all return HTTP 200 in production, the served PDF is
+      byte-identical to the committed one, and the live page renders v1.0 with
+      Annexes A and B and no validation placeholder. `/terms/2026-08-22`, a
+      route considered during review and never published, correctly 404s.
+- [x] Account-wide Stripe *Terms of service* URL stays
+      `https://trendev.fr/terms/2026-09-01`. It was never changed, because the
+      route did not move, and that route now returns 200. It is not readable
+      through the API, so this one is confirmed by construction rather than by
+      query: if it is ever repointed, verify it in Dashboard → Settings →
+      Public business details.
 
 ## v1.0 was amended in place on 2026-08-21
 
