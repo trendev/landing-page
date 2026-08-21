@@ -21,7 +21,8 @@ able to re-read what they accepted.
   because the version-history nav and the dated-route 404 check need it before
   any text is loaded.
 - Routes: `/terms` serves the current version; `/terms/<effective-date>`
-  serves each version immutably (e.g. `/terms/2026-09-01`).
+  serves each version immutably. Currently one published version:
+  `/terms/2026-09-01` (v1.0).
 - Each version has a committed PDF at
   `public/terms/trendev-terms-of-service-<date>.pdf`, generated **from the
   built dated route** by `scripts/generate-terms-pdf.mjs`, so the PDF matches
@@ -74,34 +75,113 @@ able to re-read what they accepted.
   archaeology.
 - The version string is what checkout metadata references (see
   `docs/stripe-acceptance-evidence.md`).
+- **Immutability is delivered by the Terms, not by a dated `/services` route.**
+  From Terms v1.0, the CTO Advisor and CTO Advisor+ descriptions are reproduced
+  verbatim as Annex A and Annex B inside each Terms version, so the buyer
+  receives the exact accepted scope in the Terms PDF and it can never change
+  under them. `/services/<slug>` stays a single-current-version marketing page.
+  This closes the defect flagged by the 2026-08-19 legal review, where checkout
+  recorded a mutable `/services/<slug>` URL while promising the accepted text
+  would remain retrievable there.
+- **Annex parity:** the Advisor and Advisor+ text in
+  `src/data/serviceDescriptions.ts` must stay word for word identical to the
+  Annex in the current Terms version. Changing the description therefore means
+  publishing a new Terms version in the same commit. The Annex is the
+  contractual copy and wins on any discrepancy (Terms §2).
+- Fractional CTO has no Annex: Terms §1 puts it outside the online Terms, and
+  it is contracted separately per engagement.
 
 ## How a purchase references these versions
 
 Each checkout (issue #16) must record, at minimum:
 
-- `Terms v1.0 (2026-09-01) — https://trendev.fr/terms/2026-09-01`
-- `Service Description cto-advisor v1.0 (2026-09-01) —
-  https://trendev.fr/services/cto-advisor`
+- `Terms v1.0 (2026-09-01) https://trendev.fr/terms/2026-09-01`
+- `Service Description cto-advisor v1.0 (2026-09-01), reproduced as Annex A of
+  the Terms above`
 
-## Launch checklist for the first production versions
+The service description no longer needs its own immutable URL: it travels
+inside the Terms version the buyer accepts.
 
-- [x] Owner supplies legal entity details — done 2026-08-18 from the public
+## Launch checklist for the first production version
+
+- [x] Owner supplies legal entity details, done 2026-08-18 from the public
       registers (RCS Meaux 821 442 290). No `[TO BE COMPLETED]` placeholder
       remains in the Terms, `/legal` or `/privacy`.
-- [x] Owner confirms the four open service-description decisions of issue #14
-      and the 2026-09-01 effective date — done 2026-08-18; the
-      `pendingDefault` tags are gone.
+- [x] Owner confirms the four open service-description decisions of issue #14,
+      done 2026-08-18; the `pendingDefault` tags are gone.
 - [x] French IT/commercial lawyer reviews Terms + service descriptions +
-      acceptance model; comments resolved — confirmed by the owner 2026-08-19,
+      acceptance model; comments resolved, confirmed by the owner 2026-08-19,
       including the jurisdiction clause (Terms §14, courts of Meaux).
-- [x] Accountant validates VAT/late-payment/invoice wording — confirmed by the
+- [x] Accountant validates VAT/late-payment/invoice wording, confirmed by the
       owner 2026-08-19.
-- [x] Owner approves; Terms `status` flipped `"draft"` → `"effective"`;
-      service descriptions dropped the `-draft` version suffix — 2026-08-19.
-- [x] PDF regenerated and committed (213,195 → 194,026 bytes, the difference
-      being the removed DRAFT banner).
-- [ ] Deploy verified: dated route + PDF return HTTP 200 in production and the
-      page no longer shows the draft banner.
+- [x] Deep legal review of the checklist (2026-08-19) worked through with the
+      owner on 2026-08-21; the approved points are folded into the text (below).
+- [x] Owner approves v1.0, effective 2026-09-01.
+- [x] PDF regenerated from the built dated route and committed.
+- [x] Stripe consent message and metadata match v1.0 (2026-09-01).
+- [ ] Deploy verified: `/terms/2026-09-01` and its PDF return HTTP 200 in
+      production.
+- [ ] Account-wide Stripe *Terms of service* URL confirmed as
+      `https://trendev.fr/terms/2026-09-01` (Dashboard only, no API).
+
+## v1.0 was amended in place on 2026-08-21
+
+v1.0 was first frozen on 2026-08-19. The deep legal review of that date found
+substantive defects, the owner's decisions of 2026-08-21 resolved them, and the
+text was rewritten **in place** on 2026-08-21: same version number, same
+2026-09-01 effective date, same route, same PDF filename.
+
+That is legitimate here and only here, because at the time of the rewrite the
+version had never been in force (its effective date had not arrived) and had
+never been accepted by anyone (`LIVE_PAYMENT_LINKS` is still empty, so no
+self-service purchase has ever been possible). **Do not reuse this route.** Once
+a version is effective, or has ever been purchasable, a correction means a new
+dated module with the old one left online: that is what the immutability rule
+above exists for, and what the numbered procedure describes.
+
+Because the route never moved, Stripe needed no URL change; only the consent
+message wording was refreshed to name the Annex.
+
+What the review changed:
+
+- **§1** names "TRENDev Consulting" expressly as a trading name of the
+  contracting legal person, and takes Fractional CTO out of the online Terms:
+  it has its own negotiated engagement agreement.
+- **§2** incorporates the service description from Annex A/B instead of the
+  mutable `/services/<slug>` route.
+- **§6** drops the `[Wording to be validated by the accountant/lawyer.]`
+  placeholder that had been frozen into the 2026-08-19 text and its PDF; states
+  that VAT is added on top of the published price where due; and states that
+  each Billing Period is a single charge due on issue.
+- **§7** keeps no-refund, and adds the owner's remedy for provider
+  non-delivery: undelivered capacity carries over at no charge until it is
+  delivered or the client cancels. Money is never returned.
+- **§12** states the advisory-only nature up front, and makes the twelve-month
+  sentence a notice condition rather than an ambiguous prescription clause.
+- **§14** stops a new Terms version applying to a running subscription on
+  notice alone; the accepted version keeps governing unless the client changes
+  plan or agrees.
+- **Annexes A and B** reproduce the CTO Advisor and CTO Advisor+ service
+  descriptions in full.
+
+### Repointing Stripe is cheaper than step 6 implies
+
+Step 6 above says to recreate the Payment Links. That is only necessary when
+`consent_collection` itself has to change, which is what happened in August
+when the Terms checkbox was first added. When the checkbox is already
+`terms_of_service: required` and only the *content* changes, the update
+endpoint is enough: `POST /v1/payment_links/{id}` accepts `metadata`,
+`subscription_data.metadata` and `custom_text`, so the recorded URL and the
+consent message can be repointed in place. The buyer-facing `buy.stripe.com`
+URL is preserved, which recreation would have thrown away.
+
+**Trap:** the two metadata fields behave differently. Top-level `metadata`
+*merges*, so posting two keys leaves the rest alone.
+`subscription_data.metadata` *replaces the whole map*, so posting two keys
+silently drops `tier_id`, `terms_version` and the service-description keys from
+the durable subscription record, which is exactly the acceptance evidence this
+document exists to preserve. Always post the complete map for
+`subscription_data.metadata`, then read the link back and count the keys.
 
 ## Cookie consent
 

@@ -8,9 +8,19 @@ import type { ServiceDescription } from "@/types";
  * becomes part of the agreement (see docs/legal-versioning.md and the Terms).
  *
  * VERSIONING: once a version is live and purchasable, do not edit its
- * substance in place — bump the version, archive the outgoing text to
+ * substance in place. Bump the version, archive the outgoing text to
  * docs/service-descriptions/<slug>-vX.Y.md, and record the change in
  * docs/legal-versioning.md.
+ *
+ * ANNEX PARITY: for cto-advisor and cto-advisor-plus, the text below must stay
+ * word for word identical to the matching Annex in the current Terms version
+ * (src/data/terms/2026-09-01.ts). The Annex is the contractual copy and is
+ * frozen; this file is the marketing rendering of it. Changing one means
+ * publishing a new Terms version too, and the Annex wins on any discrepancy
+ * (Terms S2).
+ *
+ * Fractional CTO has no Annex: Terms S1 puts it outside the online Terms, so
+ * its commercial terms come from its own engagement agreement.
  *
  * The four open decisions of issue #14 (async response target, async
  * accounting increment, Quarterly Technology Review wording, and whether to
@@ -23,11 +33,11 @@ import type { ServiceDescription } from "@/types";
 const SHARED_BILLING_BULLETS = [
   "Monthly subscription, billed in advance at the start of each billing period.",
   "Public prices are stated excluding applicable taxes. The applicable VAT or tax treatment is determined at checkout and on invoices, based on your business's country of establishment and tax status.",
-  "Professional and business customers only — this service is not offered to consumers.",
+  "Professional and business customers only: this service is not offered to consumers.",
 ];
 
 const SHARED_CANCELLATION_BULLETS = [
-  "Cancel anytime — no long-term commitment.",
+  "Cancel anytime, with no long-term commitment.",
   "Cancellation takes effect at the end of the current paid billing period; the service remains available until then.",
   "No refunds and no prorated credits for the current paid period.",
   "Unused advisory capacity does not roll over to the following month.",
@@ -40,15 +50,15 @@ export const serviceDescriptions: ServiceDescription[] = [
     title: "CTO Advisor",
     version: "1.0",
     effectiveDate: "2026-09-01",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-08-21",
     metaDescription:
-      "CTO Advisor — recurring senior CTO advisory for founders and executives. €1,500/month excluding applicable taxes, up to 4h/month advisory capacity, cancel anytime.",
+      "CTO Advisor: recurring senior CTO advisory for founders and executives. €1,500/month excluding applicable taxes, up to 4h/month advisory capacity, cancel anytime.",
     sections: [
       {
         id: "overview",
         heading: "Overview & who it's for",
         paragraphs: [
-          "CTO Advisor gives founders and executives recurring access to senior CTO judgment without hiring an operational technology leader. You bring the decisions that keep you up at night — architecture bets, roadmap sequencing, hiring, vendor choices — and get direct, experienced counsel with no agenda other than your outcome.",
+          "CTO Advisor gives founders and executives recurring access to senior CTO judgment without hiring an operational technology leader. You bring the decisions that keep you up at night: architecture bets, roadmap sequencing, hiring, vendor choices. You get direct, experienced counsel with no agenda other than your outcome.",
           "It is designed for leaders who own execution themselves but want a trusted, independent technical authority reviewing direction, challenging assumptions, and helping avoid expensive mistakes.",
           "This service is available to professional and business customers only.",
         ],
@@ -71,7 +81,7 @@ export const serviceDescriptions: ServiceDescription[] = [
         id: "capacity",
         heading: "Capacity & scheduling",
         paragraphs: [
-          "Advisory capacity is a boundary, not the value proposition — it defines the volume of substantive advisory work included each month.",
+          "Advisory capacity is a boundary, not the value proposition. It defines the volume of substantive advisory work included each month.",
         ],
         bullets: [
           "Up to 4 hours per month of advisory capacity.",
@@ -125,9 +135,9 @@ export const serviceDescriptions: ServiceDescription[] = [
     title: "CTO Advisor+",
     version: "1.0",
     effectiveDate: "2026-09-01",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-08-21",
     metaDescription:
-      "CTO Advisor+ — deeper recurring CTO governance with priority access. €2,500/month excluding applicable taxes, up to 8h/month advisory capacity, cancel anytime.",
+      "CTO Advisor+: deeper recurring CTO governance with priority access. €2,500/month excluding applicable taxes, up to 8h/month advisory capacity, cancel anytime.",
     sections: [
       {
         id: "overview",
@@ -165,7 +175,7 @@ export const serviceDescriptions: ServiceDescription[] = [
         id: "capacity",
         heading: "Capacity & scheduling",
         paragraphs: [
-          "Advisory capacity is a boundary, not the value proposition — it defines the volume of substantive advisory work included each month.",
+          "Advisory capacity is a boundary, not the value proposition. It defines the volume of substantive advisory work included each month.",
         ],
         bullets: [
           "Up to 8 hours per month of advisory capacity.",
@@ -218,16 +228,16 @@ export const serviceDescriptions: ServiceDescription[] = [
     title: "Fractional CTO",
     version: "1.0",
     effectiveDate: "2026-09-01",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-08-21",
     metaDescription:
-      "Fractional CTO — embedded, tailored CTO leadership for transformation, governance, due diligence and board-facing work. From €6,000/month excluding applicable taxes.",
+      "Fractional CTO: embedded, tailored CTO leadership for transformation, governance, due diligence and board-facing work. From €6,000/month excluding applicable taxes.",
     sections: [
       {
         id: "overview",
         heading: "Overview & who it's for",
         paragraphs: [
-          "Fractional CTO is an enterprise-style, tailored engagement: embedded CTO leadership for organisations that need deeper involvement than advisory — transformation programmes, execution governance, board- and investor-facing technical leadership, or high-stakes technical work.",
-          "Unlike the Advisor subscriptions, Fractional CTO takes ownership where scoped: of technical strategy, of architecture direction, of engineering governance — and of hands-on execution when explicitly agreed.",
+          "Fractional CTO is an enterprise-style, tailored engagement: embedded CTO leadership for organisations that need deeper involvement than advisory, such as transformation programmes, execution governance, board- and investor-facing technical leadership, or high-stakes technical work.",
+          "Unlike the Advisor subscriptions, Fractional CTO takes ownership where scoped: of technical strategy, of architecture direction, of engineering governance, and of hands-on execution when explicitly agreed.",
           "This service is available to professional and business customers only.",
         ],
       },
@@ -251,11 +261,11 @@ export const serviceDescriptions: ServiceDescription[] = [
         id: "engagement",
         heading: "Engagement design",
         paragraphs: [
-          "Every Fractional CTO engagement is scoped individually after a consultation: objectives, cadence, reserved capacity, governance model and duration are tailored to your context. There is no self-service checkout and no standard package — deliberately.",
+          "Every Fractional CTO engagement is scoped individually after a consultation: objectives, cadence, reserved capacity, governance model and duration are tailored to your context. There is no self-service checkout and no standard package, deliberately.",
         ],
         bullets: [
           "Scope, cadence and capacity defined per engagement",
-          "Engagement-specific commercial terms supplement the standard Terms of Service",
+          "Commercial and contractual terms are set by the engagement agreement, not by the online Terms of Service",
           "Cancellation and renewal per the scoped agreement",
         ],
       },
@@ -271,7 +281,7 @@ export const serviceDescriptions: ServiceDescription[] = [
         id: "prerequisite",
         heading: "Getting started",
         paragraphs: [
-          "Start with a free CTO consultation to discuss your context. If there is a fit, TRENDev prepares a tailored engagement proposal — scope, cadence, governance and commercial terms — for your review.",
+          "Start with a free CTO consultation to discuss your context. If there is a fit, TRENDev prepares a tailored engagement proposal for your review, covering scope, cadence, governance and commercial terms.",
         ],
       },
     ],

@@ -11,7 +11,55 @@ import {
 } from "@/data/terms";
 import { useDocumentMeta } from "@/hooks/useDocumentMeta";
 import { NotFoundPage } from "@/pages/NotFoundPage";
-import type { TermsVersion } from "@/types";
+import type { ContentSection, TermsVersion } from "@/types";
+
+/**
+ * Paragraph and bullet markup, shared by the numbered sections and by the annex
+ * subsections nested inside them, so the two render identically.
+ */
+function Paragraphs({ items }: { items?: string[] }) {
+  if (!items?.length) return null;
+  return (
+    <>
+      {items.map((paragraph) => (
+        <p
+          key={paragraph}
+          className="text-sm sm:text-base text-muted-foreground mb-3 leading-relaxed"
+        >
+          {paragraph}
+        </p>
+      ))}
+    </>
+  );
+}
+
+function Bullets({ items }: { items?: string[] }) {
+  if (!items?.length) return null;
+  return (
+    <ul className="space-y-2 mt-2">
+      {items.map((bullet) => (
+        <li
+          key={bullet}
+          className="flex items-start gap-3 text-sm sm:text-base text-muted-foreground"
+        >
+          <span className="w-1.5 h-1.5 bg-accent rounded-full mt-2 shrink-0" />
+          <span>{bullet}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** A headed block inside a section: the annexes reproduce a service description. */
+function Subsection({ section }: { section: ContentSection }) {
+  return (
+    <section id={section.id} className="mt-6">
+      <h3 className="text-base sm:text-lg mb-2">{section.heading}</h3>
+      <Paragraphs items={section.paragraphs} />
+      <Bullets items={section.bullets} />
+    </section>
+  );
+}
 
 interface TermsPageProps {
   /** Dated route (/terms/YYYY-MM-DD); undefined renders the current version. */
@@ -49,7 +97,7 @@ export function TermsPage({ date }: TermsPageProps) {
     terms
       ? {
           title: `Terms of Service (v${terms.version}) | TRENDev`,
-          description: `TRENDev Professional Services — Terms of Service, version ${terms.version}, effective ${terms.effectiveDate}. Professional clients only.`,
+          description: `TRENDev Professional Services Terms of Service, version ${terms.version}, effective ${terms.effectiveDate}. Professional clients only.`,
           canonicalPath: date ? `/terms/${date}` : "/terms",
         }
       : undefined,
@@ -70,7 +118,7 @@ export function TermsPage({ date }: TermsPageProps) {
           <>
             <header className="glass rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8">
               <h1 className="text-2xl sm:text-3xl md:text-4xl mb-4">
-                TRENDev Professional Services — Terms of Service
+                TRENDev Professional Services Terms of Service
               </h1>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground mb-5">
                 <span>Version {terms.version}</span>
@@ -94,7 +142,7 @@ export function TermsPage({ date }: TermsPageProps) {
               <div className="rounded-xl border border-amber-400/40 bg-amber-400/10 px-5 py-4 mb-6 sm:mb-8 flex items-start gap-3 print:border-amber-700 print:bg-amber-50">
                 <TriangleAlert className="w-5 h-5 text-amber-300 shrink-0 mt-0.5 print:text-amber-700" />
                 <p className="text-sm sm:text-base text-amber-100 print:text-amber-900">
-                  <strong>DRAFT — pending legal review.</strong> These Terms are
+                  <strong>DRAFT: pending legal review.</strong> These Terms are
                   a draft and are not yet in force. They must be reviewed by a
                   French IT/commercial lawyer and approved before any
                   self-service subscription is offered under them.
@@ -121,29 +169,13 @@ export function TermsPage({ date }: TermsPageProps) {
                   className="mb-8 last:mb-0"
                 >
                   <h2 className="text-lg sm:text-xl mb-3">
-                    {section.number}. {section.heading}
+                    {section.label ?? section.number}. {section.heading}
                   </h2>
-                  {section.paragraphs.map((paragraph) => (
-                    <p
-                      key={paragraph}
-                      className="text-sm sm:text-base text-muted-foreground mb-3 leading-relaxed"
-                    >
-                      {paragraph}
-                    </p>
+                  <Paragraphs items={section.paragraphs} />
+                  <Bullets items={section.bullets} />
+                  {section.subsections?.map((subsection) => (
+                    <Subsection key={subsection.id} section={subsection} />
                   ))}
-                  {section.bullets && (
-                    <ul className="space-y-2 mt-2">
-                      {section.bullets.map((bullet) => (
-                        <li
-                          key={bullet}
-                          className="flex items-start gap-3 text-sm sm:text-base text-muted-foreground"
-                        >
-                          <span className="w-1.5 h-1.5 bg-accent rounded-full mt-2 shrink-0" />
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </article>
               ))}
             </div>
@@ -161,8 +193,8 @@ export function TermsPage({ date }: TermsPageProps) {
                 href={`/terms/${summary.date}`}
                 className="text-accent hover:opacity-80 transition-opacity"
               >
-                v{summary.version} — {summary.date}
-                {summary.status === "draft" ? " (draft)" : ""}
+                v{summary.version} · {summary.date}
+                {summary.status === "effective" ? "" : ` (${summary.status})`}
               </Link>
             ))}
           </nav>

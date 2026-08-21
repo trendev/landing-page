@@ -26,13 +26,23 @@ issues that produced it.
 | Purchase timestamp | Stripe checkout session / subscription record |
 | Explicit B2B confirmation | Required custom checkbox/field, e.g. "I confirm I am purchasing on behalf of a business (professional clients only)" |
 | Explicit Terms acceptance | Stripe consent collection (`terms_of_service: required`) with the account's Terms URL pointing at the **dated** route |
-| Terms version accepted | `metadata.terms_version = "1.0"`, `metadata.terms_url = "https://trendev.fr/terms/2026-09-01"` |
-| Service-description version accepted | `metadata.service_description = "cto-advisor v1.0 (2026-09-01)"`, `metadata.service_description_url = "https://trendev.fr/services/cto-advisor"` |
+| Terms version accepted | `metadata.terms_version = "1.0"`, `metadata.terms_date = "2026-09-01"`, `metadata.terms_url = "https://trendev.fr/terms/2026-09-01"` |
+| Service-description version accepted | `metadata.service_description = "cto-advisor 1.0"`. **No separate immutable URL needed:** the description is Annex A/B of the dated Terms above, so `terms_url` already points at the frozen copy. |
 
-Key point: the Terms/service URLs recorded in metadata and in the Stripe
-terms-of-service setting must be the **dated immutable** routes, so the
+Key point: the Terms URL recorded in metadata and in the Stripe
+terms-of-service setting must be the **dated immutable** route, so the
 accepted text can never change under the recorded link
 (see `docs/legal-versioning.md`).
+
+This used to be recorded for the Terms but not for the service description,
+which pointed at the mutable `/services/<slug>` route while the consent message
+promised the accepted version would stay retrievable there. The 2026-08-19
+legal review flagged it as a blocking defect. Terms v1.0 as amended on
+2026-08-21 fixes it by reproducing the CTO Advisor and CTO Advisor+
+descriptions verbatim as Annexes A and B: one dated URL, one PDF, both texts
+inside it.
+`/services/<slug>` may still be linked for convenience, but it is no longer
+the record of what was accepted.
 
 Payment Links support metadata, custom fields (including required checkboxes),
 consent collection, tax-ID collection and Stripe Tax — verify at
@@ -68,6 +78,23 @@ owner-performed end-to-end test purchase in Stripe test mode.
 
 ## As actually configured (test mode, 2026-08-19)
 
+> **Refreshed 2026-08-21.** The recorded URL and version are unchanged, because
+> Terms v1.0 was amended in place at the same `/terms/2026-09-01` route before
+> its effective date. Only the consent message wording was updated, to name the
+> Annex now that the service description lives inside the Terms.
+>
+> That edit used `POST /v1/payment_links/{id}`, which accepts `metadata`,
+> `subscription_data.metadata` and `custom_text`, so no recreation was needed
+> and the `buy.stripe.com` URLs below are unchanged. Only `consent_collection`
+> is create-only, and it did not change (already `terms_of_service: required`).
+>
+> Both links were read back afterwards: `metadata` and
+> `subscription_data.metadata` each carry all six keys (`tier_id`,
+> `terms_version=1.0`, `terms_date=2026-09-01`, `terms_url`,
+> `service_description`, `service_description_url`). Read back after any
+> metadata write: `subscription_data.metadata` **replaces** the whole map
+> rather than merging, so a partial post silently deletes evidence keys.
+
 Account `acct_1QNvN0Hxg3uOgAWo`. Verified by rendering both checkout pages,
 not just by reading the API response.
 
@@ -93,10 +120,12 @@ which is what makes the versions clickable at the moment of acceptance rather
 than only recorded in metadata afterwards:
 
 > By subscribing you accept the [TRENDev Professional Services Terms of Service
-> v1.0 (2026-09-01)](https://trendev.fr/terms/2026-09-01) and the [CTO Advisor
-> service description v1.0](https://trendev.fr/services/cto-advisor).
-> Those exact versions govern your subscription and stay retrievable at those
-> addresses.
+> v1.0 (2026-09-01)](https://trendev.fr/terms/2026-09-01), including Annex A,
+> the CTO Advisor service description, which forms part of them.
+> That exact version governs your subscription and stays retrievable at that
+> address.
+
+(Annex B for CTO Advisor+.)
 
 Supplying that message **replaces** Stripe's default "I agree to the Terms of
 Service" line, including its hyperlink, so the markdown links are not a nicety:

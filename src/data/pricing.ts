@@ -55,7 +55,7 @@ export const pricingTiers: PricingTier[] = [
     priceSuffix: "/month",
     taxNote: TAX_NOTE,
     tagline:
-      "Recurring senior CTO judgment for founders and executives who need decisions, direction, and a sounding board — without operational overhead.",
+      "Recurring senior CTO judgment for founders and executives who need decisions, direction, and a sounding board, without operational overhead.",
     features: [
       "Architecture and technical decision support",
       "Technical roadmap and product trade-off guidance",
@@ -72,7 +72,7 @@ export const pricingTiers: PricingTier[] = [
     ],
     billingNotes: [
       "Monthly subscription, billed in advance",
-      "Cancel anytime — effective at the end of the current paid period",
+      "Cancel anytime, effective at the end of the current paid period",
       "No refunds or prorated credits · no capacity rollover",
     ],
     cta: { label: "Start CTO Advisor", kind: "checkout" },
@@ -104,7 +104,7 @@ export const pricingTiers: PricingTier[] = [
     ],
     billingNotes: [
       "Monthly subscription, billed in advance",
-      "Cancel anytime — effective at the end of the current paid period",
+      "Cancel anytime, effective at the end of the current paid period",
       "No refunds or prorated credits · no capacity rollover",
     ],
     recommended: true,
@@ -132,7 +132,7 @@ export const pricingTiers: PricingTier[] = [
     ],
     billingNotes: [
       "Enterprise-style engagement, scoped individually after consultation",
-      "Tailored agreement — terms per scoped engagement",
+      "Tailored agreement: terms per scoped engagement",
     ],
     cta: { label: "Discuss your context", kind: "contact" },
     servicePath: "/services/fractional-cto",
