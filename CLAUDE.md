@@ -39,13 +39,16 @@ There are no tests and no linter configured.
   `WelcomePage` (post-purchase onboarding, issue #18), `NotFoundPage`;
   `legalLayout.tsx` is the shared legal-page shell.
 - `src/components/` — one component per page section (Header, Hero,
-  Methodology, Offers, EngagementModels, WhyChoose, Expertise, Services,
-  Technologies, Faq, Cta, Footer). `ServiceCard` is the shared card for the
-  Expertise + Services grids. `Methodology` (the
-  `Understand → Prioritize → Execute → Scale` step indicator + qualitative
-  outcomes) and `Offers` (named productized entry points) carry the
-  buying-journey content added for issue #8.
-  Offers/EngagementModels are kept until issue #19 decides their fate.
+  Methodology, Offers, WhyChoose, Expertise, Services, Technologies, Faq, Cta,
+  Footer). `ServiceCard` is the shared card for the Expertise + Services grids.
+  `Methodology` (the `Understand → Prioritize → Execute → Scale` step
+  indicator + qualitative outcomes) and `Offers` (named, fixed-scope
+  productized entry points, e.g. "CTO Audit", distinct from the subscription
+  tiers on `/advisory`) carry the buying-journey content added for issue #8.
+  `EngagementModels` was removed when issue #19 decided its fate: it was
+  generic, unlinked filler duplicating messaging already covered by Hero,
+  Offers, WhyChoose and Services, and it did not fit the premium boutique
+  positioning `/advisory` was built for.
   `ConsentBanner` is the cookie banner (see the consent section below).
   `BackLink` is the return path every subpage must render (see below).
   `TierCta` is the shared Advisor/Fractional purchase CTA, and

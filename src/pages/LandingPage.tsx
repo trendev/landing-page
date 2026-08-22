@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { Cta } from "@/components/Cta";
-import { EngagementModels } from "@/components/EngagementModels";
 import { Expertise } from "@/components/Expertise";
 import { Faq } from "@/components/Faq";
 import { Hero } from "@/components/Hero";
@@ -36,7 +35,6 @@ export function LandingPage({ onOpenConsultation }: LandingPageProps) {
       />
       <Methodology />
       <Offers onOpenConsultation={onOpenConsultation} />
-      <EngagementModels />
       <WhyChoose />
       <Expertise onSelectItem={setSelectedItem} />
       <Services onSelectItem={setSelectedItem} />

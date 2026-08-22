@@ -27,11 +27,6 @@ export interface Project {
   hidden?: boolean;
 }
 
-export interface EngagementModel {
-  title: string;
-  description: string;
-}
-
 export interface MethodologyStep {
   icon: LucideIcon;
   /** Display order label, e.g. "01". */
