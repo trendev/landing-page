@@ -27,7 +27,7 @@ There are no tests and no linter configured.
 - `src/app/router.tsx` — hand-rolled client router (**do not add
   react-router**): `useRoute()`, `navigate()`, `Link`, flat route table
   (`/`, `/advisory`, `/services/:slug`, `/terms`, `/terms/:date`, `/legal`,
-  `/privacy`).
+  `/privacy`, `/welcome`).
   Handles `/#section` hash links from subpages, scroll-to-top, and GA SPA
   pageviews (via `useDocumentMeta`). GH Pages serves deep links through
   per-route `index.html` copies created in `.github/workflows/deploy.yml` —
@@ -36,7 +36,8 @@ There are no tests and no linter configured.
   landing-only modal state: DetailModal, ProjectsModal), `AdvisoryPage` (the
   subscription funnel: 3 tiers + `ComparisonTable`), `ServicePage`
   (data-driven by slug), `TermsPage` (versioned), `LegalPage`, `PrivacyPage`,
-  `NotFoundPage`; `legalLayout.tsx` is the shared legal-page shell.
+  `WelcomePage` (post-purchase onboarding, issue #18), `NotFoundPage`;
+  `legalLayout.tsx` is the shared legal-page shell.
 - `src/components/` — one component per page section (Header, Hero,
   Methodology, Offers, EngagementModels, WhyChoose, Expertise, Services,
   Technologies, Faq, Cta, Footer). `ServiceCard` is the shared card for the
@@ -87,9 +88,20 @@ There are no tests and no linter configured.
     `serviceDescriptions.ts`: live data inside an immutable contract defeats
     the point.
   - `legalPages.ts` — legal notice + privacy content.
+  - `welcome.ts` — `/welcome` onboarding copy (issue #18). Stripe redirects
+    here after checkout, but the page is **static and unauthenticated**: it
+    reads no Stripe data, holds no customer state and sends no email. Billing
+    communication stays with Stripe. Onboarding is a prefilled `mailto`, not a
+    form tool, so no third-party processor is added that `/privacy` would have
+    to disclose. There is deliberately **no "Manage billing" link** until the
+    Customer Portal exists (issue #17): a generic portal URL that does not
+    resolve to the buyer's own subscription is worse than none.
 - `src/types.ts` — shared types. `src/hooks/` — `useBodyScrollLock` (scroll
   lock), `useDocumentMeta` (per-route title/description/canonical + GA SPA
   pageview; `index.html` stays the SEO source of truth for `/` and OG/JSON-LD).
+  It also overrides `robots` per route, restoring the `index.html` default when
+  a page passes none: `deploy.yml` gives every route a real crawlable entry
+  point, so a route that should stay out of search (`/welcome`) must say so.
 - `src/lib/analytics.ts` — consent-gated Google Analytics loading. See
   **Cookie consent** below before touching anything analytics-related.
 
@@ -125,8 +137,8 @@ There are no tests and no linter configured.
   subscribing") must stay adjacent to the Advisor purchase CTAs.
 - **Every subpage renders a `BackLink`.** The site is a single-page app with
   deep-linkable routes, so a visitor can land on `/advisory`, `/services/*`,
-  `/terms`, `/legal` or `/privacy` straight from search or a shared link with
-  no history to go back to. The header logo goes home too, but it is not an
+  `/terms`, `/legal`, `/privacy` or `/welcome` straight from search or a
+  shared link with no history to go back to. The header logo goes home too, but it is not an
   obvious affordance. `/services/*` points back at its parent `/advisory`;
   everything else points at `/`. `BackLink` is `print:hidden`, so it never
   reaches the Terms PDF.

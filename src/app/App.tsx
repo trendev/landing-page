@@ -15,6 +15,7 @@ import { NotFoundPage } from "@/pages/NotFoundPage";
 import { PrivacyPage } from "@/pages/PrivacyPage";
 import { ServicePage } from "@/pages/ServicePage";
 import { TermsPage } from "@/pages/TermsPage";
+import { WelcomePage } from "@/pages/WelcomePage";
 
 function Page({
   route,
@@ -41,6 +42,8 @@ function Page({
       return <LegalPage />;
     case "privacy":
       return <PrivacyPage />;
+    case "welcome":
+      return <WelcomePage />;
     case "notFound":
       return <NotFoundPage />;
   }

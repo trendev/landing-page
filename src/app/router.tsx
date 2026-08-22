@@ -19,6 +19,7 @@ export type Route =
   | { kind: "terms"; date?: string }
   | { kind: "legal" }
   | { kind: "privacy" }
+  | { kind: "welcome" }
   | { kind: "notFound" };
 
 /** Strip trailing slashes; GH Pages serves `/terms/` for `/terms/index.html`. */
@@ -34,6 +35,7 @@ export function matchRoute(pathname: string): Route {
   if (path === "/legal") return { kind: "legal" };
   if (path === "/privacy") return { kind: "privacy" };
   if (path === "/terms") return { kind: "terms" };
+  if (path === "/welcome") return { kind: "welcome" };
 
   const terms = path.match(/^\/terms\/(\d{4}-\d{2}-\d{2})$/);
   // Unknown dates are resolved to NotFound by TermsPage (it owns the registry).

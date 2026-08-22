@@ -48,7 +48,7 @@ jobs:
         run: |
           for route in advisory \
                        services/cto-advisor services/cto-advisor-plus services/fractional-cto \
-                       terms terms/2026-09-01 legal privacy; do
+                       terms terms/2026-09-01 legal privacy welcome; do
             mkdir -p "build/$route"
             cp build/index.html "build/$route/index.html"
           done
