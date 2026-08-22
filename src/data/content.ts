@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 
 import type {
-  EngagementModel,
   Faq,
   MethodologyStep,
   Project,
@@ -346,24 +345,6 @@ export const projects: Project[] = [
       "Collaboration",
     ],
     hidden: true,
-  },
-];
-
-export const engagementModels: EngagementModel[] = [
-  {
-    title: "Fractional CTO / CTO as a Service",
-    description:
-      "Executive technical leadership without full-time overhead: roadmap, hiring, architecture, and investor-ready technical communication.",
-  },
-  {
-    title: "Delivery Acceleration for Startups",
-    description:
-      "MVP-to-scale execution with full-stack engineering, cloud-native architecture, and DevOps automation to ship faster with less risk.",
-  },
-  {
-    title: "Modernization for Growing Companies",
-    description:
-      "Upgrade legacy systems through cloud migration, reliability engineering, and AI-enabled workflows that reduce cost and increase speed.",
   },
 ];
 
