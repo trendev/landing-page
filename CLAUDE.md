@@ -63,11 +63,16 @@ There are no tests and no linter configured.
   - `pricing.ts` — the 3 frozen premium tiers, comparison table,
     `PRIMARY_CTA_LABEL`, `PREREQUISITE_NOTE`.
   - `stripe.ts` — `STRIPE_PAYMENT_LINKS`, **selected by environment**: test
-    links under `vite` (dev), live links under `vite build` (what
-    `deploy.yml` runs). `VITE_STRIPE_MODE=test|live` overrides — use it when
-    previewing a production build locally, which would otherwise point at real
-    checkout. Live links stay empty until issue #16 clears its gates; empty ⇒
-    purchase CTAs fall back to the consultation modal. Payment Links are public
+    links under `vite` (dev), live links under `vite build`, overridable with
+    `VITE_STRIPE_MODE=test|live`. Use the override when previewing a production
+    build locally, which would otherwise point at real checkout.
+    **`deploy.yml` currently pins the deployed site to `test`** (issue #16) so
+    reviewers can walk the whole funnel with Stripe test cards before launch,
+    so `PROD` does not imply live links right now; remove that `env:` block in
+    the same change that fills in `LIVE_PAYMENT_LINKS`. Live links stay empty
+    until issue #16 clears its gates; empty ⇒ purchase CTAs fall back to the
+    consultation modal. Both test links complete at `/welcome` via
+    `after_completion.redirect`. Payment Links are public
     URLs, **not secrets** — do not move them into `.env` (it is gitignored, so
     CI would need secrets for values that aren't secret, and the deployed link
     set would stop being reviewable in the diff).
