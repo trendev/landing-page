@@ -26,6 +26,11 @@ const CONFIG = {
   drapeScale: 2.6, // size of the folds (lower = bigger folds)
   sheen: 1.0, // strength of the rolling satin highlight
   mouse: 0.6, // how much the light follows the cursor (0 = ignore)
+  // Highlight ceiling. This is a READABILITY setting, not just a look: the
+  // crests are what unglassed body text has to survive. See the note above the
+  // rolloff in FRAG before raising `highlight`.
+  knee: 0.05, // brightness at which the rolloff starts
+  highlight: 0.27, // brightness the crests asymptotically approach
 };
 
 const VERT = `
@@ -43,6 +48,8 @@ const FRAG = `
   uniform float u_twill;
   uniform float u_drape;
   uniform float u_sheen;
+  uniform float u_knee;
+  uniform float u_highlight;
 
   // draped cloth height-field: layered travelling waves
   float drape(vec2 q, float t){
@@ -94,14 +101,34 @@ const FRAG = `
     float lightAmt = 0.14 + 0.86*diff;
 
     vec3 col = mix(navy, mid, lightAmt);
-    col = mix(col, cyan, crest*0.55 + spec*0.9);
+    // clamped: the factor peaks at ~1.45, so the mix used to overshoot *past*
+    // pure cyan toward white, which also washed the accent out to grey-white.
+    col = mix(col, cyan, clamp(crest*0.55 + spec*0.9, 0.0, 1.0));
     col *= mix(0.42, 1.0, weave);
     col += cyan * spec * weave * 0.7;
 
     float vig = smoothstep(1.25, 0.25, length(uv - 0.5));
     col *= mix(0.62, 1.0, vig);
 
-    gl_FragColor = vec4(col, 1.0);
+    // Highlight rolloff, applied to BRIGHTNESS and fed back proportionally so
+    // hue and saturation survive: the crests keep their cyan, they just stop
+    // being bright. Everything below u_knee is untouched, so the weave keeps
+    // its structure.
+    //
+    // This is what makes the page readable. The two darkeners above are
+    // spatial (thread gaps, vignette) and the vignette is at its *brightest*
+    // dead centre -- exactly where the centred hero copy sits -- so the peaks
+    // used to reach a relative luminance of 0.80, brighter than pure cyan.
+    // #9DAFD8 body text over that measured 1.0:1: literally invisible. The
+    // ceiling holds the whole canvas under L 0.053, which is 4.7:1.
+    float v = dot(col, vec3(0.2126, 0.7152, 0.0722));
+    if (v > u_knee) {
+      float over = v - u_knee;
+      float capped = u_knee + over / (1.0 + over / max(u_highlight - u_knee, 1e-4));
+      col *= capped / v;
+    }
+
+    gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
   }
 `;
 
@@ -177,6 +204,8 @@ export function WeaveBackground() {
       twill: gl.getUniformLocation(prog, "u_twill"),
       drape: gl.getUniformLocation(prog, "u_drape"),
       sheen: gl.getUniformLocation(prog, "u_sheen"),
+      knee: gl.getUniformLocation(prog, "u_knee"),
+      highlight: gl.getUniformLocation(prog, "u_highlight"),
     };
 
     let w = 0;
@@ -215,6 +244,8 @@ export function WeaveBackground() {
       gl.uniform1f(U.twill, CONFIG.twill);
       gl.uniform1f(U.drape, CONFIG.drapeScale);
       gl.uniform1f(U.sheen, CONFIG.sheen);
+      gl.uniform1f(U.knee, CONFIG.knee);
+      gl.uniform1f(U.highlight, CONFIG.highlight);
     };
 
     // The accent/weave-shape uniforms never change at runtime, so upload them

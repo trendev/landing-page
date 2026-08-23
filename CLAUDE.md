@@ -271,8 +271,21 @@ glassmorphic** look with an animated woven-wave background. Visual reference
   degrades gracefully: a static gradient when WebGL is unavailable, and a single
   still frame when the user prefers reduced motion.
 - Tunables live in the `CONFIG` object at the top of the component (`density`,
-  `speed`, `twill`, `drapeScale`, `sheen`, `mouse`). It reads `--accent` from
-  the document so it stays in sync with the brand token.
+  `speed`, `twill`, `drapeScale`, `sheen`, `mouse`, `knee`, `highlight`). It
+  reads `--accent` from the document so it stays in sync with the brand token.
+- **`CONFIG.highlight` is a readability setting, not a look setting.** The
+  shader ends with a proportional rolloff that caps how bright the satin crests
+  may get: brightness is compressed and fed back into the colour, so the crests
+  keep their cyan hue and the weave keeps its structure, but the whole canvas
+  stays under a relative luminance of ~0.053. That ceiling is what lets
+  `text-muted-foreground` (`#9DAFD8`) survive on the bare background at 4.7:1.
+  Without it the crests reach L 0.80 — brighter than pure cyan — and body text
+  over them measures **1.0:1, i.e. invisible**; that was the bug this cap fixed.
+  The shader's other two darkeners cannot stand in for it: the thread gaps and
+  the vignette are *spatial*, and the vignette is at its brightest dead centre,
+  exactly where the centred hero copy sits. **Raising `highlight` re-breaks
+  every unglassed paragraph on the site** (the hero subhead and each section
+  intro). If you change it, re-measure the worst case rather than eyeballing it.
 - **Performance (a full-screen shader is the page's heaviest cost):** it renders
   the canvas at **0.6x** internal resolution (soft weave hides the upscale),
   caps the animation to **~30fps**, uploads static uniforms once, and **pauses
