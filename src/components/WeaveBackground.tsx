@@ -264,10 +264,35 @@ export function WeaveBackground() {
       window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    let drawn = 0;
     let raf = 0;
     let running = false;
     let lastDraw = 0;
-    const start = performance.now();
+    // Seconds of animation actually rendered. Driving the shader from this
+    // rather than from wall-clock means every hold below (hidden tab, active
+    // scroll) freezes the weave and resumes exactly where it stopped, instead
+    // of jumping forward by however long the hold lasted.
+    let clock = 0;
+
+    // Hold the background while the user is actively scrolling. Scrolling is
+    // when frames are scarcest -- the compositor is already re-blitting a
+    // full-screen fixed canvas under 38 glass cards -- and a slow weave frozen
+    // for the length of a flick is imperceptible, because the canvas is fixed
+    // and does not move with the content anyway.
+    let scrolling = false;
+    let scrollHold = 0;
+    const onScroll = () => {
+      if (!scrolling) {
+        scrolling = true;
+        drawn = 0; // the hold is not a slow frame; don't let it trip the governor
+      }
+      clearTimeout(scrollHold);
+      scrollHold = window.setTimeout(() => {
+        scrolling = false;
+        drawn = 0;
+      }, 180);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
     // Cap the background to ~30fps. The ripple is slow, so 30fps is visually
     // indistinguishable from 60 but halves the per-second shading work and
     // leaves the main thread free to scroll at full rate.
@@ -300,7 +325,6 @@ export function WeaveBackground() {
     const WARMUP = 30;
     const WINDOW = 45;
     const BUDGET = FRAME_MS * 1.35;
-    let drawn = 0;
     let windowStart = 0;
 
     const governor = (now: number) => {
@@ -318,13 +342,17 @@ export function WeaveBackground() {
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
-      if (now - lastDraw < FRAME_MS) return;
+      const dt = now - lastDraw;
+      if (dt < FRAME_MS) return;
       lastDraw = now;
+      if (scrolling) return;
+      // clamped so a long hold cannot fast-forward the weave on the next frame
+      clock += Math.min(dt, FRAME_MS * 2) / 1000;
       mx += (tmx - mx) * 0.1;
       my += (tmy - my) * 0.1;
       gl.uniform2f(U.res, w, h);
       uploadLight();
-      gl.uniform1f(U.time, ((now - start) / 1000) * CONFIG.speed * 6.0);
+      gl.uniform1f(U.time, clock * CONFIG.speed * 6.0);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       governor(now);
     };
@@ -354,7 +382,9 @@ export function WeaveBackground() {
 
     return () => {
       pause();
+      clearTimeout(scrollHold);
       document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);
       const lose = gl.getExtension("WEBGL_lose_context");
