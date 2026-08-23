@@ -15,12 +15,12 @@ type PaymentLinks = Record<CheckoutTierId, string>;
  * and the deployed link set would stop being reviewable in the diff.
  *
  * Selection: `vite` (dev) is test mode and `vite build` (production) is live
- * mode, unless VITE_STRIPE_MODE overrides it. Two places set that override:
- * previewing a production build locally (which would otherwise point at real
- * checkout), and .github/workflows/deploy.yml, which currently pins the
- * deployed site to `test` so reviewers can walk the funnel before launch.
- * That pin is temporary and documented at the Build step; while it is in
- * place, PROD does not imply live links.
+ * mode, unless VITE_STRIPE_MODE overrides it. The override's remaining use is
+ * previewing a production build locally with test links (`VITE_STRIPE_MODE=test
+ * npm run build`), which would otherwise point at real checkout. deploy.yml
+ * used to pin the deployed site to `test` for pre-launch review; that pin was
+ * removed in the same change that filled LIVE_PAYMENT_LINKS, so PROD means
+ * live checkout again.
  */
 
 /**
@@ -48,19 +48,25 @@ const TEST_PAYMENT_LINKS: PaymentLinks = {
 };
 
 /**
- * Live mode. Deliberately empty until the issue #16 launch gates clear (lawyer
- * -approved effective Terms, accountant-validated tax config, owner test
- * purchase). While a link is empty the purchase CTA keeps its real label but
- * opens the consultation modal instead, which is the honest fallback because
- * the consultation is the mandatory first step of the purchase flow.
+ * Live mode. Created 2026-08-23 (issue #16) mirroring the test links
+ * field-for-field: Terms v1.0 (2026-09-01) consent with the Annex named in the
+ * checkbox message, required business legal name + B2B confirmation, required
+ * billing address, tax-ID collection, automatic tax, all six acceptance
+ * evidence keys in both `metadata` and `subscription_data.metadata`, and
+ * completion at https://trendev.fr/welcome.
  *
- * Do not fill these in until the Terms version they reference is `effective`:
- * a live checkout must not collect acceptance of Terms whose own banner says
- * they are not yet in force.
+ * Advisor: plink_1U7kQxHxg3uOgAWoveHMrENC (price_1U7kQfHxg3uOgAWoLM2zoZIr).
+ * Advisor+: plink_1U7kR7Hxg3uOgAWoEDq3P70U (price_1U7kQjHxg3uOgAWoCs0tlzOw).
+ *
+ * These move real money. They only reach visitors once a build without
+ * VITE_STRIPE_MODE deploys, so the remaining launch gates (accountant-validated
+ * live tax config, owner test purchase, Terms v1.0 in force from 2026-09-01)
+ * are enforced by when the change that removed the deploy.yml test pin is
+ * merged, not by editing this file again.
  */
 const LIVE_PAYMENT_LINKS: PaymentLinks = {
-  "cto-advisor": "",
-  "cto-advisor-plus": "",
+  "cto-advisor": "https://buy.stripe.com/9B628r58RcrQ1rc6oN5AQ01",
+  "cto-advisor-plus": "https://buy.stripe.com/7sY6oHfNv9fE9XI6oN5AQ02",
 };
 
 const override = import.meta.env.VITE_STRIPE_MODE;
@@ -74,3 +80,22 @@ export const STRIPE_MODE: "test" | "live" =
 
 export const STRIPE_PAYMENT_LINKS: PaymentLinks =
   STRIPE_MODE === "live" ? LIVE_PAYMENT_LINKS : TEST_PAYMENT_LINKS;
+
+/**
+ * Stripe Customer Portal login page (issue #17), split by mode like the
+ * payment links: the login page is a per-mode Dashboard artifact
+ * (billing.stripe.com/p/login/…), created when the portal's no-code link is
+ * activated in Settings → Billing → Customer portal. The customer
+ * authenticates with their checkout email (Stripe sends a one-time code), so
+ * the same public URL resolves every buyer to their own subscription — no
+ * backend involved.
+ *
+ * Empty until the owner activates the link in the matching mode; while empty,
+ * /welcome simply omits its "Manage billing" block rather than pointing at a
+ * dead URL. Like the payment links, these are public URLs, not secrets.
+ */
+const TEST_PORTAL_LOGIN_URL = "";
+const LIVE_PORTAL_LOGIN_URL = "";
+
+export const STRIPE_PORTAL_LOGIN_URL: string =
+  STRIPE_MODE === "live" ? LIVE_PORTAL_LOGIN_URL : TEST_PORTAL_LOGIN_URL;

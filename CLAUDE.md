@@ -69,16 +69,18 @@ There are no tests and no linter configured.
     links under `vite` (dev), live links under `vite build`, overridable with
     `VITE_STRIPE_MODE=test|live`. Use the override when previewing a production
     build locally, which would otherwise point at real checkout.
-    **`deploy.yml` currently pins the deployed site to `test`** (issue #16) so
-    reviewers can walk the whole funnel with Stripe test cards before launch,
-    so `PROD` does not imply live links right now; remove that `env:` block in
-    the same change that fills in `LIVE_PAYMENT_LINKS`. Live links stay empty
-    until issue #16 clears its gates; empty ⇒ purchase CTAs fall back to the
-    consultation modal. Both test links complete at `/welcome` via
-    `after_completion.redirect`. Payment Links are public
-    URLs, **not secrets** — do not move them into `.env` (it is gitignored, so
-    CI would need secrets for values that aren't secret, and the deployed link
-    set would stop being reviewable in the diff).
+    **Live links are filled in** (created 2026-08-23, issue #16, mirroring the
+    test links field-for-field) and the temporary `deploy.yml` test-mode pin
+    was removed in the same change, so a deploy from `main` is live checkout —
+    merge timing is the go-live switch. An empty link ⇒ that purchase CTA falls
+    back to the consultation modal. All four links complete at `/welcome` via
+    `after_completion.redirect`. `STRIPE_PORTAL_LOGIN_URL` (issue #17) is the
+    per-mode Customer Portal login page, empty until the owner activates the
+    portal's no-code link in the matching Dashboard mode; while empty,
+    `/welcome` hides its "Manage billing" block. Payment Links and the portal
+    login page are public URLs, **not secrets** — do not move them into `.env`
+    (it is gitignored, so CI would need secrets for values that aren't secret,
+    and the deployed link set would stop being reviewable in the diff).
   - `serviceDescriptions.ts` — versioned service definitions (issue #14),
     v1.0 (2026-09-01). The Advisor/Advisor+ text must stay word for word
     identical to Annex A/B of the current Terms version; a parity check is
@@ -101,9 +103,11 @@ There are no tests and no linter configured.
     reads no Stripe data, holds no customer state and sends no email. Billing
     communication stays with Stripe. Onboarding is a prefilled `mailto`, not a
     form tool, so no third-party processor is added that `/privacy` would have
-    to disclose. There is deliberately **no "Manage billing" link** until the
-    Customer Portal exists (issue #17): a generic portal URL that does not
-    resolve to the buyer's own subscription is worse than none.
+    to disclose. The **"Manage billing" block renders only when
+    `STRIPE_PORTAL_LOGIN_URL` is filled** for the current mode (issue #17): the
+    portal login page has the buyer authenticate with their checkout email, so
+    a public static URL resolves each buyer to their own subscription — but a
+    dead or generic URL is worse than none, hence the empty-string gate.
 - `src/types.ts` — shared types. `src/hooks/` — `useBodyScrollLock` (scroll
   lock), `useDocumentMeta` (per-route title/description/canonical + GA SPA
   pageview; `index.html` stays the SEO source of truth for `/` and OG/JSON-LD).

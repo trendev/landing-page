@@ -53,8 +53,9 @@ alternative be documented (still no custom backend unless genuinely required).
 ## Flow requirements
 
 - Public links (not private) for both Advisor tiers, pasted into
-  `STRIPE_PAYMENT_LINKS` in `src/data/stripe.ts` (live entries are empty
-  strings today; the CTAs fall back to the consultation modal until filled).
+  `STRIPE_PAYMENT_LINKS` in `src/data/stripe.ts` (both modes filled since
+  2026-08-23; an empty entry makes that CTA fall back to the consultation
+  modal).
 - The visible prerequisite ("Prerequisite: please schedule your free CTO
   consultation before subscribing.") stays adjacent to the CTAs — it is a
   commercial condition, not a technical gate.
@@ -154,13 +155,61 @@ service_description=<slug> 1.0, service_description_url=<service route>
 
 ### Known gaps
 
-- `after_completion` is still `hosted_confirmation`; the redirect to
-  `https://trendev.fr/welcome` waits on issue #18 building that route.
-- Both links currently offer **Klarna** alongside card. Klarna is a consumer
-  BNPL product and an odd fit for a €1,500-2,500/month B2B subscription;
-  restricting `payment_method_types` is a commercial decision for the owner.
+- ~~`after_completion` is still `hosted_confirmation`~~ resolved 2026-08-22:
+  both test links redirect to `https://trendev.fr/welcome` (issue #18).
+- Payment methods are **automatic** (card plus whatever Stripe enables for the
+  account, currently including Klarna). Raised as an odd fit for a
+  €1,500-2,500/month B2B subscription; the owner decided on 2026-08-23 to keep
+  automatic selection, in both modes. No `payment_method_types` restriction.
 - ~~Account default tax category is `txcd_10000000`~~ resolved: the account
   default is now `txcd_20060048` in both modes, matching the two products.
+
+## As configured in live mode (2026-08-23, issue #16)
+
+Live products, prices and payment links created, mirroring the test
+configuration field-for-field (same consent collection, custom fields, custom
+text naming Annex A/B, automatic tax with `liability: self`, tax-ID collection,
+`/welcome` redirect, and all six evidence keys in both `metadata` and
+`subscription_data.metadata`). Verified by reading every object back and
+fetching both checkout URLs (HTTP 200); rendered-page verification is part of
+the owner's mandatory test purchase.
+
+| Object | ID |
+|---|---|
+| Product / price, CTO Advisor | `prod_V80RH9BxsV3GmJ` / `price_1U7kQfHxg3uOgAWoLM2zoZIr` |
+| Product / price, CTO Advisor+ | `prod_V80RKd2qiyatRS` / `price_1U7kQjHxg3uOgAWoCs0tlzOw` |
+| Payment link, Advisor | `plink_1U7kQxHxg3uOgAWoveHMrENC` |
+| Payment link, Advisor+ | `plink_1U7kR7Hxg3uOgAWoEDq3P70U` |
+
+The live URLs are recorded in `LIVE_PAYMENT_LINKS` (`src/data/stripe.ts`).
+They reach visitors only when a build without `VITE_STRIPE_MODE` deploys, i.e.
+once the change removing the deploy.yml test pin is merged — that merge is the
+go-live switch and must wait for the launch gates above.
+
+## Customer Portal & cancellation lifecycle (issue #17)
+
+The Stripe MCP tooling used for the setup does not expose
+`POST /v1/billing_portal/configurations`, so the portal is configured in the
+Dashboard (Settings → Billing → Customer portal), **per mode**, with:
+
+- Cancellation: enabled, **at end of billing period**, no proration/refund
+  (matches Terms §Cancellation and the pricing pages).
+- Plan changes / pausing: **disabled** (no supported plan switch in V1).
+- Invoice history and payment-method / billing-detail updates: enabled.
+- Business information: links to `https://trendev.fr/terms` and
+  `https://trendev.fr/privacy`.
+- The no-code **login page link activated**; its
+  `https://billing.stripe.com/p/login/…` URL is pasted into
+  `STRIPE_PORTAL_LOGIN_URL` (`src/data/stripe.ts`, per mode), which makes
+  `/welcome` render its "Manage billing" block. Customers authenticate with
+  their checkout email (one-time code), so the public URL resolves each buyer
+  to their own subscription without any backend.
+
+Failed payments (owner decision 2026-08-23): **Smart Retries, then cancel the
+subscription** — configured in Settings → Billing → Revenue recovery
+(retry policy: Smart Retries; "If all retries for a payment fail": cancel the
+subscription). Stripe sends the failed-payment emails; no service continues
+past an unpaid period, matching the no-refund / period-end Terms model.
 
 ## Tax configuration, verified 2026-08-19
 
@@ -182,8 +231,8 @@ live mode will charge. Check both.
 | Head office | Serris, FR | Serris, FR |
 | Default tax code | `txcd_20060048` | `txcd_20060048` |
 | Registrations | FR `standard`, FR `oss_union` | FR `standard` (`taxreg_1U68dSHxg3uOgAWod8hIGPxi`, active from 2026-08-19) |
-| Price `tax_behavior` | `exclusive` | n/a, no live prices yet |
-| Payment links `automatic_tax` | enabled, `liability: self` | n/a for the CTO tiers |
+| Price `tax_behavior` | `exclusive` | `exclusive` |
+| Payment links `automatic_tax` | enabled, `liability: self` | enabled, `liability: self` |
 
 ### Measured behaviour
 
