@@ -270,9 +270,11 @@ glassmorphic** look with an animated woven-wave background. Visual reference
 - It is responsive (fills the viewport, DPR-aware), dependency-free, and
   degrades gracefully: a static gradient when WebGL is unavailable, and a single
   still frame when the user prefers reduced motion.
-- Tunables live in the `CONFIG` object at the top of the component (`density`,
-  `speed`, `twill`, `drapeScale`, `sheen`, `mouse`, `knee`, `highlight`). It
+- Tunables live in the `CONFIG` object at the top of the component (`speed`,
+  `twill`, `drapeScale`, `sheen`, `mouse`, `knee`, `highlight`, `quality`). It
   reads `--accent` from the document so it stays in sync with the brand token.
+  (There used to be a `density` knob; it was always dead — the uniform was
+  uploaded but never read, and the thread cell size is hardcoded in the shader.)
 - **`CONFIG.highlight` is a readability setting, not a look setting.** The
   shader ends with a proportional rolloff that caps how bright the satin crests
   may get: brightness is compressed and fed back into the colour, so the crests
@@ -292,6 +294,22 @@ glassmorphic** look with an animated woven-wave background. Visual reference
   on `visibilitychange`** when the tab is hidden. Keep these. The other half of
   the budget is the glass rule above — never reintroduce `backdrop-blur` on the
   content cards that sit over this canvas.
+- **Adaptive resolution.** 0.6x is the *starting* quality, not a fixed one.
+  A full-screen fragment shader costs exactly what it covers in pixels, so the
+  component measures the real interval between drawn frames and steps down
+  `CONFIG.quality` (`0.6 → 0.5 → 0.42 → 0.34`) when a device cannot hold the
+  frame budget; at the bottom step it shades ~3x fewer pixels. It is
+  **downgrade-only by design** — stepping back up on a device sitting right at
+  the threshold oscillates, and a canvas resizing back and forth is far more
+  distracting than a slightly softer weave. The first 30 frames are ignored so
+  page-load layout is not blamed on the shader, and `pause()` resets the window
+  so a hidden-tab gap never counts as a slow frame. A device that can hold 30fps
+  never leaves 0.6x.
+- **Uniform-only work belongs on the CPU.** The light direction, half vector,
+  `cos/sin(twill)` and the thread-cell reciprocal are computed once per frame
+  (or per resize) and passed in as uniforms. They used to be recomputed in every
+  fragment — two `normalize()`s and a `sin`/`cos` pair on every pixel of a
+  full-screen quad. Don't move them back into the shader for readability.
 
 ## Gotchas
 
