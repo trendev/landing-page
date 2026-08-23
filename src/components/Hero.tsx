@@ -38,7 +38,7 @@ export function Hero({ onOpenConsultation, onOpenProjects }: HeroProps) {
               reads as invitation without competing with the primary fill. */}
           <Link
             href={ADVISORY_PATH}
-            className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg border border-accent/50 text-accent hover:bg-accent/10 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+            className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg border border-accent/50 bg-card/50 text-accent hover:bg-accent/15 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
           >
             <Repeat className="w-4 h-4" />
             {SECONDARY_CTA_LABEL}

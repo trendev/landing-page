@@ -20,12 +20,19 @@ import { useEffect, useRef } from "react";
  */
 
 const CONFIG = {
-  density: 12.0, // thread cells per ~100px of height (higher = finer weave)
   speed: 0.16, // ripple animation speed
   twill: 0.62, // diagonal weave angle (radians)
   drapeScale: 2.6, // size of the folds (lower = bigger folds)
   sheen: 1.0, // strength of the rolling satin highlight
   mouse: 0.6, // how much the light follows the cursor (0 = ignore)
+  // Highlight ceiling. This is a READABILITY setting, not just a look: the
+  // crests are what unglassed body text has to survive. See the note above the
+  // rolloff in FRAG before raising `highlight`.
+  knee: 0.05, // brightness at which the rolloff starts
+  highlight: 0.27, // brightness the crests asymptotically approach
+  // Internal-resolution ladder, best first. The governor walks DOWN this list
+  // when the device cannot hold the frame budget; see `resize`/`frame` below.
+  quality: [0.6, 0.5, 0.42, 0.34],
 };
 
 const VERT = `
@@ -37,12 +44,18 @@ const FRAG = `
   precision highp float;
   uniform vec2  u_res;
   uniform float u_time;
-  uniform vec2  u_mouse;   // -1..1
   uniform vec3  u_accent;  // brand cyan, linear-ish 0..1
-  uniform float u_density;
-  uniform float u_twill;
   uniform float u_drape;
   uniform float u_sheen;
+  uniform float u_knee;
+  uniform float u_highlight;
+  // Precomputed on the CPU once per frame (or once per resize). These depend
+  // only on uniforms, so computing them per fragment was paying for a couple of
+  // normalize()s and a sin/cos pair on every single pixel of a full-screen quad.
+  uniform vec3  u_L;        // light direction, already normalised
+  uniform vec3  u_H;        // half vector, already normalised
+  uniform vec2  u_twillSC;  // cos(twill), sin(twill)
+  uniform float u_cellInv;  // 1.0 / (height * 0.012)
 
   // draped cloth height-field: layered travelling waves
   float drape(vec2 q, float t){
@@ -67,18 +80,19 @@ const FRAG = `
     float hy = drape(q + vec2(0.0, e), t);
     vec3  n  = normalize(vec3(-(hx-h)/e, -(hy-h)/e, 1.0));
 
-    // light rolls over time + follows the cursor
-    vec3 L = normalize(vec3(0.45 + u_mouse.x*0.5, 0.65 + u_mouse.y*0.5, 0.85));
-    vec3 V = vec3(0.0, 0.0, 1.0);
-    vec3 H = normalize(L + V);
-    float diff = clamp(dot(n, L), 0.0, 1.0);
-    float spec = pow(clamp(dot(n, H), 0.0, 1.0), 22.0) * u_sheen;
+    // light rolls over time + follows the cursor (u_L/u_H come from the CPU)
+    float diff = clamp(dot(n, u_L), 0.0, 1.0);
+    // pow(b, 22.0) as a multiply chain: b^22 == b^16 * b^4 * b^2. Same value,
+    // but it drops the exp2/log2 pair that pow() compiles to.
+    float b = clamp(dot(n, u_H), 0.0, 1.0);
+    float b2 = b*b, b4 = b2*b2, b8 = b4*b4, b16 = b8*b8;
+    float spec = b16*b4*b2 * u_sheen;
 
-    // woven thread structure (diagonal twill of round threads)
-    vec2 cc = frag / (u_res.y * 0.012);
-    float ca = cos(u_twill), sa = sin(u_twill);
-    mat2 R = mat2(ca, -sa, sa, ca);
-    vec2 c = R * cc;
+    // woven thread structure (diagonal twill of round threads).
+    // mat2 is column-major, so mat2(ca,-sa,sa,ca)*cc == (ca*x + sa*y, ca*y - sa*x).
+    vec2 cc = frag * u_cellInv;
+    vec2 c = vec2(u_twillSC.x*cc.x + u_twillSC.y*cc.y,
+                  u_twillSC.x*cc.y - u_twillSC.y*cc.x);
     vec2 g1 = fract(c) - 0.5;
     float warp = smoothstep(0.5, 0.12, length(g1));
     vec2 g2 = fract(c + 0.5) - 0.5;
@@ -94,14 +108,32 @@ const FRAG = `
     float lightAmt = 0.14 + 0.86*diff;
 
     vec3 col = mix(navy, mid, lightAmt);
-    col = mix(col, cyan, crest*0.55 + spec*0.9);
+    // clamped: the factor peaks at ~1.45, so the mix used to overshoot *past*
+    // pure cyan toward white, which also washed the accent out to grey-white.
+    col = mix(col, cyan, clamp(crest*0.55 + spec*0.9, 0.0, 1.0));
     col *= mix(0.42, 1.0, weave);
     col += cyan * spec * weave * 0.7;
 
     float vig = smoothstep(1.25, 0.25, length(uv - 0.5));
     col *= mix(0.62, 1.0, vig);
 
-    gl_FragColor = vec4(col, 1.0);
+    // Highlight rolloff, applied to BRIGHTNESS and fed back proportionally so
+    // hue and saturation survive: the crests keep their cyan, they just stop
+    // being bright. Everything below u_knee is untouched, so the weave keeps
+    // its structure.
+    //
+    // This is what makes the page readable. The two darkeners above are
+    // spatial (thread gaps, vignette) and the vignette is at its *brightest*
+    // dead centre -- exactly where the centred hero copy sits -- so the peaks
+    // used to reach a relative luminance of 0.80, brighter than pure cyan.
+    // #9DAFD8 body text over that measured 1.0:1: literally invisible. The
+    // ceiling holds the whole canvas under L 0.053, which is 4.7:1.
+    float v = dot(col, vec3(0.2126, 0.7152, 0.0722));
+    float over = max(v - u_knee, 0.0);
+    float capped = u_knee + over / (1.0 + over / max(u_highlight - u_knee, 1e-4));
+    col *= capped / max(v, 1e-4);
+
+    gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
   }
 `;
 
@@ -171,12 +203,15 @@ export function WeaveBackground() {
     const U = {
       res: gl.getUniformLocation(prog, "u_res"),
       time: gl.getUniformLocation(prog, "u_time"),
-      mouse: gl.getUniformLocation(prog, "u_mouse"),
       accent: gl.getUniformLocation(prog, "u_accent"),
-      density: gl.getUniformLocation(prog, "u_density"),
-      twill: gl.getUniformLocation(prog, "u_twill"),
       drape: gl.getUniformLocation(prog, "u_drape"),
       sheen: gl.getUniformLocation(prog, "u_sheen"),
+      knee: gl.getUniformLocation(prog, "u_knee"),
+      highlight: gl.getUniformLocation(prog, "u_highlight"),
+      L: gl.getUniformLocation(prog, "u_L"),
+      H: gl.getUniformLocation(prog, "u_H"),
+      twillSC: gl.getUniformLocation(prog, "u_twillSC"),
+      cellInv: gl.getUniformLocation(prog, "u_cellInv"),
     };
 
     let w = 0;
@@ -187,15 +222,18 @@ export function WeaveBackground() {
       // upscale is invisible, but the fragment shader (the dominant GPU cost)
       // runs over ~64% fewer pixels than at 1x and ~4x fewer than retina. This
       // is the single biggest lever for keeping the animation cheap on weak GPUs.
-      const dpr = 0.6;
-      w = Math.floor(window.innerWidth * dpr);
-      h = Math.floor(window.innerHeight * dpr);
+      const dpr = CONFIG.quality[qIndex];
+      w = Math.max(1, Math.floor(window.innerWidth * dpr));
+      h = Math.max(1, Math.floor(window.innerHeight * dpr));
       canvas.width = w;
       canvas.height = h;
       canvas.style.width = window.innerWidth + "px";
       canvas.style.height = window.innerHeight + "px";
       gl.viewport(0, 0, w, h);
+      // depends on the backing-store height, so it has to follow every resize
+      gl.uniform1f(U.cellInv, 1 / (h * 0.012));
     };
+    let qIndex = 0;
     resize();
     window.addEventListener("resize", resize, { passive: true });
 
@@ -211,10 +249,11 @@ export function WeaveBackground() {
 
     const setStaticUniforms = () => {
       gl.uniform3f(U.accent, accent[0], accent[1], accent[2]);
-      gl.uniform1f(U.density, CONFIG.density);
-      gl.uniform1f(U.twill, CONFIG.twill);
+      gl.uniform2f(U.twillSC, Math.cos(CONFIG.twill), Math.sin(CONFIG.twill));
       gl.uniform1f(U.drape, CONFIG.drapeScale);
       gl.uniform1f(U.sheen, CONFIG.sheen);
+      gl.uniform1f(U.knee, CONFIG.knee);
+      gl.uniform1f(U.highlight, CONFIG.highlight);
     };
 
     // The accent/weave-shape uniforms never change at runtime, so upload them
@@ -225,25 +264,76 @@ export function WeaveBackground() {
       window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    let drawn = 0;
     let raf = 0;
     let running = false;
     let lastDraw = 0;
-    const start = performance.now();
+    // Seconds of animation actually rendered. Driving the shader from this
+    // rather than from wall-clock means a hidden tab resumes exactly where it
+    // stopped instead of jumping forward by however long it was hidden.
+    let clock = 0;
+
     // Cap the background to ~30fps. The ripple is slow, so 30fps is visually
     // indistinguishable from 60 but halves the per-second shading work and
     // leaves the main thread free to scroll at full rate.
     const FRAME_MS = 1000 / 30;
 
+    // Light direction + half vector, per frame on the CPU rather than per
+    // fragment on the GPU. Two normalize()s over ~500k pixels was the shader
+    // recomputing a value that is constant across the whole frame.
+    const uploadLight = () => {
+      const lx = 0.45 + mx * 0.5;
+      const ly = 0.65 + my * 0.5;
+      const lz = 0.85;
+      const ln = Math.hypot(lx, ly, lz);
+      const Lx = lx / ln, Ly = ly / ln, Lz = lz / ln;
+      const hn = Math.hypot(Lx, Ly, Lz + 1);
+      gl.uniform3f(U.L, Lx, Ly, Lz);
+      gl.uniform3f(U.H, Lx / hn, Ly / hn, (Lz + 1) / hn);
+    };
+
+    // Adaptive resolution. A full-screen fragment shader costs exactly what it
+    // covers in pixels, so when a device cannot hold the frame budget the only
+    // lever that always works is shading fewer of them. Watch the real interval
+    // between drawn frames and step down CONFIG.quality until we fit.
+    //
+    // Downgrade-only, on purpose: stepping back up on a device that is right at
+    // the threshold oscillates between two resolutions, and a canvas resizing
+    // back and forth is far more distracting than a slightly softer weave. The
+    // first WARMUP frames are ignored so that page-load layout and font swaps
+    // do not get blamed on the shader.
+    const WARMUP = 30;
+    const WINDOW = 45;
+    const BUDGET = FRAME_MS * 1.35;
+    let windowStart = 0;
+
+    const governor = (now: number) => {
+      drawn++;
+      if (drawn === WARMUP) windowStart = now;
+      if (drawn < WARMUP + WINDOW) return;
+      const avg = (now - windowStart) / WINDOW;
+      drawn = WARMUP;
+      windowStart = now;
+      if (avg > BUDGET && qIndex < CONFIG.quality.length - 1) {
+        qIndex++;
+        resize();
+      }
+    };
+
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
-      if (now - lastDraw < FRAME_MS) return;
+      const dt = now - lastDraw;
+      if (dt < FRAME_MS) return;
       lastDraw = now;
+      // clamped so a long pause cannot fast-forward the weave on the next frame
+      clock += Math.min(dt, FRAME_MS * 2) / 1000;
       mx += (tmx - mx) * 0.1;
       my += (tmy - my) * 0.1;
       gl.uniform2f(U.res, w, h);
-      gl.uniform2f(U.mouse, mx, my);
-      gl.uniform1f(U.time, ((now - start) / 1000) * CONFIG.speed * 6.0);
+      uploadLight();
+      gl.uniform1f(U.time, clock * CONFIG.speed * 6.0);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      governor(now);
     };
 
     const play = () => {
@@ -254,13 +344,14 @@ export function WeaveBackground() {
     const pause = () => {
       running = false;
       cancelAnimationFrame(raf);
+      drawn = 0; // don't bill the hidden-tab gap to the governor on resume
     };
     // Don't burn the GPU animating a background the user can't see.
     const onVisibility = () => (document.hidden ? pause() : play());
 
     if (reduceMotion) {
       gl.uniform2f(U.res, w, h);
-      gl.uniform2f(U.mouse, 0, 0);
+      uploadLight();
       gl.uniform1f(U.time, 3.0);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     } else {

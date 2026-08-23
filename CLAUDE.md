@@ -239,7 +239,10 @@ glassmorphic** look with an animated woven-wave background. Visual reference
   (secondary) / `#6F7EA6` (muted).
 - **Glass recipe** for panels/cards/nav: use the shared `.glass` utility
   (`theme.css`) — a translucent dark fill (`bg-card/55`), `border-white/12`, soft
-  dark shadow. **No `backdrop-filter` in `.glass`.** `backdrop-blur` over the
+  dark shadow. Its 60px blur is a latent cost (a box-shadow rasterises over its
+  whole blur area, ~38 times on this page); if raster savings are ever needed,
+  ~32px is nearly free visually. Left at 60px because the saving could not be
+  demonstrated — don't trade the look for an unmeasured win. **No `backdrop-filter` in `.glass`.** `backdrop-blur` over the
   animated `WeaveBackground` re-rasterizes every frame; with ~30 cards on the
   page that pins the GPU and stalls the canvas. Only persistent/transient chrome
   that overlaps *scrolling* content (Header, modal panels, the consent banner
@@ -270,15 +273,52 @@ glassmorphic** look with an animated woven-wave background. Visual reference
 - It is responsive (fills the viewport, DPR-aware), dependency-free, and
   degrades gracefully: a static gradient when WebGL is unavailable, and a single
   still frame when the user prefers reduced motion.
-- Tunables live in the `CONFIG` object at the top of the component (`density`,
-  `speed`, `twill`, `drapeScale`, `sheen`, `mouse`). It reads `--accent` from
-  the document so it stays in sync with the brand token.
+- Tunables live in the `CONFIG` object at the top of the component (`speed`,
+  `twill`, `drapeScale`, `sheen`, `mouse`, `knee`, `highlight`, `quality`). It
+  reads `--accent` from the document so it stays in sync with the brand token.
+  (There used to be a `density` knob; it was always dead — the uniform was
+  uploaded but never read, and the thread cell size is hardcoded in the shader.)
+- **`CONFIG.highlight` is a readability setting, not a look setting.** The
+  shader ends with a proportional rolloff that caps how bright the satin crests
+  may get: brightness is compressed and fed back into the colour, so the crests
+  keep their cyan hue and the weave keeps its structure, but the whole canvas
+  stays under a relative luminance of ~0.053. That ceiling is what lets
+  `text-muted-foreground` (`#9DAFD8`) survive on the bare background at 4.7:1.
+  Without it the crests reach L 0.80 — brighter than pure cyan — and body text
+  over them measures **1.0:1, i.e. invisible**; that was the bug this cap fixed.
+  The shader's other two darkeners cannot stand in for it: the thread gaps and
+  the vignette are *spatial*, and the vignette is at its brightest dead centre,
+  exactly where the centred hero copy sits. **Raising `highlight` re-breaks
+  every unglassed paragraph on the site** (the hero subhead and each section
+  intro). If you change it, re-measure the worst case rather than eyeballing it.
 - **Performance (a full-screen shader is the page's heaviest cost):** it renders
   the canvas at **0.6x** internal resolution (soft weave hides the upscale),
   caps the animation to **~30fps**, uploads static uniforms once, and **pauses
   on `visibilitychange`** when the tab is hidden. Keep these. The other half of
   the budget is the glass rule above — never reintroduce `backdrop-blur` on the
   content cards that sit over this canvas.
+- **Never freeze the weave while the user scrolls.** This was tried as a perf
+  win and reverted on sight: the background stopping the moment you touch the
+  page reads as jank, not as smoothness, whatever the frame numbers say. The
+  animation runs continuously whenever the tab is visible. The shader
+  is driven by an accumulated `clock` rather than wall-clock time, so returning
+  to a hidden tab resumes where it stopped instead of jumping forward.
+- **Adaptive resolution.** 0.6x is the *starting* quality, not a fixed one.
+  A full-screen fragment shader costs exactly what it covers in pixels, so the
+  component measures the real interval between drawn frames and steps down
+  `CONFIG.quality` (`0.6 → 0.5 → 0.42 → 0.34`) when a device cannot hold the
+  frame budget; at the bottom step it shades ~3x fewer pixels. It is
+  **downgrade-only by design** — stepping back up on a device sitting right at
+  the threshold oscillates, and a canvas resizing back and forth is far more
+  distracting than a slightly softer weave. The first 30 frames are ignored so
+  page-load layout is not blamed on the shader, and `pause()` resets the window
+  so a hidden-tab gap never counts as a slow frame. A device that can hold 30fps
+  never leaves 0.6x.
+- **Uniform-only work belongs on the CPU.** The light direction, half vector,
+  `cos/sin(twill)` and the thread-cell reciprocal are computed once per frame
+  (or per resize) and passed in as uniforms. They used to be recomputed in every
+  fragment — two `normalize()`s and a `sin`/`cos` pair on every pixel of a
+  full-screen quad. Don't move them back into the shader for readability.
 
 ## Gotchas
 
