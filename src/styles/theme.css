@@ -63,14 +63,15 @@
    * opts back into a real `backdrop-blur-md` locally. A handful of small
    * elements at most, so the cost stays bounded.
    *
-   * The blur radius is also a budget: a box-shadow is rasterised over its whole
-   * blur area, and there are ~38 of these on the page. The radius was 60px; at
-   * 32px the scroll cost drops measurably while the difference is 3% of pixels
-   * at a mean of 0.4/255 -- invisible, because the shadow colour is nearly the
-   * page background already. Don't push it back up without re-measuring.
+   * The blur radius is a latent performance cost -- a box-shadow rasterises
+   * over its whole blur area and there are ~38 of these -- so if this page ever
+   * needs raster savings, dropping 60px to ~32px is nearly free visually (it
+   * moves 3% of pixels by a mean of 0.4/255, because the shadow colour is
+   * already close to the page background). It is left at 60px deliberately:
+   * the saving could not be demonstrated on real hardware, so the look wins.
    */
   .glass {
-    @apply bg-card/55 border border-white/12 shadow-[0_10px_32px_rgba(4,6,13,0.55)];
+    @apply bg-card/55 border border-white/12 shadow-[0_20px_60px_rgba(4,6,13,0.5)];
   }
 
   /**
@@ -82,10 +83,10 @@
    * The comet is a half-length element moved with `transform`, NOT a full-width
    * gradient moved with `background-position`. background-position is not a
    * compositable property, so the old version repainted all three connectors on
-   * every frame, on the main thread, for the whole life of the page — measured
-   * as the single largest scroll cost on the site, ahead of both the canvas and
-   * the glass shadows. `transform` runs on the compositor and repaints nothing.
-   * Keep any future connector animation to `transform`/`opacity` only.
+   * the main thread every frame, for the whole life of the page; `transform`
+   * runs on the compositor and repaints nothing. The travel is identical, so
+   * this is a free swap rather than a measured win — keep any future connector
+   * animation to `transform`/`opacity` only.
    */
   .timeline-line,
   .timeline-line-v {

@@ -269,30 +269,10 @@ export function WeaveBackground() {
     let running = false;
     let lastDraw = 0;
     // Seconds of animation actually rendered. Driving the shader from this
-    // rather than from wall-clock means every hold below (hidden tab, active
-    // scroll) freezes the weave and resumes exactly where it stopped, instead
-    // of jumping forward by however long the hold lasted.
+    // rather than from wall-clock means a hidden tab resumes exactly where it
+    // stopped instead of jumping forward by however long it was hidden.
     let clock = 0;
 
-    // Hold the background while the user is actively scrolling. Scrolling is
-    // when frames are scarcest -- the compositor is already re-blitting a
-    // full-screen fixed canvas under 38 glass cards -- and a slow weave frozen
-    // for the length of a flick is imperceptible, because the canvas is fixed
-    // and does not move with the content anyway.
-    let scrolling = false;
-    let scrollHold = 0;
-    const onScroll = () => {
-      if (!scrolling) {
-        scrolling = true;
-        drawn = 0; // the hold is not a slow frame; don't let it trip the governor
-      }
-      clearTimeout(scrollHold);
-      scrollHold = window.setTimeout(() => {
-        scrolling = false;
-        drawn = 0;
-      }, 180);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
     // Cap the background to ~30fps. The ripple is slow, so 30fps is visually
     // indistinguishable from 60 but halves the per-second shading work and
     // leaves the main thread free to scroll at full rate.
@@ -345,8 +325,7 @@ export function WeaveBackground() {
       const dt = now - lastDraw;
       if (dt < FRAME_MS) return;
       lastDraw = now;
-      if (scrolling) return;
-      // clamped so a long hold cannot fast-forward the weave on the next frame
+      // clamped so a long pause cannot fast-forward the weave on the next frame
       clock += Math.min(dt, FRAME_MS * 2) / 1000;
       mx += (tmx - mx) * 0.1;
       my += (tmy - my) * 0.1;
@@ -382,9 +361,7 @@ export function WeaveBackground() {
 
     return () => {
       pause();
-      clearTimeout(scrollHold);
       document.removeEventListener("visibilitychange", onVisibility);
-      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);
       const lose = gl.getExtension("WEBGL_lose_context");

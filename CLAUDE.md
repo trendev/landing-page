@@ -239,9 +239,10 @@ glassmorphic** look with an animated woven-wave background. Visual reference
   (secondary) / `#6F7EA6` (muted).
 - **Glass recipe** for panels/cards/nav: use the shared `.glass` utility
   (`theme.css`) — a translucent dark fill (`bg-card/55`), `border-white/12`, soft
-  dark shadow. The shadow's blur radius is a performance budget, not just a
-  look: a box-shadow rasterises over its whole blur area and there are ~38 of
-  these on the page. Don't raise it without re-measuring scroll cost. **No `backdrop-filter` in `.glass`.** `backdrop-blur` over the
+  dark shadow. Its 60px blur is a latent cost (a box-shadow rasterises over its
+  whole blur area, ~38 times on this page); if raster savings are ever needed,
+  ~32px is nearly free visually. Left at 60px because the saving could not be
+  demonstrated — don't trade the look for an unmeasured win. **No `backdrop-filter` in `.glass`.** `backdrop-blur` over the
   animated `WeaveBackground` re-rasterizes every frame; with ~30 cards on the
   page that pins the GPU and stalls the canvas. Only persistent/transient chrome
   that overlaps *scrolling* content (Header, modal panels, the consent banner
@@ -296,12 +297,12 @@ glassmorphic** look with an animated woven-wave background. Visual reference
   on `visibilitychange`** when the tab is hidden. Keep these. The other half of
   the budget is the glass rule above — never reintroduce `backdrop-blur` on the
   content cards that sit over this canvas.
-- **The canvas holds still while the user scrolls.** Scrolling is when frames
-  are scarcest, and the weave is `position: fixed`, so it does not move with the
-  content anyway — freezing it for the length of a flick is imperceptible and
-  measured ~2x on scroll frame cost. The shader is driven by an accumulated
-  `clock` rather than wall-clock time, so every hold (scroll, hidden tab)
-  resumes exactly where it stopped instead of jumping forward.
+- **Never freeze the weave while the user scrolls.** This was tried as a perf
+  win and reverted on sight: the background stopping the moment you touch the
+  page reads as jank, not as smoothness, whatever the frame numbers say. The
+  animation runs continuously whenever the tab is visible. The shader
+  is driven by an accumulated `clock` rather than wall-clock time, so returning
+  to a hidden tab resumes where it stopped instead of jumping forward.
 - **Adaptive resolution.** 0.6x is the *starting* quality, not a fixed one.
   A full-screen fragment shader costs exactly what it covers in pixels, so the
   component measures the real interval between drawn frames and steps down
