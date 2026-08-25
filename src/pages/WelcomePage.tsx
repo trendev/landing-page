@@ -5,6 +5,7 @@ import {
   WELCOME_BILLING_NOTE,
   WELCOME_SUBTITLE,
   WELCOME_TITLE,
+  manageBilling,
   welcomeClosing,
   welcomeSteps,
 } from "@/data/welcome";
@@ -130,6 +131,21 @@ export function WelcomePage() {
             </p>
           ))}
         </article>
+
+        {manageBilling && (
+          <article className="glass rounded-2xl p-6 sm:p-8 mt-6">
+            <h2 className="text-lg sm:text-xl mb-3">{manageBilling.heading}</h2>
+            {manageBilling.paragraphs.map((paragraph) => (
+              <p
+                key={paragraph}
+                className="text-sm sm:text-base text-muted-foreground mb-3 leading-relaxed"
+              >
+                {paragraph}
+              </p>
+            ))}
+            <StepCta cta={manageBilling.cta} />
+          </article>
+        )}
 
         <div className="mt-10 text-center">
           <BackLink />

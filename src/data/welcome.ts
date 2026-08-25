@@ -1,6 +1,7 @@
 import { CalendarCheck, ClipboardList, Mail } from "lucide-react";
 
 import { CALENDLY_URL, CONTACT_ADDRESS } from "@/data/content";
+import { STRIPE_PORTAL_LOGIN_URL } from "@/data/stripe";
 import type { ContentSection, WelcomeStep } from "@/types";
 
 /**
@@ -17,9 +18,12 @@ import type { ContentSection, WelcomeStep } from "@/types";
  * processor to disclose in /privacy, needs no backend, and reads as a human
  * advisory handoff rather than a product signup.
  *
- * There is deliberately no "Manage billing" link. The Stripe Customer Portal
- * is issue #17, which is not configured; a generic portal URL that does not
- * resolve to the customer's own subscription would be worse than no link.
+ * "Manage billing" (issue #17) links the Stripe Customer Portal login page,
+ * where the buyer authenticates with their checkout email and manages their
+ * own subscription — so a public static URL is safe here. The block renders
+ * only once STRIPE_PORTAL_LOGIN_URL is filled for the current mode: a generic
+ * URL that did not resolve to the customer's own subscription would be worse
+ * than no link, and so would a dead one.
  */
 
 export const WELCOME_TITLE = "Welcome to TRENDev.";
@@ -121,6 +125,23 @@ export const welcomeSteps: WelcomeStep[] = [
     ],
   },
 ];
+
+/**
+ * Rendered after the closing section, only when the portal login URL for the
+ * current Stripe mode exists (see the comment in @/data/stripe). Cancellation
+ * wording must keep matching the Terms and the pricing pages: at period end,
+ * no refund, no prorated credit.
+ */
+export const manageBilling = STRIPE_PORTAL_LOGIN_URL
+  ? {
+      heading: "Manage your billing",
+      paragraphs: [
+        "Invoices, receipts, payment method and cancellation are handled in the Stripe customer portal. Sign in with the email address you used at checkout; Stripe sends you a one-time code.",
+        "You can cancel anytime. Cancellation takes effect at the end of your current paid billing period, which stays active until then.",
+      ],
+      cta: { label: "Open the billing portal", href: STRIPE_PORTAL_LOGIN_URL },
+    }
+  : null;
 
 export const welcomeClosing: ContentSection = {
   id: "what-happens-next",
