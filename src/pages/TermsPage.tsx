@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Download, TriangleAlert } from "lucide-react";
+import { Download, Info, TriangleAlert } from "lucide-react";
 
 import { Link } from "@/app/router";
 import { BackLink } from "@/components/BackLink";
@@ -59,6 +59,18 @@ function Subsection({ section }: { section: ContentSection }) {
       <Bullets items={section.bullets} />
     </section>
   );
+}
+
+/**
+ * Today in the viewer's local timezone as YYYY-MM-DD, so it compares directly
+ * against the ISO `effectiveDate`: ISO dates sort lexicographically, so no date
+ * arithmetic and no timezone normalisation are needed for a same-day boundary.
+ */
+function todayIso(): string {
+  const now = new Date();
+  const month = `${now.getMonth() + 1}`.padStart(2, "0");
+  const day = `${now.getDate()}`.padStart(2, "0");
+  return `${now.getFullYear()}-${month}-${day}`;
 }
 
 interface TermsPageProps {
@@ -149,6 +161,25 @@ export function TermsPage({ date }: TermsPageProps) {
                 </p>
               </div>
             )}
+
+            {terms.status === "effective" &&
+              todayIso() < terms.effectiveDate && (
+                <div className="print:hidden rounded-xl border border-accent/30 bg-accent/10 px-5 py-4 mb-6 sm:mb-8 flex items-start gap-3">
+                  <Info className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+                  <p className="text-sm sm:text-base text-foreground">
+                    <strong>
+                      Purchases made before {terms.effectiveDate}.
+                    </strong>{" "}
+                    Checkout is open ahead of the effective date shown above.
+                    This is the version presented and accepted at checkout
+                    today, and it governs your subscription from the date of
+                    purchase: the agreement is formed when the first payment is
+                    confirmed (Section 3), and the version accepted at purchase
+                    keeps governing the subscription for as long as it runs
+                    (Section 14).
+                  </p>
+                </div>
+              )}
 
             {terms.status === "superseded" && (
               <div className="rounded-xl border border-accent/30 bg-accent/10 px-5 py-4 mb-6 sm:mb-8">

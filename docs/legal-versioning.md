@@ -131,6 +131,27 @@ inside the Terms version the buyer accepts.
       through the API, so this one is confirmed by construction rather than by
       query: if it is ever repointed, verify it in Dashboard → Settings →
       Public business details.
+- [x] Live checkout opened 2026-08-25: `LIVE_PAYMENT_LINKS` filled and the
+      `deploy.yml` test pin removed. Verified the same day against live mode:
+      both live Payment Links match the committed URLs, carry
+      `terms_of_service: required`, the v1.0 (2026-09-01) consent message
+      naming Annex A/B, the six acceptance-evidence keys in `metadata` and
+      `subscription_data.metadata`, and redirect to `/welcome`; the live FR tax
+      registration is `active`; the live Customer Portal login page matches
+      `STRIPE_PORTAL_LOGIN_URL`; `/advisory`, `/terms`, `/terms/2026-09-01`,
+      `/services/*` and `/welcome` all serve 200 with the live link set.
+- [x] **Go-live preceded the effective date, and `/terms` now says so.**
+      Checkout opened 2026-08-25 while v1.0 is dated 2026-09-01, so a purchase
+      before that date accepts a version dated ahead of it. Nothing is
+      ungoverned: Section 3 forms the agreement on first payment against the
+      version then accepted, Section 14 makes that accepted version govern the
+      subscription for as long as it runs, and the checkout consent message
+      says so explicitly. The only surface that did not was the `/terms`
+      header, which shows `Effective date: 2026-09-01` and nothing else, so
+      `TermsPage` gained a note that renders while an `effective` version's
+      date is still in the future. It is `print:hidden`, so a PDF regenerated
+      during the window stays identical to the committed one, and it disappears
+      on its own on 2026-09-01. Live subscription count was 0 at go-live.
 
 ## v1.0 was amended in place on 2026-08-21
 
@@ -141,8 +162,10 @@ text was rewritten **in place** on 2026-08-21: same version number, same
 
 That is legitimate here and only here, because at the time of the rewrite the
 version had never been in force (its effective date had not arrived) and had
-never been accepted by anyone (`LIVE_PAYMENT_LINKS` is still empty, so no
-self-service purchase has ever been possible). **Do not reuse this route.** Once
+never been accepted by anyone (`LIVE_PAYMENT_LINKS` was still empty, so no
+self-service purchase was possible). That is no longer the case: the 2026-08-25
+deploy filled the live links and removed the deploy.yml test pin, so v1.0 has
+been purchasable since. **Do not reuse this route.** Once
 a version is effective, or has ever been purchasable, a correction means a new
 dated module with the old one left online: that is what the immutability rule
 above exists for, and what the numbered procedure describes.
