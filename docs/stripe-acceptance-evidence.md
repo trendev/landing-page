@@ -189,21 +189,26 @@ go-live switch and must wait for the launch gates above.
 ## Customer Portal & cancellation lifecycle (issue #17)
 
 The Stripe MCP tooling used for the setup does not expose
-`POST /v1/billing_portal/configurations`, so the portal is configured in the
-Dashboard (Settings → Billing → Customer portal), **per mode**, with:
+`POST /v1/billing_portal/configurations`, so the portal was configured by the
+owner in the Dashboard (Settings → Billing → Customer portal) on 2026-08-25,
+**per mode**: test `bpc_1U8JGKHxg3uOgAWoA9s1VsCZ`, live
+`bpc_1U8J97Hxg3uOgAWoLkfHWJtT`. Both configurations were read back and verified
+to match the spec below (an earlier live draft had plan/quantity switching
+enabled with prorations; fixed same day):
 
 - Cancellation: enabled, **at end of billing period**, no proration/refund
   (matches Terms §Cancellation and the pricing pages).
 - Plan changes / pausing: **disabled** (no supported plan switch in V1).
 - Invoice history and payment-method / billing-detail updates: enabled.
-- Business information: links to `https://trendev.fr/terms` and
-  `https://trendev.fr/privacy`.
-- The no-code **login page link activated**; its
-  `https://billing.stripe.com/p/login/…` URL is pasted into
-  `STRIPE_PORTAL_LOGIN_URL` (`src/data/stripe.ts`, per mode), which makes
-  `/welcome` render its "Manage billing" block. Customers authenticate with
-  their checkout email (one-time code), so the public URL resolves each buyer
-  to their own subscription without any backend.
+- Legal links: the portal-level `business_profile` URLs are deliberately left
+  null, which makes the portal **inherit** Settings → Public business details —
+  already set to the dated `https://trendev.fr/terms/2026-09-01` (which checkout
+  consent requires) and `https://trendev.fr/privacy`.
+- The no-code **login page link is activated in both modes**; the URLs are
+  recorded in `STRIPE_PORTAL_LOGIN_URL` (`src/data/stripe.ts`, per mode), which
+  makes `/welcome` render its "Manage billing" block. Customers authenticate
+  with their checkout email (one-time code), so the public URL resolves each
+  buyer to their own subscription without any backend.
 
 Failed payments (owner decision 2026-08-23): **Smart Retries, then cancel the
 subscription** — configured in Settings → Billing → Revenue recovery

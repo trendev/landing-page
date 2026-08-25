@@ -94,11 +94,14 @@ export const STRIPE_PAYMENT_LINKS: PaymentLinks =
  * /welcome simply omits its "Manage billing" block rather than pointing at a
  * dead URL. Like the payment links, these are public URLs, not secrets.
  *
- * Live URL provided by the owner on PR #39 (2026-08-25) and verified against
- * the live default portal configuration (bpc_1U8J97Hxg3uOgAWoLkfHWJtT,
- * login_page.enabled). Test mode has no portal configuration yet.
+ * Both URLs provided by the owner on 2026-08-25 and verified against the
+ * default portal configuration of the matching mode (test
+ * bpc_1U8JGKHxg3uOgAWoA9s1VsCZ, live bpc_1U8J97Hxg3uOgAWoLkfHWJtT; both
+ * login_page.enabled, cancel at period end without proration, no plan
+ * switching).
  */
-const TEST_PORTAL_LOGIN_URL = "";
+const TEST_PORTAL_LOGIN_URL =
+  "https://billing.stripe.com/p/login/test_cNicN5eJr9fE4Do3cB5AQ00";
 const LIVE_PORTAL_LOGIN_URL =
   "https://billing.stripe.com/p/login/cNicN5eJr9fE4Do3cB5AQ00";
 
