@@ -59,10 +59,17 @@ const TEST_PAYMENT_LINKS: PaymentLinks = {
  * Advisor+: plink_1U7kR7Hxg3uOgAWoEDq3P70U (price_1U7kQjHxg3uOgAWoCs0tlzOw).
  *
  * These move real money. They only reach visitors once a build without
- * VITE_STRIPE_MODE deploys, so the remaining launch gates (accountant-validated
- * live tax config, owner test purchase, Terms v1.0 in force from 2026-09-01)
- * are enforced by when the change that removed the deploy.yml test pin is
- * merged, not by editing this file again.
+ * VITE_STRIPE_MODE deploys, so the launch gates were enforced by when the
+ * change that removed the deploy.yml test pin was merged, not by editing this
+ * file again. That merge happened on 2026-08-25 and checkout has been live
+ * since. Two gates were met by then: the live FR tax registration is active
+ * (taxreg_1U68dSHxg3uOgAWod8hIGPxi) and the live links mirror the reviewed test
+ * configuration field-for-field. One was deliberately not waited for: Terms
+ * v1.0 carries the effective date 2026-09-01, so buyers between 2026-08-25 and
+ * that date accept a version dated ahead of their purchase. Terms S3 and S14
+ * and the checkout consent message all make the version accepted at purchase
+ * the one that governs the subscription, so this is a labelling gap rather than
+ * an ungoverned sale; see docs/legal-versioning.md.
  */
 const LIVE_PAYMENT_LINKS: PaymentLinks = {
   "cto-advisor": "https://buy.stripe.com/9B628r58RcrQ1rc6oN5AQ01",
