@@ -1,0 +1,21 @@
+[
+  { "path": "/", "slug": "landing", "name": "Landing", "weave": true },
+  { "path": "/advisory", "slug": "advisory", "name": "Advisory" },
+  { "path": "/services/cto-advisor", "slug": "svc-advisor", "name": "CTO Advisor" },
+  { "path": "/services/cto-advisor-plus", "slug": "svc-advisor-plus", "name": "CTO Advisor+" },
+  { "path": "/services/fractional-cto", "slug": "svc-fractional", "name": "Fractional CTO" },
+  { "path": "/faq", "slug": "faq", "name": "FAQ" },
+  { "path": "/terms", "slug": "terms", "name": "Terms v1.0" },
+  { "path": "/legal", "slug": "legal", "name": "Legal notice" },
+  { "path": "/privacy", "slug": "privacy", "name": "Privacy" },
+  { "path": "/welcome", "slug": "welcome", "name": "Welcome" },
+  { "path": "/nope", "slug": "notfound", "name": "404" },
+
+  { "path": "/", "slug": "overlay-consent", "name": "Overlay - Cookie consent", "h": 900, "showConsent": true },
+  { "path": "/", "slug": "overlay-consultation", "name": "Overlay - Consultation modal", "h": 900,
+    "before": "(()=>{const b=[...document.querySelectorAll('header button')].find(e=>/consultation/i.test(e.innerText));b&&b.click();})()" },
+  { "path": "/", "slug": "overlay-projects", "name": "Overlay - Projects modal", "h": 900,
+    "before": "(()=>{const b=[...document.querySelectorAll('button,a')].find(e=>/view our work/i.test(e.innerText));b&&b.click();})()" },
+  { "path": "/", "slug": "overlay-detail", "name": "Overlay - Expertise detail modal", "h": 900,
+    "before": "(()=>{const h=[...document.querySelectorAll('h3')].find(e=>/Engineering Management/i.test(e.innerText));const b=h&&h.closest('button,div[role=button],article');b&&b.click();window.scrollTo(0,0);})()" }
+]

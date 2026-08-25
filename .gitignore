@@ -145,3 +145,6 @@ vite.config.ts.timestamp-*
 .DS_Store
 # Playwright MCP screenshots / snapshots
 .playwright-mcp/
+
+# Figma sync capture output (scripts/figma-sync/build.mjs)
+figma-out/
