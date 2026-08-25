@@ -93,9 +93,14 @@ export const STRIPE_PAYMENT_LINKS: PaymentLinks =
  * Empty until the owner activates the link in the matching mode; while empty,
  * /welcome simply omits its "Manage billing" block rather than pointing at a
  * dead URL. Like the payment links, these are public URLs, not secrets.
+ *
+ * Live URL provided by the owner on PR #39 (2026-08-25) and verified against
+ * the live default portal configuration (bpc_1U8J97Hxg3uOgAWoLkfHWJtT,
+ * login_page.enabled). Test mode has no portal configuration yet.
  */
 const TEST_PORTAL_LOGIN_URL = "";
-const LIVE_PORTAL_LOGIN_URL = "";
+const LIVE_PORTAL_LOGIN_URL =
+  "https://billing.stripe.com/p/login/cNicN5eJr9fE4Do3cB5AQ00";
 
 export const STRIPE_PORTAL_LOGIN_URL: string =
   STRIPE_MODE === "live" ? LIVE_PORTAL_LOGIN_URL : TEST_PORTAL_LOGIN_URL;
