@@ -45,9 +45,42 @@ export interface ProductizedOffer {
   deliverables: string[];
 }
 
-export interface Faq {
+/* ── Knowledge base (/faq) ─────────────────────────────────────────────── */
+
+export type FaqTopicId =
+  | "cto-role"
+  | "working-together"
+  | "technology"
+  | "plans-billing"
+  | "getting-started";
+
+export interface FaqTopic {
+  id: FaqTopicId;
+  label: string;
+}
+
+export interface FaqEntry {
+  /**
+   * URL slug AND DOM id, so /faq#do-we-need-kubernetes deep-links to this
+   * answer. PERMANENT: once published it is a shareable link, so it must never
+   * be renamed or reused, even if the question wording changes.
+   */
+  id: string;
+  topic: FaqTopicId;
   question: string;
-  answer: string;
+  /**
+   * Answer paragraphs. May contain `**bold**` and `[text](/path)` only; see
+   * `@/lib/inlineMarkup` for the grammar. Deliberately not Markdown: the whole
+   * site ships without a Markdown dependency.
+   */
+  answer: string[];
+  bullets?: string[];
+  /** Synonyms and acronyms absent from the visible copy, folded into search. */
+  keywords?: string[];
+  /** Other entry ids, rendered as /faq#id links under the answer. */
+  related?: string[];
+  /** Mirrored into the landing-page teaser. Keep this to 4 entries. */
+  featured?: boolean;
 }
 
 /* ── Premium CTO offers (epic #12) ─────────────────────────────────────── */

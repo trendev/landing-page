@@ -47,7 +47,7 @@ jobs:
       # Keep this list in sync with src/app/router.tsx and src/data/terms/.
       - name: Add per-route entry points
         run: |
-          for route in advisory \
+          for route in advisory faq \
                        services/cto-advisor services/cto-advisor-plus services/fractional-cto \
                        terms terms/2026-09-01 legal privacy welcome; do
             mkdir -p "build/$route"

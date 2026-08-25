@@ -27,7 +27,13 @@ There are no tests and no linter configured.
 - `src/app/router.tsx` — hand-rolled client router (**do not add
   react-router**): `useRoute()`, `navigate()`, `Link`, flat route table
   (`/`, `/advisory`, `/services/:slug`, `/terms`, `/terms/:date`, `/legal`,
-  `/privacy`, `/welcome`).
+  `/privacy`, `/welcome`, `/faq`).
+  It also exports `useHash()`, a **separate** store from `useRoute()`: the route
+  snapshot is `pathname` only, so a hash change notifies nothing (`navigate()`
+  skips `notify()` on a same-path move, and on `popstate` the pathname snapshot
+  is unchanged). `/faq` needs the hash to expand and scroll to a deep-linked
+  answer. Don't fold the hash into the pathname snapshot instead — that
+  re-renders the whole landing tree on every `/#section` click.
   Handles `/#section` hash links from subpages, scroll-to-top, and GA SPA
   pageviews (via `useDocumentMeta`). GH Pages serves deep links through
   per-route `index.html` copies created in `.github/workflows/deploy.yml` —
@@ -36,7 +42,9 @@ There are no tests and no linter configured.
   landing-only modal state: DetailModal, ProjectsModal), `AdvisoryPage` (the
   subscription funnel: 3 tiers + `ComparisonTable`), `ServicePage`
   (data-driven by slug), `TermsPage` (versioned), `LegalPage`, `PrivacyPage`,
-  `WelcomePage` (post-purchase onboarding, issue #18), `NotFoundPage`;
+  `WelcomePage` (post-purchase onboarding, issue #18), `FaqPage` (the
+  knowledge base: search + topic pills + accordion, and the only emitter of the
+  site's `FAQPage` JSON-LD), `NotFoundPage`;
   `legalLayout.tsx` is the shared legal-page shell.
 - `src/components/` — one component per page section (Header, Hero,
   Methodology, Offers, WhyChoose, Expertise, Services, Technologies, Faq, Cta,
@@ -51,6 +59,10 @@ There are no tests and no linter configured.
   positioning `/advisory` was built for.
   `ConsentBanner` is the cookie banner (see the consent section below).
   `BackLink` is the return path every subpage must render (see below).
+  `FaqItem` (one disclosure) and `FaqSearch` (input + topic pills + result
+  count) build `/faq`; `Faq.tsx` is now only the landing-page **teaser**,
+  rendering `featuredFaqs` through the same `FaqItem` so the two surfaces
+  cannot drift.
   `TierCta` is the shared Advisor/Fractional purchase CTA, and
   `ComparisonTable` the 3-tier comparison; both are used by `/services/*`
   only. **The landing page has no pricing/subscription section** — see the
@@ -61,8 +73,19 @@ There are no tests and no linter configured.
   brand icons; do not re-add an icon dependency for it).
 - **All page copy lives under `src/data/`**, not in components:
   - `content.ts` — landing sections (expertise, services, whyChoose, projects,
-    engagementModels, methodologySteps, outcomes, offers, faqs) plus
+    engagementModels, methodologySteps, outcomes, offers) plus
     `navLinks`, `legalLinks`, `CALENDLY_URL`, `CONTACT_EMAIL`, `GITHUB_URL`.
+  - `faq.ts` — the knowledge base (~44 entries across 5 topics) behind `/faq`
+    and the landing teaser. **Single source of truth**: the teaser renders
+    `featuredFaqs` (the `featured` flag) from this same array, so there is no
+    second copy of any question. Each `id` is a **published, permanent URL**
+    (`/faq#do-we-need-kubernetes`) — reword a question freely, never rename its
+    id. Answers carry `**bold**` and `[text](/path)` only, parsed by
+    `@/lib/inlineMarkup` (~35 lines); **do not add a Markdown dependency** for
+    this. The cancellation/refund/capacity/tax answers restate the Terms
+    closely and link to `/terms#...` on purpose: that wording already exists in
+    four places and this must not become a fifth that contradicts a contract.
+    Keep the module free of React/lucide imports so it stays Node-importable.
   - `pricing.ts` — the 3 frozen premium tiers, comparison table,
     `PRIMARY_CTA_LABEL`, `PREREQUISITE_NOTE`.
   - `stripe.ts` — `STRIPE_PAYMENT_LINKS`, **selected by environment**: test
@@ -340,7 +363,18 @@ glassmorphic** look with an animated woven-wave background. Visual reference
   structure above. If you find a giant inline file or a Figma artifact, it's
   drift — prefer the decomposed pattern.
 - `index.html` carries the SEO/OpenGraph/schema.org markup — update site-wide
-  meta there, not in React. The one exception: subpages override
+  meta there, not in React. **Exception: `FAQPage` JSON-LD is emitted at
+  runtime by `FaqPage`, not from `index.html`.** `deploy.yml` copies the one
+  built `index.html` into every route directory, so a static FAQPage block
+  there claims `/privacy`, `/terms` and `/welcome` are FAQ pages too (the
+  removed hand-written block did exactly that, and had already drifted from
+  the copy it described). Don't move it back. Only the site-wide
+  `Organization` block belongs in `index.html`.
+- **Every FAQ answer must stay in the DOM at all times.** `FaqItem` toggles
+  its panel with `inert` + a `grid-template-rows` transition, never by
+  unmounting and never with `hidden` (which cannot be animated). The site is
+  fully client-rendered, so a collapsed answer that is absent from the DOM is
+  simply invisible to crawlers. This rules out virtualising the list. The one exception: subpages override
   title/description/canonical at runtime via `useDocumentMeta` (which also
   fires GA SPA pageviews). `index.html` holds only the gtag **stub** and a
   denied Consent Mode default; `gtag.js` itself is loaded from

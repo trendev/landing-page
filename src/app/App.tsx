@@ -9,6 +9,7 @@ import { ConsultationModal } from "@/components/modals/ConsultationModal";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { readConsent, setConsent } from "@/lib/analytics";
 import { AdvisoryPage } from "@/pages/AdvisoryPage";
+import { FaqPage } from "@/pages/FaqPage";
 import { LandingPage } from "@/pages/LandingPage";
 import { LegalPage } from "@/pages/LegalPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
@@ -42,6 +43,8 @@ function Page({
       return <LegalPage />;
     case "privacy":
       return <PrivacyPage />;
+    case "faq":
+      return <FaqPage onOpenConsultation={onOpenConsultation} />;
     case "welcome":
       return <WelcomePage />;
     case "notFound":

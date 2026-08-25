@@ -31,6 +31,16 @@ export const WELCOME_TITLE = "Welcome to TRENDev.";
 export const WELCOME_SUBTITLE =
   "Your CTO advisory engagement starts here.";
 
+/**
+ * This page is `noindex` and reachable only through Stripe's post-checkout
+ * redirect, so a buyer who closes the tab has no way back to it from search.
+ * The /faq entry "I closed the welcome page. How do I get back to it?"
+ * (/faq#find-my-welcome-page) is the permanent route back in; this line is what
+ * stops most people needing it.
+ */
+export const WELCOME_SAVE_NOTE =
+  "Worth bookmarking this page: it is not listed in search results. If you lose it, it is linked from the FAQ under Getting started.";
+
 export const WELCOME_BILLING_NOTE =
   "Your receipt, invoices and any payment notifications are sent by Stripe to the email address you used at checkout. TRENDev does not send billing email.";
 

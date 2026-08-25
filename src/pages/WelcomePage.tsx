@@ -3,6 +3,7 @@ import { ArrowRight, TriangleAlert } from "lucide-react";
 import { BackLink } from "@/components/BackLink";
 import {
   WELCOME_BILLING_NOTE,
+  WELCOME_SAVE_NOTE,
   WELCOME_SUBTITLE,
   WELCOME_TITLE,
   manageBilling,
@@ -111,6 +112,11 @@ export function WelcomePage() {
           <p className="text-lg text-muted-foreground">{WELCOME_SUBTITLE}</p>
           <p className="text-sm text-muted-foreground mt-4 max-w-xl mx-auto">
             {WELCOME_BILLING_NOTE}
+          </p>
+          {/* Given prominence deliberately: losing this page is the single
+              most common source of post-checkout support email. */}
+          <p className="glass rounded-xl px-4 py-3 text-sm text-foreground mt-5 max-w-xl mx-auto">
+            {WELCOME_SAVE_NOTE}
           </p>
         </header>
 
