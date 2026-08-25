@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 
 import type {
-  Faq,
   MethodologyStep,
   Project,
   ProductizedOffer,
@@ -421,30 +420,6 @@ export const offers: ProductizedOffer[] = [
   },
 ];
 
-export const faqs: Faq[] = [
-  {
-    question: "What is CTO as a Service and who needs it?",
-    answer:
-      "CTO as a Service gives you strategic technical leadership on-demand. It is ideal for startups and SMEs that need senior guidance on architecture, hiring, security, and roadmap execution without committing to a full-time CTO role.",
-  },
-  {
-    question: "Can you support both strategy and implementation?",
-    answer:
-      "Yes. We combine executive-level consulting with hands-on delivery across full-stack development, cloud/DevOps, AI integration, and blockchain engineering.",
-  },
-  {
-    question:
-      "Do you provide smart contract development and security support?",
-    answer:
-      "Yes. We design and build smart contracts on major ecosystems, run security-focused reviews, and help teams improve reliability, gas efficiency, and operational safety.",
-  },
-  {
-    question: "How quickly can we start?",
-    answer:
-      "Most engagements start with a free discovery call, then a short technical assessment and action plan. Initial high-priority execution can usually begin within days.",
-  },
-];
-
 /**
  * In-page navigation shared by the header and footer. Route-aware ("/#id")
  * so the links work from subpages (/services/*, /terms, …) via the router.
@@ -454,6 +429,7 @@ export const navLinks = [
   { href: "/advisory", label: "Advisory" },
   { href: "/#expertise", label: "Expertise" },
   { href: "/#services", label: "Services" },
+  { href: "/faq", label: "FAQ" },
   { href: "/#contact", label: "Contact" },
 ];
 

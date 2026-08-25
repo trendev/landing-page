@@ -20,6 +20,7 @@ export type Route =
   | { kind: "legal" }
   | { kind: "privacy" }
   | { kind: "welcome" }
+  | { kind: "faq" }
   | { kind: "notFound" };
 
 /** Strip trailing slashes; GH Pages serves `/terms/` for `/terms/index.html`. */
@@ -36,6 +37,7 @@ export function matchRoute(pathname: string): Route {
   if (path === "/privacy") return { kind: "privacy" };
   if (path === "/terms") return { kind: "terms" };
   if (path === "/welcome") return { kind: "welcome" };
+  if (path === "/faq") return { kind: "faq" };
 
   const terms = path.match(/^\/terms\/(\d{4}-\d{2}-\d{2})$/);
   // Unknown dates are resolved to NotFound by TermsPage (it owns the registry).
@@ -59,8 +61,39 @@ function subscribe(listener: () => void): () => void {
   return () => listeners.delete(listener);
 }
 
+/**
+ * Separate subscription for `location.hash`.
+ *
+ * The route store above snapshots `location.pathname` only, which means a hash
+ * change produces NO React notification by either path: `navigate()` skips
+ * `notify()` when the path is unchanged, and on `popstate` the pathname
+ * snapshot is identical so `useSyncExternalStore` bails out. A page that has to
+ * react to the hash (/faq, which expands and scrolls to the targeted answer)
+ * therefore needs its own store.
+ *
+ * Folding the hash into `getPathname` instead would work, but it would also
+ * re-render the whole landing tree on every `/#expertise` click, so this stays
+ * opt-in.
+ */
+const hashListeners = new Set<() => void>();
+
+function notifyHash() {
+  for (const listener of hashListeners) listener();
+}
+
+function subscribeHash(listener: () => void): () => void {
+  hashListeners.add(listener);
+  return () => hashListeners.delete(listener);
+}
+
+function getHash(): string {
+  return window.location.hash;
+}
+
 if (typeof window !== "undefined") {
   window.addEventListener("popstate", notify);
+  window.addEventListener("popstate", notifyHash);
+  window.addEventListener("hashchange", notifyHash);
 }
 
 function getPathname(): string {
@@ -73,6 +106,11 @@ export function useRoute(): Route {
   return matchRoute(pathname);
 }
 
+/** Current `location.hash` (including the leading "#"), or "" when absent. */
+export function useHash(): string {
+  return useSyncExternalStore(subscribeHash, getHash);
+}
+
 /**
  * Programmatic navigation. Accepts paths with optional hashes ("/#expertise").
  * After the route renders: scrolls to the hash target if present, else to top.
@@ -83,6 +121,7 @@ export function navigate(href: string): void {
     normalize(url.pathname) === normalize(window.location.pathname);
   window.history.pushState(null, "", url.pathname + url.search + url.hash);
   if (!samePath) notify();
+  notifyHash();
   // One frame so the target page has committed before we look up the anchor.
   requestAnimationFrame(() => {
     const id = url.hash.slice(1);
