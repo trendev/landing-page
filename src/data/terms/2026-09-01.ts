@@ -6,8 +6,10 @@ import type { TermsVersion } from "@/types";
  * IMMUTABILITY: once this version's PDF is committed and the version is
  * purchasable, this file must NEVER be edited in substance. Changes require a
  * new dated module + registry entry + PDF (see src/data/terms/index.ts and
- * docs/legal-versioning.md). While status is "draft", pre-review corrections
- * are allowed but must regenerate the PDF.
+ * docs/legal-versioning.md). The generic allowance for correcting a module
+ * while its status is "draft" has never applied to this one and cannot now:
+ * this version is in force and has been purchasable since 2026-08-25, so
+ * `status` is the only field that may change here, and only to "superseded".
  *
  * EFFECTIVE from 2026-09-01. Lawyer review and accountant validation completed
  * on 2026-08-19, and the owner approved this text on 2026-08-21. There is
@@ -17,12 +19,15 @@ import type { TermsVersion } from "@/types";
  * of that date found substantive defects, and the owner's decisions of
  * 2026-08-21 resolved them, so the text was rewritten in place on 2026-08-21,
  * before the 2026-09-01 effective date and before any client could accept it
- * (self-service checkout is still disabled: LIVE_PAYMENT_LINKS is empty).
- * That is the one situation where amending in place is legitimate, because
- * nothing had been in force and nothing had been accepted. From the effective
- * date onward, and in any case once this version has ever been purchasable,
- * corrections require a new dated module instead, and only `status` may change
- * here, only to "superseded".
+ * (self-service checkout was still disabled then: LIVE_PAYMENT_LINKS was
+ * empty). That is the one situation where amending in place is legitimate,
+ * because nothing had been in force and nothing had been accepted.
+ *
+ * THAT WINDOW IS CLOSED, and both conditions that shut it have fired: live
+ * checkout opened on 2026-08-25, so this version has been purchasable since,
+ * and its 2026-09-01 effective date has passed, so it is in force. Do not
+ * read the paragraph above as a precedent. A correction now means a new dated
+ * module, with this one left online exactly as it stands.
  *
  * What the 2026-08-19 review changed:
  *  - S1  the trading name "TRENDev Consulting" is expressly identified as an

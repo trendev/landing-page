@@ -207,9 +207,10 @@ There are no tests and no linter configured.
   same version, same date, same route, same PDF filename. That was legitimate
   only because, on 2026-08-21, the version had not yet reached its effective
   date and had never been accepted: `LIVE_PAYMENT_LINKS` was still empty, so no
-  purchase was possible. **That window is closed.** Live checkout has been
-  reachable since the 2026-08-25 deploy, so the version is now purchasable and
-  the escape hatch no longer exists, whether or not anyone has bought yet.
+  purchase was possible. **That window is closed**, twice over: live checkout
+  has been reachable since the 2026-08-25 deploy, so the version is purchasable
+  whether or not anyone has bought yet, and its effective date passed on
+  2026-09-01, so it is in force.
   **Do not do it again.** From now on the text is frozen absolutely:
   `status` is the only field that may change, only to `"superseded"`, and any
   correction means a new dated module with this one left online. A version that
@@ -217,11 +218,14 @@ There are no tests and no linter configured.
   pending-legal-review banner that must stay until approval. An `effective`
   version whose date is still in the future renders a third, self-expiring note
   saying it is the version accepted at checkout today and governs from the date
-  of purchase: checkout went live on 2026-08-25, a week ahead of v1.0's
-  2026-09-01 date, and `/terms` was the only surface not already saying so
-  (Terms Sections 3 and 14 and the Stripe consent message all do). All three
-  banners are site chrome, never contract text, and the pre-effective one is
-  `print:hidden` so a regenerated PDF stays byte-identical.
+  of purchase. That note is **currently dormant**: it existed for the
+  2026-08-25 → 2026-09-01 window, when checkout went live a week ahead of
+  v1.0's date and `/terms` was the only surface not already saying so (Terms
+  Sections 3 and 14 and the Stripe consent message all did), and it stopped
+  rendering on its own when the date arrived. Keep it — it is generic over any
+  effective version published ahead of its date. All three banners are site
+  chrome, never contract text, and the pre-effective one is `print:hidden` so a
+  regenerated PDF stays byte-identical.
 - **Publishing a new Terms version does not require recreating the Stripe
   Payment Links.** Only `consent_collection` is create-only; `metadata`,
   `subscription_data.metadata` and `custom_text` are all accepted by
