@@ -150,8 +150,18 @@ inside the Terms version the buyer accepts.
       header, which shows `Effective date: 2026-09-01` and nothing else, so
       `TermsPage` gained a note that renders while an `effective` version's
       date is still in the future. It is `print:hidden`, so a PDF regenerated
-      during the window stays identical to the committed one, and it disappears
-      on its own on 2026-09-01. Live subscription count was 0 at go-live.
+      during the window stayed identical to the committed one. Live
+      subscription count was 0 at go-live.
+- [x] **Effective date reached 2026-09-01, and the window is closed** (#41).
+      The pre-effective note stopped rendering on its own that day, as designed
+      — it is gated on `todayIso() < terms.effectiveDate`, so no code change was
+      needed and none was made. The mechanism stays in `TermsPage`: it is
+      generic over any `effective` version published ahead of its date, and
+      removing it would only mean writing it again next time. v1.0 is now in
+      force *and* has been purchasable since 2026-08-25, so the amend-in-place
+      escape hatch described below is spent; the header comment in
+      `src/data/terms/2026-09-01.ts` was corrected to say so, without touching
+      a character of the contract text.
 
 ## v1.0 was amended in place on 2026-08-21
 
@@ -163,9 +173,10 @@ text was rewritten **in place** on 2026-08-21: same version number, same
 That is legitimate here and only here, because at the time of the rewrite the
 version had never been in force (its effective date had not arrived) and had
 never been accepted by anyone (`LIVE_PAYMENT_LINKS` was still empty, so no
-self-service purchase was possible). That is no longer the case: the 2026-08-25
-deploy filled the live links and removed the deploy.yml test pin, so v1.0 has
-been purchasable since. **Do not reuse this route.** Once
+self-service purchase was possible). Neither still holds: the 2026-08-25 deploy
+filled the live links and removed the deploy.yml test pin, so v1.0 has been
+purchasable since, and its effective date arrived on 2026-09-01, so it is in
+force. **Do not reuse this route.** Once
 a version is effective, or has ever been purchasable, a correction means a new
 dated module with the old one left online: that is what the immutability rule
 above exists for, and what the numbered procedure describes.

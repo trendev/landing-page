@@ -68,8 +68,10 @@ const TEST_PAYMENT_LINKS: PaymentLinks = {
  * v1.0 carries the effective date 2026-09-01, so buyers between 2026-08-25 and
  * that date accept a version dated ahead of their purchase. Terms S3 and S14
  * and the checkout consent message all make the version accepted at purchase
- * the one that governs the subscription, so this is a labelling gap rather than
- * an ungoverned sale; see docs/legal-versioning.md.
+ * the one that governs the subscription, so this was a labelling gap rather
+ * than an ungoverned sale; see docs/legal-versioning.md. That gap closed on
+ * 2026-09-01 when the effective date arrived, and the note /terms carried
+ * through the window expired with it. Every gate is now behind us.
  */
 const LIVE_PAYMENT_LINKS: PaymentLinks = {
   "cto-advisor": "https://buy.stripe.com/9B628r58RcrQ1rc6oN5AQ01",
@@ -97,9 +99,11 @@ export const STRIPE_PAYMENT_LINKS: PaymentLinks =
  * the same public URL resolves every buyer to their own subscription — no
  * backend involved.
  *
- * Empty until the owner activates the link in the matching mode; while empty,
- * /welcome simply omits its "Manage billing" block rather than pointing at a
- * dead URL. Like the payment links, these are public URLs, not secrets.
+ * Both modes are filled in below, so /welcome shows its "Manage billing" block.
+ * The empty-string branch is kept, not dead: a mode whose portal link is not
+ * activated yet leaves this empty, and /welcome then omits the block rather
+ * than pointing at a dead URL. Like the payment links, these are public URLs,
+ * not secrets.
  *
  * Both URLs provided by the owner on 2026-08-25 and verified against the
  * default portal configuration of the matching mode (test

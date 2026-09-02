@@ -13,6 +13,14 @@
  *
  * Requires a Chromium/Chrome binary: set CHROME_BIN, or one is auto-detected
  * (Playwright's /opt/pw-browsers install, or chromium/google-chrome on PATH).
+ *
+ * TERMS_PDF_OUT overrides the destination, so a published version can be
+ * re-rendered somewhere harmless and diffed against its committed PDF without
+ * ever overwriting it — the check that proves a change to a frozen module's
+ * comments (or a `print:hidden` banner) did not move the document. Beware that
+ * a different Chrome build writes a different producer string, so an honest
+ * byte-diff means comparing against the binary that produced the committed
+ * file; on a mismatch, compare extracted text before concluding anything moved.
  */
 import { execFileSync, execSync, spawn } from "node:child_process";
 import { existsSync, globSync, mkdirSync } from "node:fs";
@@ -71,8 +79,10 @@ async function waitForServer(url, timeoutMs = 15000) {
 const chrome = findChrome();
 const port = 4173;
 const pageUrl = `http://localhost:${port}/terms/${date}`;
-const outDir = resolve(root, "public/terms");
-const outFile = resolve(outDir, `trendev-terms-of-service-${date}.pdf`);
+const outFile = process.env.TERMS_PDF_OUT
+  ? resolve(root, process.env.TERMS_PDF_OUT)
+  : resolve(root, "public/terms", `trendev-terms-of-service-${date}.pdf`);
+const outDir = dirname(outFile);
 
 console.log("Building site…");
 execSync("npm run build", { cwd: root, stdio: "inherit" });

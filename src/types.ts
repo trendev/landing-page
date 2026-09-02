@@ -137,11 +137,16 @@ export interface ServiceDescription {
   slug: string;
   tierId: TierId;
   title: string;
-  /** e.g. "1.0-draft" — referenced as acceptance evidence at purchase (issue #16). */
+  /** e.g. "1.0" — referenced as acceptance evidence at purchase (issue #16). */
   version: string;
   /** ISO date the version takes (or took) effect. */
   effectiveDate: string;
-  /** ISO date of the last edit to this version while still in draft. */
+  /**
+   * ISO date this version's text last changed. It stops moving at approval:
+   * an effective version is frozen, so this stays the date the approved
+   * wording was settled, and /services/<slug> keeps showing it for as long
+   * as the version stands.
+   */
   lastUpdated: string;
   metaDescription: string;
   sections: ContentSection[];
@@ -195,6 +200,12 @@ export interface TermsVersion {
   status: "draft" | "effective" | "superseded";
   /** ISO date; also the dated route segment (/terms/2026-09-01). */
   effectiveDate: string;
+  /**
+   * ISO date this version's text last changed, frozen at approval. It can sit
+   * before `effectiveDate` — v1.0 was approved 2026-08-21 for a 2026-09-01
+   * start — and it never moves again once the version is in force, because the
+   * text cannot. /terms renders it beside the effective date.
+   */
   lastUpdated: string;
   /** Committed PDF matching this version, e.g. "/terms/trendev-terms-of-service-2026-09-01.pdf". */
   pdfPath: string;
