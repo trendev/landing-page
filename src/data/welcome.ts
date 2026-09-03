@@ -2,7 +2,11 @@ import { CalendarCheck, ClipboardList, Mail } from "lucide-react";
 
 import { CALENDLY_URL, CONTACT_ADDRESS } from "@/data/content";
 import { STRIPE_PORTAL_LOGIN_URL } from "@/data/stripe";
-import type { ContentSection, WelcomeStep } from "@/types";
+import type {
+  ContentSection,
+  WelcomeContextField,
+  WelcomeStep,
+} from "@/types";
 
 /**
  * Post-purchase onboarding copy for /welcome (issue #18).
@@ -13,10 +17,17 @@ import type { ContentSection, WelcomeStep } from "@/types";
  * communication stays with Stripe, which already owns receipts, invoices and
  * failed-payment notices.
  *
- * The onboarding mechanism is a mailto with a pre-filled checklist rather than
- * a form tool, chosen by the owner on 2026-08-21: it adds no third-party
- * processor to disclose in /privacy, needs no backend, and reads as a human
- * advisory handoff rather than a product signup.
+ * The onboarding mechanism is a guided form that composes a mailto. The form
+ * replaced a blank pre-filled checklist, but the delivery mechanism is
+ * deliberately unchanged: answers are composed in the browser and handed to
+ * the client's own mail client. Nothing is posted anywhere and nothing is
+ * stored, so the 2026-08-21 decision against a form tool still holds — no
+ * third-party processor to disclose in /privacy, no backend, and it still
+ * reads as a human advisory handoff rather than a product signup.
+ *
+ * If a future change ever posts these answers somewhere, /privacy's
+ * "Data we process", legal bases and recipients sections must change in the
+ * same commit.
  *
  * "Manage billing" (issue #17) links the Stripe Customer Portal login page,
  * where the buyer authenticates with their checkout email and manages their
@@ -44,40 +55,146 @@ export const WELCOME_SAVE_NOTE =
 export const WELCOME_BILLING_NOTE =
   "Your receipt, invoices and any payment notifications are sent by Stripe to the email address you used at checkout. TRENDev does not send billing email.";
 
-const CONTEXT_EMAIL_SUBJECT = "CTO advisory onboarding: my context";
+export const CONTEXT_EMAIL_SUBJECT = "CTO advisory onboarding: my context";
 
-const CONTEXT_EMAIL_BODY = [
+/** Opening lines, above the per-topic headings, in every composed message. */
+const CONTEXT_EMAIL_GREETING = [
   "Hello Julien,",
   "",
   "Here is the context for our first working session.",
   "",
-  "Company and product:",
-  "",
-  "Stage and objectives:",
-  "",
-  "Team structure:",
-  "",
-  "Architecture and stack:",
-  "",
-  "Current roadmap:",
-  "",
-  "Main technical or business concerns:",
-  "",
-  "Known technical debt, security or delivery issues:",
-  "",
-  "Upcoming funding, board, due-diligence or launch deadlines:",
-  "",
-].join("\n");
+];
 
 /**
- * Pre-filled so the client can reply into a structure instead of facing a
- * blank message. Both parts are encoded: the body contains newlines, and the
- * subject contains a colon.
+ * The eight onboarding topics — the single source of truth for both the form
+ * on /welcome and the headings in the composed email.
+ *
+ * These used to be two hand-maintained parallel lists (display bullets and
+ * email headings) that nothing kept aligned; adding a topic to one silently
+ * left the other behind. Derive, never duplicate.
  */
-export const CONTEXT_EMAIL_HREF =
-  `mailto:${CONTACT_ADDRESS}` +
-  `?subject=${encodeURIComponent(CONTEXT_EMAIL_SUBJECT)}` +
-  `&body=${encodeURIComponent(CONTEXT_EMAIL_BODY)}`;
+export const contextFields: WelcomeContextField[] = [
+  {
+    id: "company",
+    label: "Company, product and business stage",
+    emailHeading: "Company and product:",
+    hint: "What you build, who buys it, and how far along the business is.",
+  },
+  {
+    id: "objectives",
+    label: "Objectives for the next two or three quarters",
+    emailHeading: "Stage and objectives:",
+  },
+  {
+    id: "team",
+    label: "Team structure and how engineering is organised",
+    emailHeading: "Team structure:",
+    hint: "Size, seniority, in-house versus outsourced, who decides what.",
+  },
+  {
+    id: "architecture",
+    label: "Current architecture and stack",
+    emailHeading: "Architecture and stack:",
+  },
+  {
+    id: "roadmap",
+    label: "Current roadmap",
+    emailHeading: "Current roadmap:",
+  },
+  {
+    id: "concerns",
+    label: "The technical or business concerns that matter most right now",
+    emailHeading: "Main technical or business concerns:",
+  },
+  {
+    id: "debt",
+    label: "Known technical debt, security or delivery issues",
+    emailHeading: "Known technical debt, security or delivery issues:",
+  },
+  {
+    id: "deadlines",
+    label: "Upcoming funding, board, due-diligence or launch deadlines",
+    emailHeading: "Upcoming funding, board, due-diligence or launch deadlines:",
+  },
+];
+
+/**
+ * Composes the onboarding message as a mailto: href.
+ *
+ * With no answers this emits every heading blank, which is byte-for-byte the
+ * template the page has always offered — so the "send the blank template"
+ * path and the filled-in form cannot drift apart. With answers it emits only
+ * the topics the client actually filled in: empty headings are noise, and the
+ * page copy is explicit that partial answers are fine.
+ *
+ * Nothing here leaves the browser. The message is handed to the client's own
+ * mail client, which is why /welcome still adds no processor to disclose.
+ */
+export function buildContextMessage(
+  answers: Record<string, string> = {},
+  name = "",
+): string {
+  const answered = contextFields.filter((field) => answers[field.id]?.trim());
+
+  return [
+    ...CONTEXT_EMAIL_GREETING,
+    ...(answered.length > 0
+      ? answered.flatMap((field) => [
+          field.emailHeading,
+          answers[field.id].trim(),
+          "",
+        ])
+      : contextFields.flatMap((field) => [field.emailHeading, ""])),
+    ...(name.trim() ? [name.trim(), ""] : []),
+  ].join("\n");
+}
+
+/** The same message as a mailto: href, for handing to the mail client. */
+export function buildContextMailto(
+  answers: Record<string, string> = {},
+  name = "",
+): string {
+  return (
+    `mailto:${CONTACT_ADDRESS}` +
+    `?subject=${encodeURIComponent(CONTEXT_EMAIL_SUBJECT)}` +
+    `&body=${encodeURIComponent(buildContextMessage(answers, name))}`
+  );
+}
+
+/**
+ * The blank template, for a client who would rather write in their own mail
+ * client than fill the form. Derived from the same builder, so it stays in
+ * step with the topics above.
+ */
+export const CONTEXT_EMAIL_HREF = buildContextMailto();
+
+/**
+ * Form chrome. Lives here rather than in the component for the same reason as
+ * every other string on the site: copy belongs under src/data.
+ */
+export const contextForm = {
+  nameLabel: "Your name",
+  nameHint: "So the message is signed. Your address comes from your mail client.",
+  submitLabel: "Open this in my email",
+  submitHint:
+    "Nothing is sent from this page. Your mail client opens with the message ready, and you press send.",
+  emptyHint: "Fill in at least one topic to compose the message.",
+  blankTemplateLabel: "Or send the blank template and write it yourself",
+  /**
+   * mailto: hrefs are handed to the OS, which caps them well below what a
+   * browser will hold in an address bar; past roughly 2 000 characters some
+   * mail clients silently truncate the body. A truncated onboarding email is
+   * the worst outcome here, because the client believes it went out in full.
+   */
+  tooLongWarning:
+    "This is now longer than a mail client can reliably carry. Copy the message and paste it into a new email instead.",
+  copyLabel: "Copy the message",
+  copiedLabel: "Copied",
+  copyFailedLabel: "Copy failed — select the text and copy it manually",
+} as const;
+
+/** Past this many characters the mailto: handoff stops being dependable. */
+export const CONTEXT_MAILTO_LIMIT = 1900;
 
 export const welcomeSteps: WelcomeStep[] = [
   {
@@ -86,20 +203,12 @@ export const welcomeSteps: WelcomeStep[] = [
     step: "01",
     heading: "Share your context",
     paragraphs: [
-      "The first session is far more productive when the groundwork is already done. Send whatever you have; none of it is mandatory, and partial answers are more useful than none.",
+      "The first session is far more productive when the groundwork is already done. Fill in whatever you can; none of it is mandatory, and partial answers are more useful than none.",
     ],
-    bullets: [
-      "Company, product and business stage",
-      "Objectives for the next two or three quarters",
-      "Team structure and how engineering is organised",
-      "Current architecture and stack",
-      "Current roadmap",
-      "The technical or business concerns that matter most right now",
-      "Known technical debt, security or delivery issues",
-      "Upcoming funding, board, due-diligence or launch deadlines",
-    ],
+    // Bullets and a standalone mailto CTA used to live here. Both are now the
+    // form: its labels are the topics, its submit button the mailto.
+    contextForm: true,
     note: "Please do not send credentials, access tokens, secrets or production personal data by email. If something sensitive is central to the discussion, we will agree a secure channel first.",
-    cta: { label: "Email your context", href: CONTEXT_EMAIL_HREF },
   },
   {
     id: "schedule-session",

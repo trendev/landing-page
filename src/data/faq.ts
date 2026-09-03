@@ -566,7 +566,7 @@ export const faqEntries: FaqEntry[] = [
     question: "I have just subscribed. What happens now?",
     answer: ["Three things, in this order."],
     bullets: [
-      "**Send your context.** Company and stage, objectives for the next two or three quarters, team structure, current architecture and roadmap, and the concerns that matter most right now. None of it is mandatory, and partial answers are more useful than none.",
+      "**Share your context.** The form on your [welcome page](/welcome) walks you through it: company and stage, objectives for the next two or three quarters, team structure, current architecture and roadmap, and the concerns that matter most right now. It composes the email for you; none of it is mandatory, and partial answers are more useful than none.",
       "**Book your first working session.** It is used to agree priorities and to decide what the first month should actually move.",
       "**Bring what already exists** to that session. Architecture diagrams however rough, roadmap, org chart, known risks, a cloud cost snapshot. Do not create documents for the sake of it.",
     ],
@@ -580,7 +580,7 @@ export const faqEntries: FaqEntry[] = [
     answer: [
       "Here: [trendev.fr/welcome](/welcome).",
       "It is deliberately kept out of search results, so it will not come up if you look for it on Google. Bookmark it, or come back to this answer, which is the permanent way back in.",
-      "Nothing is lost by having closed the tab. Everything on that page is repeatable: the onboarding email template, the booking link and the billing portal.",
+      "Nothing is lost by having closed the tab. Everything on that page is repeatable: the context form, the booking link and the billing portal.",
     ],
     keywords: ["welcome", "lost", "onboarding page", "bookmark", "after checkout"],
     related: ["just-subscribed-what-now", "where-is-my-receipt"],
