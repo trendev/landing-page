@@ -43,6 +43,12 @@ runner. Chromium comes from `PLAYWRIGHT_BROWSERS_PATH` where one is provisioned.
   stay centred once Figma re-shapes them in Inter.
 - **Lucide icons** as real vectors, deduplicated per page, with `currentColor`
   resolved to the computed colour.
+- **Placeholder text in empty fields.** A placeholder lives in the browser's
+  shadow DOM and has no text node, so the character walker cannot see it and an
+  empty field would capture as a blank box — which is how the `/welcome` context
+  form's eight worked examples went missing. Each one is mirrored into a real,
+  identically-styled element for the duration of the capture. Only empty fields
+  show a placeholder, so only empty fields get a mirror.
 
 ## Known, deliberate gaps
 
