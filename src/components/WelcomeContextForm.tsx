@@ -23,7 +23,7 @@ type CopyState = "idle" | "copied" | "failed";
  * The client answers the eight topics in the page and the submit button hands
  * the composed message to their own mail client. Deliberately still a mailto:
  * nothing is posted anywhere, no answer is stored, and no third-party
- * processor is involved — which is what keeps /privacy accurate without a
+ * processor is involved, which is what keeps /privacy accurate without a
  * word of change. Draft persistence was considered and left out for the same
  * reason: /privacy documents exactly one storage key.
  */
@@ -35,7 +35,7 @@ export function WelcomeContextForm() {
   const hasAnswer = contextFields.some((field) => answers[field.id]?.trim());
   const href = buildContextMailto(answers, name);
   // Measured on the encoded href, because that is what actually gets handed
-  // to the OS — prose with accents or newlines encodes far longer than it reads.
+  // to the OS. Prose with accents or newlines encodes far longer than it reads.
   const tooLong = href.length > CONTEXT_MAILTO_LIMIT;
   const canSubmit = hasAnswer && !tooLong;
 
@@ -79,7 +79,7 @@ export function WelcomeContextForm() {
             </label>
             {/* The hint stays put while they type; the placeholder is the
                 worked example and vanishes on the first keystroke. Neither
-                replaces the label — see FaqSearch: a placeholder is not one. */}
+                replaces the label. See FaqSearch: a placeholder is not one. */}
             <p id={hintId} className="text-sm text-muted-foreground mb-2">
               {field.hint}
             </p>

@@ -21,7 +21,7 @@ import type {
  * replaced a blank pre-filled checklist, but the delivery mechanism is
  * deliberately unchanged: answers are composed in the browser and handed to
  * the client's own mail client. Nothing is posted anywhere and nothing is
- * stored, so the 2026-08-21 decision against a form tool still holds — no
+ * stored, so the 2026-08-21 decision against a form tool still holds: no
  * third-party processor to disclose in /privacy, no backend, and it still
  * reads as a human advisory handoff rather than a product signup.
  *
@@ -66,7 +66,7 @@ const CONTEXT_EMAIL_GREETING = [
 ];
 
 /**
- * The eight onboarding topics — the single source of truth for both the form
+ * The eight onboarding topics: the single source of truth for both the form
  * on /welcome and the headings in the composed email.
  *
  * These used to be two hand-maintained parallel lists (display bullets and
@@ -146,7 +146,7 @@ export const contextFields: WelcomeContextField[] = [
  * Composes the onboarding message as a mailto: href.
  *
  * With no answers this emits every heading blank, which is byte-for-byte the
- * template the page has always offered — so the "send the blank template"
+ * template the page has always offered, so the "send the blank template"
  * path and the filled-in form cannot drift apart. With answers it emits only
  * the topics the client actually filled in: empty headings are noise, and the
  * page copy is explicit that partial answers are fine.
@@ -216,7 +216,7 @@ export const contextForm = {
     "This is now longer than a mail client can reliably carry. Copy the message and paste it into a new email instead.",
   copyLabel: "Copy the message",
   copiedLabel: "Copied",
-  copyFailedLabel: "Copy failed — select the text and copy it manually",
+  copyFailedLabel: "Copy failed. Select the text and copy it manually.",
 } as const;
 
 /** Past this many characters the mailto: handoff stops being dependable. */
