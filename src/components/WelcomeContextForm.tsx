@@ -68,7 +68,7 @@ export function WelcomeContextForm() {
     <form onSubmit={handleSubmit} className="mt-5 space-y-5">
       {contextFields.map((field) => {
         const inputId = `${FIELD_ID_PREFIX}-${field.id}`;
-        const hintId = field.hint ? `${inputId}-hint` : undefined;
+        const hintId = `${inputId}-hint`;
         return (
           <div key={field.id}>
             <label
@@ -77,16 +77,18 @@ export function WelcomeContextForm() {
             >
               {field.label}
             </label>
-            {field.hint && (
-              <p id={hintId} className="text-sm text-muted-foreground mb-2">
-                {field.hint}
-              </p>
-            )}
+            {/* The hint stays put while they type; the placeholder is the
+                worked example and vanishes on the first keystroke. Neither
+                replaces the label — see FaqSearch: a placeholder is not one. */}
+            <p id={hintId} className="text-sm text-muted-foreground mb-2">
+              {field.hint}
+            </p>
             <textarea
               id={inputId}
               rows={3}
               value={answers[field.id] ?? ""}
               onChange={(event) => setAnswer(field.id, event.target.value)}
+              placeholder={`${contextForm.examplePrefix}${field.placeholder}`}
               aria-describedby={hintId}
               className={`${fieldClass} resize-y`}
             />

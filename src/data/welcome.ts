@@ -79,42 +79,66 @@ export const contextFields: WelcomeContextField[] = [
     label: "Company, product and business stage",
     emailHeading: "Company and product:",
     hint: "What you build, who buys it, and how far along the business is.",
+    placeholder:
+      "B2B SaaS for freight forwarders. 45 paying customers, \u20AC1.4M ARR, Series A closed last year.",
   },
   {
     id: "objectives",
     label: "Objectives for the next two or three quarters",
     emailHeading: "Stage and objectives:",
+    hint: "The outcomes the business is committed to, not the features.",
+    placeholder:
+      "Double self-serve signups, ship SSO to unblock enterprise deals, cut cloud spend by a third.",
   },
   {
     id: "team",
     label: "Team structure and how engineering is organised",
     emailHeading: "Team structure:",
     hint: "Size, seniority, in-house versus outsourced, who decides what.",
+    placeholder:
+      "Six engineers plus two mobile contractors. One senior, no tech lead. I make the calls today.",
   },
   {
     id: "architecture",
     label: "Current architecture and stack",
     emailHeading: "Architecture and stack:",
+    hint: "The shape of the system and what it runs on.",
+    placeholder:
+      "Rails monolith and a Node service, Postgres, Redis, on Heroku. No infrastructure as code yet.",
   },
   {
     id: "roadmap",
     label: "Current roadmap",
     emailHeading: "Current roadmap:",
+    hint: "What is planned, and how firm the plan actually is.",
+    placeholder:
+      "Mobile app in Q1, billing rework in Q2. The Q2 half is still a wish list.",
   },
   {
     id: "concerns",
     label: "The technical or business concerns that matter most right now",
     emailHeading: "Main technical or business concerns:",
+    hint: "What keeps coming back, or what you would fix first given the choice.",
+    placeholder:
+      "Deploys take a day and break often. I cannot tell whether the team is slow or the codebase is.",
   },
   {
     id: "debt",
     label: "Known technical debt, security or delivery issues",
     emailHeading: "Known technical debt, security or delivery issues:",
+    hint: "What you already know is wrong, even if nothing has been done about it.",
+    // Describes a knowledge/coverage problem without inviting the client to
+    // paste anything the step's own note tells them not to send.
+    placeholder:
+      "No tests on the billing path. One engineer holds all the deployment knowledge.",
   },
   {
     id: "deadlines",
     label: "Upcoming funding, board, due-diligence or launch deadlines",
     emailHeading: "Upcoming funding, board, due-diligence or launch deadlines:",
+    hint: "Anything with a fixed date the technical work has to survive.",
+    placeholder:
+      "Series B due diligence in November. A customer security questionnaire is due before that.",
   },
 ];
 
@@ -173,6 +197,8 @@ export const CONTEXT_EMAIL_HREF = buildContextMailto();
  * every other string on the site: copy belongs under src/data.
  */
 export const contextForm = {
+  /** Prefix applied to every field placeholder at render time. */
+  examplePrefix: "e.g. ",
   nameLabel: "Your name",
   nameHint: "So the message is signed. Your address comes from your mail client.",
   submitLabel: "Open this in my email",

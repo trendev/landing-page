@@ -191,8 +191,20 @@ export interface WelcomeContextField {
   label: string;
   /** Heading in the email body, e.g. "Architecture and stack:". */
   emailHeading: string;
-  /** Short prompt under the label; guidance, never a placeholder. */
-  hint?: string;
+  /**
+   * Guidance line under the label, saying what is being asked for. Stays
+   * visible while the client types, unlike the placeholder.
+   */
+  hint: string;
+  /**
+   * A worked example shown inside the empty box, rendered with an "e.g. "
+   * prefix. Shows what a real answer reads like.
+   *
+   * Required, like `hint`, on purpose: a bare label over an empty box is the
+   * problem both of these exist to solve, so a new topic cannot ship without
+   * them.
+   */
+  placeholder: string;
 }
 
 /* ── Terms of Service versioning (issue #15) ───────────────────────────── */
