@@ -270,7 +270,52 @@ const EXTRACT = () => {
     for (const c of el.children) walk(c, depth + 1);
   };
 
+  // A placeholder lives in the browser's shadow DOM: it has no text node, so
+  // the character-by-character walker above cannot see it and every empty
+  // field would capture as a blank box. Mirror each one into a real element,
+  // matched to the field's content box and typography, so the normal text
+  // path measures it like any other copy. Only empty fields show one.
+  const phMirrors = [];
+  for (const f of document.querySelectorAll('input[placeholder], textarea[placeholder]')) {
+    if (f.value !== '' || !f.placeholder) continue;
+    const fcs = getComputedStyle(f);
+    if (fcs.display === 'none' || fcs.visibility === 'hidden') continue;
+    const r = f.getBoundingClientRect();
+    if (r.width <= 0 || r.height <= 0) continue;
+    const num = (v) => parseFloat(v) || 0;
+    const padL = num(fcs.paddingLeft) + num(fcs.borderLeftWidth);
+    const padT = num(fcs.paddingTop) + num(fcs.borderTopWidth);
+    const padR = num(fcs.paddingRight) + num(fcs.borderRightWidth);
+    const padB = num(fcs.paddingBottom) + num(fcs.borderBottomWidth);
+    const d = document.createElement('div');
+    d.textContent = f.placeholder;
+    Object.assign(d.style, {
+      position: 'absolute',
+      margin: '0',
+      pointerEvents: 'none',
+      whiteSpace: 'pre-wrap',
+      overflow: 'hidden',
+      left: r.left + window.scrollX + padL + 'px',
+      top: r.top + window.scrollY + padT + 'px',
+      width: Math.max(0, r.width - padL - padR) + 'px',
+      height: Math.max(0, r.height - padT - padB) + 'px',
+      fontFamily: fcs.fontFamily,
+      fontSize: fcs.fontSize,
+      fontWeight: fcs.fontWeight,
+      fontStyle: fcs.fontStyle,
+      lineHeight: fcs.lineHeight,
+      letterSpacing: fcs.letterSpacing,
+      // ::placeholder carries its own colour; the field's own colour is what
+      // the typed answer would use, which is not what is on screen here.
+      color: getComputedStyle(f, '::placeholder').color || fcs.color,
+    });
+    document.body.appendChild(d);
+    phMirrors.push(d);
+  }
+
   for (const c of document.body.children) walk(c, 0);
+
+  for (const d of phMirrors) d.remove();
   return { pageW, pageH, nodes, svgs };
 };
 

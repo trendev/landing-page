@@ -164,12 +164,47 @@ export interface WelcomeStep {
   bullets?: string[];
   /** Cautionary line rendered under the bullets, e.g. do not send secrets. */
   note?: string;
+  /**
+   * Renders the guided context form in place of bullets and a CTA. The form
+   * derives its fields from `contextFields`, so the step carries no copy of
+   * its own; see @/data/welcome.
+   */
+  contextForm?: boolean;
   cta?: {
     label: string;
     href: string;
     /** Accent styling; at most one step should claim it. */
     primary?: boolean;
   };
+}
+
+/**
+ * One topic the client is asked about before the first working session.
+ *
+ * Single source of truth for three surfaces that used to be maintained by
+ * hand and had already drifted apart: the label shown on /welcome, and the
+ * heading used in the composed onboarding email.
+ */
+export interface WelcomeContextField {
+  id: string;
+  /** Shown as the form label, e.g. "Current architecture and stack". */
+  label: string;
+  /** Heading in the email body, e.g. "Architecture and stack:". */
+  emailHeading: string;
+  /**
+   * Guidance line under the label, saying what is being asked for. Stays
+   * visible while the client types, unlike the placeholder.
+   */
+  hint: string;
+  /**
+   * A worked example shown inside the empty box, rendered with an "e.g. "
+   * prefix. Shows what a real answer reads like.
+   *
+   * Required, like `hint`, on purpose: a bare label over an empty box is the
+   * problem both of these exist to solve, so a new topic cannot ship without
+   * them.
+   */
+  placeholder: string;
 }
 
 /* ── Terms of Service versioning (issue #15) ───────────────────────────── */

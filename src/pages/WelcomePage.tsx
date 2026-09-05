@@ -1,6 +1,7 @@
 import { ArrowRight, TriangleAlert } from "lucide-react";
 
 import { BackLink } from "@/components/BackLink";
+import { WelcomeContextForm } from "@/components/WelcomeContextForm";
 import {
   WELCOME_BILLING_NOTE,
   WELCOME_SAVE_NOTE,
@@ -79,6 +80,8 @@ function Step({ step }: { step: WelcomeStep }) {
           <span>{step.note}</span>
         </p>
       )}
+
+      {step.contextForm && <WelcomeContextForm />}
 
       {step.cta && <StepCta cta={step.cta} />}
     </li>
