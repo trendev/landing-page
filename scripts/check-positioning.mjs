@@ -24,7 +24,9 @@ try {
   for (const id of ['why-choose', 'how-we-deliver', 'engagements', 'how-we-work', 'offers', 'expertise', 'services', 'contact']) {
     assert.ok(landing.includes(`id="${id}"`), `Missing published anchor: ${id}`);
   }
-  assert.ok(landing.indexOf('id="how-we-deliver"') < landing.indexOf('id="engagements"'));
+  for (const audience of ['For founders', 'For growing startups', 'For investors']) {
+    assert.ok(landing.includes(audience), `Missing audience: ${audience}`);
+  }
   assert.equal(proofCases.length, 3);
   assert.ok(landing.includes('Approximately 90 engineers'));
   assert.ok(landing.includes('100+ EC2 instances'));
@@ -40,13 +42,14 @@ try {
   assert.ok(advisory.includes('buy.stripe.com/test_'), 'Smoke checks must use test checkout');
   assert.ok(!consultation.includes('buy.stripe.com'));
   assert.ok(consultation.includes('calendly.com'));
-  assert.equal(engagementModes[0].engagement, 'CTO Advisor');
+  assert.ok(engagementModes.some(mode => mode.engagement === 'Technical assessment & due diligence' && mode.href === '/#offers'));
+  assert.ok(engagementModes.some(mode => mode.engagement === 'CTO Advisor'));
   for (const unsupported of ['Deployments from days to minutes', 'Production AI delivered in weeks', 'measurable returns']) {
     assert.ok(!landing.includes(unsupported), `Unverified claim: ${unsupported}`);
   }
   const captureRoutes = JSON.parse(readFileSync('scripts/figma-sync/routes.json', 'utf8'));
   assert.ok(captureRoutes.find(r => r.slug === 'overlay-projects').before.includes('explore our engineering resources'));
-  console.log('Positioning smoke checks passed: hero, anchors, evidence order, advisory, delivery, booking and capture selector.');
+  console.log('Positioning smoke checks passed: hero, audiences, anchors, assessment, advisory, delivery, booking and capture selector.');
 } finally {
   await server.close();
 }

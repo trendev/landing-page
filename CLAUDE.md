@@ -90,8 +90,9 @@ responsive browser QA. There is no general test runner or linter configured.
     unrelated assignments, and keep company size / engineering headcount /
     squad count distinct.
   - `positioning.ts` — buyer-facing hero, section introductions and advisory
-    page chrome. Start with growing-startup constraints, then anonymised proof,
-    then engagement choices. Founder experience supports the firm’s delivery
+    page chrome. Address founders, growing startups and investors with simple
+    service categories, then substantiate them with anonymised proof.
+    Founder experience supports the firm’s delivery
     credibility; it is not the hero’s subject. No invented permanent team.
   - `faq.ts` — the knowledge base (~44 entries across 5 topics) behind `/faq`
     and the landing teaser. **Single source of truth**: the teaser renders

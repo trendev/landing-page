@@ -1,21 +1,21 @@
 /** Buyer-facing copy. Contractual service definitions remain unchanged. */
 export const positioning = {
   hero: {
-    eyebrow: "Technology consulting & delivery for growing startups",
-    title: "Scale your product. Strengthen your engineering.",
+    eyebrow: "CTO advisory · Technology leadership · Product delivery",
+    title: "Your technology partner, from idea to scale.",
     description:
-      "Growth puts new demands on your platform, your teams and your delivery. TRENDev brings CTO leadership and hands-on engineering to help you navigate that next stage — from critical decisions to implementation.",
+      "For founders building a product, startups scaling their teams and investors assessing technology. TRENDev brings technical advice, CTO leadership and hands-on delivery to turn your next step into a clear plan and concrete work.",
     proof:
       "20+ years of engineering and CTO experience. Past engagements spanning two-squad teams and organisations of approximately 90 engineers.",
     workLink: "Explore selected engagements",
   },
   challenges: {
-    title: "Growth changes what your technology needs to do",
+    title: "Technical support for your next step",
     description:
-      "More customers, more engineers and more commitments can expose limits in the way you build and operate. We work on the platform and the organisation together.",
+      "Launch a product, scale an engineering organisation or assess a technology investment. We help you understand the choices, make a plan and bring in the expertise to move forward.",
   },
   delivery: {
-    title: "Experience at the scale you are growing into",
+    title: "Concrete work behind the expertise",
     description:
       "Selected engagements from our founder’s track record. Real constraints, specific work and documented scope — with client identities kept confidential.",
     modelTitle: "Senior leadership. A delivery team shaped around the mission.",
@@ -27,38 +27,38 @@ export const positioning = {
     resourcesLink: "Explore our engineering resources",
   },
   engagements: {
-    title: "The right involvement for the challenge",
+    title: "Advice, leadership and delivery",
     description:
-      "Get a decision reviewed, bring in technology leadership, or commission a delivery mission. Start with the support you need: implementation does not require an advisory subscription.",
+      "A technical assessment for a specific question. Ongoing advice for recurring decisions. CTO leadership or a delivery team for work that needs execution. Each engagement has a clear scope; you can start with any of them.",
   },
   methodology: {
-    title: "From the constraint to the next release",
+    title: "How we work",
     description:
       "Understand the bottleneck, agree priorities, then put change into practice. In a delivery or Fractional CTO mission, we lead the agreed work; in advisory, your team owns execution.",
     outputsTitle: "What we define with you",
   },
   offers: {
-    title: "A focused first step, when you need one",
+    title: "Start with a clear plan",
     description:
       "Not ready to commit to a broader mission? Start with a defined question and concrete outputs. These assessments are optional: you can also brief us directly on leadership or delivery work.",
   },
   expertise: {
-    title: "Leadership and engineering, connected",
+    title: "Our expertise",
     description:
       "Organisational decisions and implementation belong in the same conversation. Choose advisory for direction, Fractional CTO for leadership, or a tailored mission for delivery.",
   },
   services: {
-    title: "Turn technical constraints into scoped work",
+    title: "Our services",
     description:
-      "Modernise a platform, improve its delivery infrastructure, or take a new capability into production. Each mission defines its technical scope, responsibilities and acceptance criteria.",
+      "Build a product, modernise a platform or bring a new capability into production. We combine architecture, cloud, AI and software engineering around the work your project needs.",
   },
   cta: {
-    title: "What is holding back your next stage of growth?",
+    title: "Let’s talk about your next step",
     description:
-      "Tell us what needs to change: your platform, delivery or engineering organisation. We’ll discuss the right scope and team with you. Already have a project brief? Send it directly — no advisory subscription required.",
+      "A product to launch, a team to scale or technology to assess? Tell us what you are working towards. We’ll discuss the support you need and a practical way to start. For implementation, you can send a project brief directly — no advisory subscription required.",
   },
   advisory: {
-    title: "CTO support for your next stage of growth",
+    title: "CTO advice and leadership for your business",
     description:
       "Keep ownership in your team with a recurring advisory subscription, or bring in a Fractional CTO to lead a defined mission. The difference is responsibility, not just time on a calendar.",
     deliveryLink: "Need implementation? Discuss a tailored delivery mission",

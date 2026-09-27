@@ -255,22 +255,22 @@ export const services: ServiceItem[] = [
 
 export const whyChoose: WhyChooseItem[] = [
   {
-    icon: Users,
-    title: "More squads, less predictable delivery",
+    icon: Rocket,
+    title: "For founders",
     description:
-      "Hiring alone will not resolve unclear ownership or dependencies. We connect team design, delivery practices and the hiring roadmap so growth has an operating plan.",
+      "Turn a project into a product. Get support with technical feasibility, architecture, an MVP roadmap and implementation — whether you have an engineering team or are putting one together.",
   },
   {
-    icon: Layers,
-    title: "A platform under growing pressure",
+    icon: Users,
+    title: "For growing startups",
     description:
-      "New customers and product lines expose architectural limits. We assess the trade-offs, sequence the transition and can deliver the agreed changes alongside your engineers.",
+      "Keep product delivery moving as customers and teams grow. Strengthen your architecture, structure your engineering organisation and bring in leadership or delivery capacity for the next stage.",
   },
   {
     icon: Compass,
-    title: "A critical transition to lead",
+    title: "For investors",
     description:
-      "A leadership gap or transformation needs decisions and follow-through. We bring a defined CTO mandate, a board-ready roadmap and delivery coordination.",
+      "Get a clear technical view before an investment or during portfolio support. Assess the product, architecture, engineering organisation and delivery risks through technical due diligence, then define practical priorities with the founders.",
   },
 ];
 
@@ -378,7 +378,7 @@ export const offers: ProductizedOffer[] = [
     icon: ClipboardCheck,
     name: "CTO Audit",
     duration: "2-week assessment",
-    summary: "Before you hire, rebuild or migrate: identify the constraints and decide what to tackle first.",
+    summary: "Before a major technical commitment or investment: assess the platform, the team and the risks, then decide what to tackle first.",
     deliverables: ["Architecture review", "Engineering review", "Prioritized action plan"],
   },
   {
@@ -423,6 +423,15 @@ export const DELIVERY_CTA_LABEL = "Discuss a delivery project";
  */
 export const engagementModes: EngagementMode[] = [
   {
+    need: "Assess a product, a platform or the technology behind an investment",
+    engagement: "Technical assessment & due diligence",
+    responsibility:
+      "A separately scoped review of the technology, team and delivery risks, with findings and recommendations for founders or investors.",
+    deliverables: ["Technical findings and risks", "Prioritised recommendations"],
+    href: "/#offers",
+    cta: "Explore a technical assessment",
+  },
+  {
     need: "Pressure-test a technology decision before committing resources",
     engagement: "CTO Advisor",
     responsibility:
@@ -450,7 +459,7 @@ export const engagementModes: EngagementMode[] = [
     cta: "Fractional CTO",
   },
   {
-    need: "Deliver a platform change, migration or product capability",
+    need: "Build an MVP, deliver a platform change or launch a product capability",
     engagement: "Tailored delivery engagement",
     responsibility:
       "Defined scope, delivery responsibilities, acceptance criteria and fees. Trusted partners may take part.",
