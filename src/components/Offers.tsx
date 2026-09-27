@@ -1,6 +1,7 @@
 import { ArrowRight, Check } from "lucide-react";
 
 import { offers } from "@/data/content";
+import { positioning } from "@/data/positioning";
 
 interface OffersProps {
   onOpenConsultation: () => void;
@@ -12,11 +13,10 @@ export function Offers({ onOpenConsultation }: OffersProps) {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
-            Where to start
+            {positioning.offers.title}
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-            Named, fixed-scope entry points with clear deliverables, so you
-            know exactly what a first engagement looks like.
+            {positioning.offers.description}
           </p>
         </div>
 

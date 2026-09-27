@@ -1,4 +1,5 @@
 import { services } from "@/data/content";
+import { positioning } from "@/data/positioning";
 import type { ServiceItem } from "@/types";
 import { ServiceCard } from "./ServiceCard";
 
@@ -12,10 +13,10 @@ export function Services({ onSelectItem }: ServicesProps) {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
-            Our Services
+            {positioning.services.title}
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
-            Technical implementation and infrastructure solutions
+            {positioning.services.description}
           </p>
         </div>
 

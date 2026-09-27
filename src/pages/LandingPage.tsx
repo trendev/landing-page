@@ -33,13 +33,12 @@ export function LandingPage({ onOpenConsultation }: LandingPageProps) {
     <>
       <Hero
         onOpenConsultation={onOpenConsultation}
-        onOpenProjects={() => setShowProjectsModal(true)}
       />
-      <Methodology />
-      <EngagementModes />
-      <Offers onOpenConsultation={onOpenConsultation} />
-      <HowWeDeliver />
       <WhyChoose />
+      <HowWeDeliver onOpenProjects={() => setShowProjectsModal(true)} />
+      <EngagementModes />
+      <Methodology />
+      <Offers onOpenConsultation={onOpenConsultation} />
       <Expertise onSelectItem={setSelectedItem} />
       <Services onSelectItem={setSelectedItem} />
       <Technologies />

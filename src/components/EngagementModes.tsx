@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 
 import { Link } from "@/app/router";
 import { engagementModes } from "@/data/content";
+import { positioning } from "@/data/positioning";
 import type { EngagementMode } from "@/types";
 
 function ModeLink({ mode }: { mode: EngagementMode }) {
@@ -42,12 +43,10 @@ export function EngagementModes() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-10 sm:mb-14">
           <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
-            Advise, lead or deliver
+            {positioning.engagements.title}
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-            Start from what you need, not from a package. Each engagement says
-            plainly who is responsible for what, and you can start with any of
-            them, including a delivery project, without buying advisory first.
+            {positioning.engagements.description}
           </p>
         </div>
 

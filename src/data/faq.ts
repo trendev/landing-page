@@ -129,8 +129,8 @@ export const faqEntries: FaqEntry[] = [
     question: "Do we need a CTO yet, or just a strong lead developer?",
     answer: [
       "If your hardest open question is “how do we build this”, you need a strong lead developer. If it is “should we build this at all, and what does it commit us to”, you need CTO judgement.",
-      "Most companies under twenty people need the first far more than the second, and hire the second by mistake because the title sounds more senior.",
-      "The honest answer is that many companies need CTO judgement a few hours a month and lead developer capacity full time. That gap is exactly what a fractional arrangement exists to fill. If you are not sure which side of the line you are on, that is a good thing to bring to a free consultation.",
+      "Headcount alone does not answer this. Consider the complexity of the platform, the number of teams to coordinate and the decisions the business needs technology leadership to own.",
+      "For occasional decision support, an Advisor subscription may fit. For an operational leadership mandate, consider a Fractional CTO. If the need is implementation capacity, TRENDev can scope a delivery mission alongside your lead developer. A free consultation can help define which gap you actually need to fill.",
     ],
     keywords: ["hire", "hiring", "lead developer", "first engineer"],
     related: ["full-time-vs-fractional-cto", "which-plan-fits-us"],
@@ -141,10 +141,10 @@ export const faqEntries: FaqEntry[] = [
     topic: "cto-role",
     question: "Full-time CTO or fractional CTO: how do we choose?",
     answer: [
-      "Ask how many hours a month the decisions actually take.",
-      "A full-time CTO makes sense when technology is the product, when the engineering organisation is large enough that leading it is itself a full-time job, or when the role is materially board-facing every week. Below that, a full-time hire spends most of the week doing work a senior engineer or an engineering manager should be doing, at executive cost.",
-      "Below that line there are two different part-time answers, and it helps to tell them apart. If you need **someone to lead**, a transformation, a governance model, a team through a transition, that is a **Fractional CTO**: operational leadership with explicitly scoped authority and follow-through. If you need **judgement more than presence**, a handful of high-stakes decisions a month, an outside review of direction, someone who can talk to your board without needing a translator, that is advisory: **CTO Advisor** or **CTO Advisor+**.",
-      "The comparison is not fractional versus full-time in the abstract. It is fractional now versus a full-time hire you may not yet be able to define, let alone attract. [See the advisory plans](/advisory).",
+      "Start with the mandate: what needs to be owned, what authority is required and how much continuity the organisation needs.",
+      "A full-time CTO makes sense when leading technology is a sustained executive responsibility across product, people, operations and the board. A Fractional CTO can fit a defined transition, transformation or leadership gap, provided the agreed capacity and authority match the work. It is not a substitute for a full-time role that genuinely needs filling.",
+      "There are two different part-time answers. If you need **someone to lead** a transformation, a governance model or a team through a transition, that is a **Fractional CTO**: operational leadership with explicitly scoped authority and follow-through. If you need **decision support without transferring operational ownership**, that is advisory: **CTO Advisor** or **CTO Advisor+**.",
+      "Choose on the basis of ownership and organisational need, not only hours or price. [Compare advisory and Fractional CTO engagements](/advisory).",
     ],
     keywords: ["part time", "interim", "cost", "salary"],
     related: ["difference-between-plans", "do-we-need-a-cto-yet"],
@@ -204,7 +204,7 @@ export const faqEntries: FaqEntry[] = [
     question: "Can you deliver a project for us, not only advise?",
     answer: [
       "Yes. Advisory is one way to work with TRENDev, not the limit of it. A defined piece of work, designed and implemented, is a **tailored delivery engagement**, and you do not need to buy advisory first.",
-      "Julien Sié sets the technical direction and stays your point of contact. When the mission needs more hands or specialist expertise, he brings in trusted providers he has worked with repeatedly, and you know who is involved and what they are responsible for.",
+      "TRENDev combines senior technical leadership with trusted delivery partners, assembled around the agreed work. Julien Sié leads the technical direction; the providers involved are people he has worked with repeatedly. You know the team and each participant’s responsibilities before the mission starts.",
       "Scope, roles, capacity, fees and acceptance criteria are agreed before the work starts, and the work is planned around your existing team and suppliers. It is not a subscription tier and is never bought through checkout: [discuss a delivery project](/#contact).",
     ],
     keywords: ["implementation", "delivery", "build", "project", "partners", "subcontract", "outsourcing"],
@@ -215,7 +215,7 @@ export const faqEntries: FaqEntry[] = [
     topic: "working-together",
     question: "How do you work with our existing lead developer or agency?",
     answer: [
-      "As a peer to them and an advisor to you, never as a layer above them.",
+      "The relationship depends on the mandate. In advisory, we provide a senior outside view without taking over operational ownership. In a Fractional CTO or delivery mission, leadership authority, delivery responsibilities and interfaces with your existing team are agreed explicitly.",
       "The failure mode to avoid is an outside advisor who undermines the person actually shipping your product. In practice that means your lead developer is in the room for architecture discussions, disagreements get resolved on the technical merits in front of you, and recommendations are things your team can carry rather than things done to them.",
       "With an outside agency the value is often sharper, because you gain a senior outside view of what you are being told, grounded in evidence. If TRENDev could itself be a candidate for the work under review, we say so up front.",
     ],

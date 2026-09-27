@@ -15,7 +15,9 @@ npm run typecheck  # tsc --noEmit — run before considering work done
 npm run build      # production build to ./build
 ```
 
-There are no tests and no linter configured.
+`node scripts/check-positioning.mjs` runs dependency-free content/render smoke
+checks through Vite and React SSR (with test checkout). It does not replace
+responsive browser QA. There is no general test runner or linter configured.
 
 ## Architecture
 
@@ -87,6 +89,10 @@ There are no tests and no linter configured.
     client, never add an undocumented metric or sector label, never merge
     unrelated assignments, and keep company size / engineering headcount /
     squad count distinct.
+  - `positioning.ts` — buyer-facing hero, section introductions and advisory
+    page chrome. Start with growing-startup constraints, then anonymised proof,
+    then engagement choices. Founder experience supports the firm’s delivery
+    credibility; it is not the hero’s subject. No invented permanent team.
   - `faq.ts` — the knowledge base (~44 entries across 5 topics) behind `/faq`
     and the landing teaser. **Single source of truth**: the teaser renders
     `featuredFaqs` (the `featured` flag) from this same array, so there is no
@@ -190,9 +196,10 @@ There are no tests and no linter configured.
   everything else points at `/`. `BackLink` is `print:hidden`, so it never
   reaches the Terms PDF.
 - **The Hero's commercial CTAs come first.** Two buttons (consultation +
-  advisory plans) carry the hero; "View our work" is a subdued text link
+  advisory plans) carry the hero; "Explore selected engagements" is a subdued text link
   underneath and must not be promoted back to a third button competing with
-  them.
+  them. It points to the anonymised cases; the engineering-resources modal
+  remains available from `HowWeDeliver`.
 - **Two funnels, two buttons — never merge them.** Booking a consultation and
   subscribing are different intents:
   - "Book a free CTO consultation" / "Schedule Free Consultation"

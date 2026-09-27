@@ -1,4 +1,5 @@
 import { whyChoose } from "@/data/content";
+import { positioning } from "@/data/positioning";
 
 export function WhyChoose() {
   return (
@@ -6,11 +7,10 @@ export function WhyChoose() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
-            Why Choose TRENDev
+            {positioning.challenges.title}
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-            Investing in TRENDev Consulting leads to measurable returns through
-            reduced costs, increased efficiency, and accelerated growth
+            {positioning.challenges.description}
           </p>
         </div>
 

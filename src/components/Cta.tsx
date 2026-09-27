@@ -1,6 +1,7 @@
 import { ArrowRight, Mail, Repeat } from "lucide-react";
 
 import { Link } from "@/app/router";
+import { positioning } from "@/data/positioning";
 import {
   CALENDLY_URL,
   DELIVERY_CTA_LABEL,
@@ -18,12 +19,10 @@ export function Cta() {
       <div className="max-w-4xl mx-auto">
         <div className="glass rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-center text-foreground">
           <h2 className="text-3xl sm:text-4xl md:text-5xl mb-4 sm:mb-6">
-            Advice, leadership or delivery?
+            {positioning.cta.title}
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto">
-            Book a free consultation to talk it through, compare the advisory
-            plans, or brief us directly on a project you want delivered. There
-            is no need to buy advisory first.
+            {positioning.cta.description}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <a

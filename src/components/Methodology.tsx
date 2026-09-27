@@ -1,6 +1,7 @@
 import { Check, ChevronsDown, ChevronsRight } from "lucide-react";
 
 import { methodologySteps, outcomes } from "@/data/content";
+import { positioning } from "@/data/positioning";
 import type { MethodologyStep } from "@/types";
 
 /** Circular timeline marker: just the step icon. */
@@ -47,12 +48,10 @@ export function Methodology() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4">
-            How engagements work
+            {positioning.methodology.title}
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-            A repeatable system, not just expert time. Every engagement moves
-            through the same four steps, the way experienced technology leaders
-            actually operate.
+            {positioning.methodology.description}
           </p>
         </div>
 
@@ -107,7 +106,7 @@ export function Methodology() {
         </ol>
 
         <div className="glass rounded-2xl p-6 sm:p-8 mt-8 sm:mt-10">
-          <h3 className="mb-4 text-center sm:text-left">What that delivers</h3>
+          <h3 className="mb-4 text-center sm:text-left">{positioning.methodology.outputsTitle}</h3>
           <ul className="flex flex-wrap gap-2 sm:gap-3 justify-center sm:justify-start">
             {outcomes.map((outcome) => (
               <li
