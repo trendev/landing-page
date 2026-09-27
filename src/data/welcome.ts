@@ -59,7 +59,7 @@ export const CONTEXT_EMAIL_SUBJECT = "CTO advisory onboarding: my context";
 
 /** Opening lines, above the per-topic headings, in every composed message. */
 const CONTEXT_EMAIL_GREETING = [
-  "Hello Julien,",
+  "Hello TRENDev,",
   "",
   "Here is the context for our first working session.",
   "",
@@ -293,7 +293,7 @@ export const welcomeClosing: ContentSection = {
   heading: "What happens next",
   paragraphs: [
     "Your advisory capacity is available from today, for the billing period you have just paid. Capacity covers meetings, preparation, substantive written advice, and architecture or document review. Short administrative exchanges do not consume it.",
-    "You are working directly with Julien Sié. There is no ticket queue and no account manager in between.",
+    "TRENDev will confirm your advisory contact and the arrangements for your first session.",
     `Anything unclear, before or after the first session: ${CONTACT_ADDRESS}.`,
   ],
 };

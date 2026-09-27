@@ -19,6 +19,9 @@ try {
 
   assert.equal((landing.match(/<h1\b/g) || []).length, 1);
   assert.ok(landing.includes(positioning.hero.title));
+  for (const path of ['src/data/positioning.ts', 'src/data/content.ts', 'src/data/faq.ts', 'src/data/welcome.ts']) {
+    assert.ok(!/Julien|Sié|our founder|TRENDev[’']s founder/i.test(readFileSync(path, 'utf8')), `Personal branding reintroduced in ${path}`);
+  }
   assert.ok(landing.includes('href="/#how-we-deliver"'));
   assert.ok(landing.includes('href="/advisory"'));
   for (const id of ['why-choose', 'how-we-deliver', 'engagements', 'how-we-work', 'offers', 'expertise', 'services', 'contact']) {

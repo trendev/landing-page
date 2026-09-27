@@ -6,7 +6,7 @@ export const positioning = {
     description:
       "For founders building a product, startups scaling their teams and investors assessing technology. TRENDev brings technical advice, CTO leadership and hands-on delivery to turn your next step into a clear plan and concrete work.",
     proof:
-      "20+ years of engineering and CTO experience. Past engagements spanning two-squad teams and organisations of approximately 90 engineers.",
+      "Engineering and CTO expertise spanning two-squad teams and organisations of approximately 90 engineers.",
     workLink: "Explore selected engagements",
   },
   challenges: {
@@ -17,7 +17,7 @@ export const positioning = {
   delivery: {
     title: "Concrete work behind the expertise",
     description:
-      "Selected engagements from our founder’s track record. Real constraints, specific work and documented scope — with client identities kept confidential.",
+      "Selected engagements illustrating the experience brought to TRENDev missions. Real constraints, specific work and documented scope — with client identities kept confidential.",
     modelTitle: "Senior leadership. A delivery team shaped around the mission.",
     modelDescription:
       "TRENDev combines a senior technical lead with trusted delivery partners who have worked together repeatedly. We agree the team, responsibilities and delivery milestones around your needs, alongside your own engineers.",

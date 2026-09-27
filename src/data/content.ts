@@ -410,7 +410,7 @@ export const offers: ProductizedOffer[] = [
  * the Advisor subscriptions, not a limit of the firm, so the copy below keeps
  * the two apart: what each engagement makes TRENDev responsible for, and how
  * delivery works when a client asks for it. Present the model accurately:
- * Julien plus trusted repeat partners, never a permanent salaried team,
+ * Senior technical leadership plus trusted repeat partners, never an invented salaried team,
  * unlimited capacity or named partners.
  */
 
@@ -475,13 +475,13 @@ export const deliveryPrinciples: DeliveryPrinciple[] = [
     icon: Compass,
     title: "Senior technical accountability",
     description:
-      "Julien Sié, TRENDev’s founder, brings more than 20 years in engineering, architecture and CTO roles. He leads technical direction and stays accountable for the agreed mission.",
+      "TRENDev provides technical direction and delivery governance, with clear decision ownership, responsibilities and reporting agreed for each mission.",
   },
   {
     icon: Handshake,
     title: "A trusted delivery network",
     description:
-      "We assemble the capabilities the work requires from providers our founder has worked with repeatedly. The team and each partner’s responsibilities are agreed for the mission.",
+      "We assemble the capabilities the work requires through established delivery partnerships. The team and each partner’s responsibilities are agreed for the mission.",
   },
   {
     icon: ClipboardCheck,

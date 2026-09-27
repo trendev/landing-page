@@ -60,7 +60,7 @@ responsive browser QA. There is no general test runner or linter configured.
   Offers, WhyChoose and Services, and it did not fit the premium boutique
   positioning `/advisory` was built for.
   `EngagementModes` (need → engagement → responsibility → outputs, advise /
-  lead / deliver) and `HowWeDeliver` (Julien + trusted repeat partners, the
+  lead / deliver) and `HowWeDeliver` (senior leadership + trusted repeat partners, the
   advice-to-delivery safeguards, and anonymised `proofCases`) carry the
   firm-level positioning of issue #47. `ScopeBoundaryNote` is site chrome shown
   on `/advisory` and the two Advisor `/services/*` pages, **beside** the frozen
@@ -92,8 +92,11 @@ responsive browser QA. There is no general test runner or linter configured.
   - `positioning.ts` — buyer-facing hero, section introductions and advisory
     page chrome. Address founders, growing startups and investors with simple
     service categories, then substantiate them with anonymised proof.
-    Founder experience supports the firm’s delivery
-    credibility; it is not the hero’s subject. No invented permanent team.
+    Present TRENDev as the consultancy, not an individual’s personal brand.
+    Do not name the founder, describe founder-led delivery, or make a single
+    person the selling point in marketing, FAQ or onboarding copy. Keep
+    required legal identification intact. Proof describes experience brought
+    to engagements, not invented company history. No invented permanent team.
   - `faq.ts` — the knowledge base (~44 entries across 5 topics) behind `/faq`
     and the landing teaser. **Single source of truth**: the teaser renders
     `featuredFaqs` (the `featured` flag) from this same array, so there is no
@@ -220,7 +223,7 @@ responsive browser QA. There is no general test runner or linter configured.
   the subscriptions' scope, frozen in the Terms annexes — not a firm-wide
   limit. Don't write absolute "we never implement" or "no commercial interest"
   claims anywhere; use the disclosed-relationship safeguards instead. Present
-  delivery as Julien plus trusted repeat partners — no invented team size,
+  delivery as senior technical leadership with trusted repeat partners — no invented team size,
   partner names or availability commitments.
 - **Do not put a pricing/subscription section on the landing page.** The
   landing page stays Fractional-CTO-oriented end to end; a subscription block

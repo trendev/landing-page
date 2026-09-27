@@ -11,7 +11,7 @@ import { positioning } from "@/data/positioning";
 
 /**
  * The partner delivery model and the anonymised proof behind it (issue #47).
- * States the model as it is, Julien plus trusted repeat partners, with no
+ * States the model as it is, senior leadership plus trusted repeat partners, with no
  * invented team size, partner names or outcome metrics.
  */
 export function HowWeDeliver({ onOpenProjects }: { onOpenProjects: () => void }) {

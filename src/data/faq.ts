@@ -192,7 +192,7 @@ export const faqEntries: FaqEntry[] = [
     answer: [
       "Not under the Advisor subscriptions. Routine coding and hands-on implementation are outside their scope: they are advice, analysis and decision support. That is a boundary of the subscription, not of the firm.",
       "Reading code is different from writing it. Reviewing an architecture, reading a critical module to form a view on a risk, or evaluating a technical proposal are all inside scope.",
-      "Implementation is something TRENDev does, as separately agreed work: hands-on execution within a [Fractional CTO engagement](/services/fractional-cto) when explicitly scoped, or a tailored delivery mission led by Julien with trusted partners he has worked with before. You can start there directly, without an advisory subscription.",
+      "Implementation is something TRENDev does, as separately agreed work: hands-on execution within a [Fractional CTO engagement](/services/fractional-cto) when explicitly scoped, or a tailored delivery mission combining technical leadership and trusted delivery partners. You can start there directly, without an advisory subscription.",
       "When advice could lead to delivery, the safeguards are plain: recommendations rest on evidence and include credible alternatives, any proposed delivery relationship is disclosed, delivery is a separate scope and price, and you remain free to execute internally or choose another provider.",
     ],
     keywords: ["implementation", "hands on", "development", "build"],
@@ -204,7 +204,7 @@ export const faqEntries: FaqEntry[] = [
     question: "Can you deliver a project for us, not only advise?",
     answer: [
       "Yes. Advisory is one way to work with TRENDev, not the limit of it. A defined piece of work, designed and implemented, is a **tailored delivery engagement**, and you do not need to buy advisory first.",
-      "TRENDev combines senior technical leadership with trusted delivery partners, assembled around the agreed work. Julien Sié leads the technical direction; the providers involved are people he has worked with repeatedly. You know the team and each participant’s responsibilities before the mission starts.",
+      "TRENDev combines senior technical leadership with trusted delivery partners, assembled around the agreed work. Technical direction, delivery coordination and partner responsibilities are defined for each mission. You know who is involved and how the work will be governed before it starts.",
       "Scope, roles, capacity, fees and acceptance criteria are agreed before the work starts, and the work is planned around your existing team and suppliers. It is not a subscription tier and is never bought through checkout: [discuss a delivery project](/#contact).",
     ],
     keywords: ["implementation", "delivery", "build", "project", "partners", "subcontract", "outsourcing"],
@@ -618,7 +618,7 @@ export const faqEntries: FaqEntry[] = [
     question: "How do I book the first session?",
     answer: [
       "Through the scheduling link on your [welcome page](/welcome), which uses the same booking system as the free consultation.",
-      "Pick whatever slot suits you. There is no ticket queue and no account manager in between: you are booking directly with Julien Sié.",
+      "Choose a convenient slot for a free consultation with TRENDev to discuss your project, your priorities and the support you need.",
     ],
     keywords: ["book", "schedule", "calendly", "appointment", "first session"],
     related: ["prepare-for-the-first-session"],
