@@ -18,12 +18,14 @@ export function Hero({ onOpenConsultation, onOpenProjects }: HeroProps) {
           </span>
         </div>
         <h1 className="text-4xl sm:text-5xl md:text-7xl mb-4 sm:mb-6 tracking-tight max-w-4xl mx-auto px-4">
-          Technology consulting that drives measurable business growth
+          Senior technology judgement, leadership and delivery
         </h1>
         <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-3xl mx-auto px-4">
-          Fractional CTO leadership and hands-on delivery across AI adoption,
-          product execution, and engineering transformation. Cloud, DevOps, and
-          Web3 as supporting expertise.
+          TRENDev is led by Julien Sié, a CTO and architect with more than 20
+          years of experience. We help you assess consequential technology
+          choices, lead change and deliver scoped projects, bringing in trusted
+          partners Julien has worked with repeatedly when the mission calls for
+          it.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
           <button

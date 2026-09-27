@@ -45,6 +45,40 @@ export interface ProductizedOffer {
   deliverables: string[];
 }
 
+/* ── Engagement modes & delivery model (issue #47) ─────────────────────── */
+
+export interface EngagementMode {
+  /** The client's need, phrased from their side. */
+  need: string;
+  /** Engagement name; must match the tier names in `pricing.ts` where one exists. */
+  engagement: string;
+  /** Who owns what, and what the client gets. */
+  responsibility: string;
+  /** Tangible outputs, not activities. */
+  deliverables: string[];
+  /** Where to go next: a route (`/services/...`) or the delivery enquiry. */
+  href: string;
+  cta: string;
+}
+
+export interface DeliveryPrinciple {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+}
+
+/**
+ * An anonymised engagement. Never name the client, never add an outcome
+ * metric that is not documented, and keep company size, engineering headcount
+ * and squad count distinct: they are different facts.
+ */
+export interface ProofCase {
+  /** Neutral context label, e.g. "Organisation of ~90 engineers". */
+  context: string;
+  problem: string;
+  work: string[];
+}
+
 /* ── Knowledge base (/faq) ─────────────────────────────────────────────── */
 
 export type FaqTopicId =
