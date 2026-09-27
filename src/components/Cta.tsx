@@ -1,7 +1,11 @@
 import { ArrowRight, Mail, Repeat } from "lucide-react";
 
 import { Link } from "@/app/router";
-import { CALENDLY_URL, CONTACT_EMAIL } from "@/data/content";
+import {
+  CALENDLY_URL,
+  DELIVERY_CTA_LABEL,
+  DELIVERY_ENQUIRY_EMAIL,
+} from "@/data/content";
 import {
   ADVISORY_PATH,
   PRIMARY_CTA_LABEL,
@@ -14,11 +18,12 @@ export function Cta() {
       <div className="max-w-4xl mx-auto">
         <div className="glass rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-center text-foreground">
           <h2 className="text-3xl sm:text-4xl md:text-5xl mb-4 sm:mb-6">
-            Ready to scale your technology?
+            Advice, leadership or delivery?
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto">
-            Schedule a free consultation to discuss your project and explore how
-            we can help achieve your goals.
+            Book a free consultation to talk it through, compare the advisory
+            plans, or brief us directly on a project you want delivered. There
+            is no need to buy advisory first.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <a
@@ -38,13 +43,11 @@ export function Cta() {
               {SECONDARY_CTA_LABEL}
             </Link>
             <a
-              href={CONTACT_EMAIL}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={DELIVERY_ENQUIRY_EMAIL}
               className="px-5 sm:px-6 py-2.5 sm:py-3 glass rounded-lg hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
             >
               <Mail className="w-4 h-4" />
-              Email us
+              {DELIVERY_CTA_LABEL}
             </a>
           </div>
         </div>

@@ -3,6 +3,7 @@ import { ArrowRight, CalendarCheck, Check } from "lucide-react";
 import { Link } from "@/app/router";
 import { BackLink } from "@/components/BackLink";
 import { ComparisonTable } from "@/components/ComparisonTable";
+import { ScopeBoundaryNote } from "@/components/ScopeBoundaryNote";
 import { TierCta } from "@/components/TierCta";
 import { PREREQUISITE_NOTE, pricingTiers } from "@/data/pricing";
 import { useDocumentMeta } from "@/hooks/useDocumentMeta";
@@ -118,6 +119,8 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
             </p>
           </div>
         </div>
+
+        <ScopeBoundaryNote className="mt-4 max-w-3xl mx-auto" />
 
         <div className="mt-12 sm:mt-16">
           <h2 className="text-2xl sm:text-3xl text-center mb-6">

@@ -57,6 +57,12 @@ There are no tests and no linter configured.
   generic, unlinked filler duplicating messaging already covered by Hero,
   Offers, WhyChoose and Services, and it did not fit the premium boutique
   positioning `/advisory` was built for.
+  `EngagementModes` (need → engagement → responsibility → outputs, advise /
+  lead / deliver) and `HowWeDeliver` (Julien + trusted repeat partners, the
+  advice-to-delivery safeguards, and anonymised `proofCases`) carry the
+  firm-level positioning of issue #47. `ScopeBoundaryNote` is site chrome shown
+  on `/advisory` and the two Advisor `/services/*` pages, **beside** the frozen
+  Annex exclusions, saying they bound the subscription, not the firm.
   `ConsentBanner` is the cookie banner (see the consent section below).
   `BackLink` is the return path every subpage must render (see below).
   `FaqItem` (one disclosure) and `FaqSearch` (input + topic pills + result
@@ -73,8 +79,14 @@ There are no tests and no linter configured.
   brand icons; do not re-add an icon dependency for it).
 - **All page copy lives under `src/data/`**, not in components:
   - `content.ts` — landing sections (expertise, services, whyChoose, projects,
-    engagementModels, methodologySteps, outcomes, offers) plus
-    `navLinks`, `legalLinks`, `CALENDLY_URL`, `CONTACT_EMAIL`, `GITHUB_URL`.
+    engagementModels, methodologySteps, outcomes, offers, engagementModes,
+    deliveryPrinciples, adviceSafeguards, proofCases) plus `navLinks`,
+    `legalLinks`, `CALENDLY_URL`, `DELIVERY_ENQUIRY_EMAIL`,
+    `DELIVERY_CTA_LABEL`, `GITHUB_URL`.
+    **`proofCases` are anonymised and source-grounded only**: never name a
+    client, never add an undocumented metric or sector label, never merge
+    unrelated assignments, and keep company size / engineering headcount /
+    squad count distinct.
   - `faq.ts` — the knowledge base (~44 entries across 5 topics) behind `/faq`
     and the landing teaser. **Single source of truth**: the teaser renders
     `featuredFaqs` (the `featured` flag) from this same array, so there is no
@@ -191,6 +203,17 @@ There are no tests and no linter configured.
     separate, visually distinct CTA for a visitor who already knows what they
     want. It lives in the Hero, the closing `Cta` section and the nav, and
     lands on `/advisory`.
+- **A third intent: delivery.** "Discuss a delivery project"
+  (`DELIVERY_CTA_LABEL` → `DELIVERY_ENQUIRY_EMAIL`, a prefilled mailto) is for
+  tailored implementation work. It is not a tier, has no price and must never
+  route to Stripe checkout; advisory is never a prerequisite for it.
+- **TRENDev advises, leads and delivers.** The Advisor exclusions ("TRENDev
+  advises, your team decides and executes", no hands-on implementation) are
+  the subscriptions' scope, frozen in the Terms annexes — not a firm-wide
+  limit. Don't write absolute "we never implement" or "no commercial interest"
+  claims anywhere; use the disclosed-relationship safeguards instead. Present
+  delivery as Julien plus trusted repeat partners — no invented team size,
+  partner names or availability commitments.
 - **Do not put a pricing/subscription section on the landing page.** The
   landing page stays Fractional-CTO-oriented end to end; a subscription block
   mid-page confuses the narrative. The offers live on `/advisory` (all three
@@ -360,6 +383,25 @@ glassmorphic** look with an animated woven-wave background. Visual reference
   (or per resize) and passed in as uniforms. They used to be recomputed in every
   fragment — two `normalize()`s and a `sin`/`cos` pair on every pixel of a
   full-screen quad. Don't move them back into the shader for readability.
+
+## PR previews (Vercel)
+
+`vercel.json` makes Vercel a **preview-only** host: each PR branch gets a
+preview URL so changes can be reviewed visually before merge. Production stays
+on GitHub Pages (`deploy.yml`) — do not move it.
+
+- `git.deploymentEnabled.main: false` — Vercel never builds `main`, so there is
+  no Vercel production deploy. Don't remove it or attach `trendev.fr` there.
+- `buildCommand` pins `VITE_STRIPE_MODE=test`: a `vite build` otherwise selects
+  the **live** Payment Links, and a preview must never lead to real checkout.
+- The catch-all rewrite to `/index.html` stands in for the per-route
+  `index.html` copies `deploy.yml` makes; Vercel serves real files first.
+- Vercel marks preview URLs `X-Robots-Tag: noindex` itself.
+- The project is `landing-page-31rm` (team `umbratrade`). The *other*
+  `landing-page` project in that team deploys `unleaktrade/landing-page`, a
+  different repo. Leave it alone. The dashboard also sets Output Directory
+  `build` and "Only build Preview deployments", so a branch without
+  `vercel.json` cannot produce a production build either.
 
 ## Gotchas
 

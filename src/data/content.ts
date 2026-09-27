@@ -8,6 +8,7 @@ import {
   Code,
   Coins,
   Compass,
+  Handshake,
   Layers,
   ListChecks,
   Rocket,
@@ -19,9 +20,12 @@ import {
 } from "lucide-react";
 
 import type {
+  DeliveryPrinciple,
+  EngagementMode,
   MethodologyStep,
   Project,
   ProductizedOffer,
+  ProofCase,
   ServiceItem,
   WhyChooseItem,
 } from "@/types";
@@ -256,7 +260,7 @@ export const whyChoose: WhyChooseItem[] = [
     icon: Users,
     title: "Experienced Leadership",
     description:
-      "Seasoned professionals with proven track records in leading technical teams and projects",
+      "More than 20 years of engineering, architecture and technology leadership, with direct access to Julien Sié as your senior counterpart",
   },
   {
     icon: Rocket,
@@ -420,6 +424,139 @@ export const offers: ProductizedOffer[] = [
   },
 ];
 
+/* ── Engagement modes & delivery model (issue #47) ──────────────────────
+ *
+ * TRENDev advises, leads and delivers. Advisory exclusions are the scope of
+ * the Advisor subscriptions, not a limit of the firm, so the copy below keeps
+ * the two apart: what each engagement makes TRENDev responsible for, and how
+ * delivery works when a client asks for it. Present the model accurately:
+ * Julien plus trusted repeat partners, never a permanent salaried team,
+ * unlimited capacity or named partners.
+ */
+
+/** Label of the delivery-enquiry CTA; a third intent next to consult/subscribe. */
+export const DELIVERY_CTA_LABEL = "Discuss a delivery project";
+
+/**
+ * Engagement modes, by the client's need. Names match `pricing.ts` exactly;
+ * tailored delivery is deliberately not a tier and has no price.
+ */
+export const engagementModes: EngagementMode[] = [
+  {
+    need: "Understand a situation or challenge a decision",
+    engagement: "Bounded assessment or CTO Advisor",
+    responsibility:
+      "Evidence, options, recommendations and decision preparation. You keep operational ownership.",
+    deliverables: ["Decision brief", "Prioritised assessment"],
+    href: "/services/cto-advisor",
+    cta: "CTO Advisor",
+  },
+  {
+    need: "Keep a closer advisory rhythm across connected decisions",
+    engagement: "CTO Advisor+",
+    responsibility:
+      "Continuing challenge, governance support and executive preparation. Still advice: no implicit transfer of delivery ownership.",
+    deliverables: ["Sequenced roadmap", "Quarterly Technology Review"],
+    href: "/services/cto-advisor-plus",
+    cta: "CTO Advisor+",
+  },
+  {
+    need: "Lead a transition or technology programme",
+    engagement: "Fractional CTO",
+    responsibility:
+      "Explicitly scoped leadership, authority, coordination and follow-through.",
+    deliverables: ["Transition plan", "Governance and follow-through"],
+    href: "/services/fractional-cto",
+    cta: "Fractional CTO",
+  },
+  {
+    need: "Design and implement an agreed piece of work",
+    engagement: "Tailored delivery engagement",
+    responsibility:
+      "Defined scope, delivery responsibilities, acceptance criteria and fees. Trusted partners may take part.",
+    deliverables: ["Implementation scope", "Delivered, accepted work"],
+    href: "/#contact",
+    cta: DELIVERY_CTA_LABEL,
+  },
+];
+
+/** "How we deliver": the partner model, stated without invented specifics. */
+export const deliveryPrinciples: DeliveryPrinciple[] = [
+  {
+    icon: Compass,
+    title: "Julien leads the work",
+    description:
+      "Julien Sié sets the technical direction and remains your senior counterpart and point of contact for the whole mission.",
+  },
+  {
+    icon: Handshake,
+    title: "Trusted, repeat partners",
+    description:
+      "When a mission needs more hands or specialist expertise, Julien brings in providers he has worked with repeatedly. You know who is involved and what they are responsible for.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Scope agreed before work starts",
+    description:
+      "Roles, responsibilities, capacity, fees and acceptance criteria are defined for each mission up front, with delivery governance to match.",
+  },
+  {
+    icon: Layers,
+    title: "Alongside your team",
+    description:
+      "Work is planned around your existing engineers and suppliers, with clear hand-offs so your team can carry it forward.",
+  },
+];
+
+/**
+ * Transparent boundaries between advice and delivery. A possible follow-on
+ * engagement is a commercial interest; these safeguards say so plainly rather
+ * than claiming independence that separate scopes alone cannot guarantee.
+ */
+export const adviceSafeguards: string[] = [
+  "Recommendations rest on evidence and include credible alternatives, including no change.",
+  "Any proposed delivery relationship, ours or a partner's, is disclosed.",
+  "Delivery is a separate scope, agreed and priced on its own.",
+  "You remain free to execute internally or choose another provider.",
+];
+
+/**
+ * Anonymised past engagements. NEVER name a client. Only documented work: no
+ * invented savings, revenue or delivery metrics, no sector label unless it is
+ * documented, and no merging of unrelated assignments into one case. Keep
+ * company size, engineering headcount and squad count distinct.
+ */
+export const proofCases: ProofCase[] = [
+  {
+    context: "Organisation of approximately 90 engineers",
+    problem:
+      "A platform transformation that had to be framed as options the board could decide on.",
+    work: ["Platform transformation", "Board scenarios"],
+  },
+  {
+    context: "10 engineers across two squads",
+    problem:
+      "A team that needed an honest read of its technology and a structure to grow into.",
+    work: [
+      "Technical audit",
+      "Organisation design",
+      "Cloud transition",
+      "Roadmap",
+      "Recruitment planning",
+    ],
+  },
+  {
+    context: "SaaS service on more than 100 EC2 instances",
+    problem:
+      "An existing SaaS service that needed auditing and refactoring at infrastructure scale.",
+    work: [
+      "Service audit and refactoring",
+      "Target architecture",
+      "Disaster recovery planning",
+    ],
+  },
+];
+
 /**
  * In-page navigation shared by the header and footer. Route-aware ("/#id")
  * so the links work from subpages (/services/*, /terms, …) via the router.
@@ -445,7 +582,7 @@ export const CALENDLY_URL =
   "https://calendly.com/whyvrafvr/trendev-consult";
 /** Bare address, for display and for pages that build their own mailto. */
 export const CONTACT_ADDRESS = "contact@trendev.fr";
-/** Prefilled consultation mailto used by the contact CTAs. */
-export const CONTACT_EMAIL =
-  `mailto:${CONTACT_ADDRESS}?subject=Consultation%20Request%20from%20TRENDev%20Website`;
+/** Prefilled delivery-project mailto: never routed to subscription checkout. */
+export const DELIVERY_ENQUIRY_EMAIL =
+  `mailto:${CONTACT_ADDRESS}?subject=Delivery%20project%20enquiry%20from%20TRENDev%20Website`;
 export const GITHUB_URL = "https://github.com/trendev";

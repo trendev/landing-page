@@ -3,6 +3,7 @@ import { CalendarCheck } from "lucide-react";
 import { Link } from "@/app/router";
 import { BackLink } from "@/components/BackLink";
 import { ComparisonTable } from "@/components/ComparisonTable";
+import { ScopeBoundaryNote } from "@/components/ScopeBoundaryNote";
 import { TierCta } from "@/components/TierCta";
 import { legalLinks } from "@/data/content";
 import { ADVISORY_PATH, PREREQUISITE_NOTE, pricingTiers } from "@/data/pricing";
@@ -95,6 +96,8 @@ export function ServicePage({ slug, onOpenConsultation }: ServicePageProps) {
           {service.sections.map((section) => (
             <Section key={section.id} section={section} />
           ))}
+          {/* Beside, never inside, the frozen Annex exclusions. */}
+          {tier.id !== "fractional-cto" && <ScopeBoundaryNote />}
         </div>
 
         <div className="mt-8 sm:mt-10">

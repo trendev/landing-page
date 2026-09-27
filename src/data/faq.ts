@@ -143,7 +143,7 @@ export const faqEntries: FaqEntry[] = [
     answer: [
       "Ask how many hours a month the decisions actually take.",
       "A full-time CTO makes sense when technology is the product, when the engineering organisation is large enough that leading it is itself a full-time job, or when the role is materially board-facing every week. Below that, a full-time hire spends most of the week doing work a senior engineer or an engineering manager should be doing, at executive cost.",
-      "A fractional arrangement makes sense when you need the judgement more than the presence: a handful of high-stakes decisions a month, an independent review of direction, and someone who can talk to your board without needing a translator.",
+      "Below that line there are two different part-time answers, and it helps to tell them apart. If you need **someone to lead**, a transformation, a governance model, a team through a transition, that is a **Fractional CTO**: operational leadership with explicitly scoped authority and follow-through. If you need **judgement more than presence**, a handful of high-stakes decisions a month, an outside review of direction, someone who can talk to your board without needing a translator, that is advisory: **CTO Advisor** or **CTO Advisor+**.",
       "The comparison is not fractional versus full-time in the abstract. It is fractional now versus a full-time hire you may not yet be able to define, let alone attract. [See the advisory plans](/advisory).",
     ],
     keywords: ["part time", "interim", "cost", "salary"],
@@ -153,9 +153,10 @@ export const faqEntries: FaqEntry[] = [
   {
     id: "what-a-fractional-cto-does-not-do",
     topic: "cto-role",
-    question: "What a fractional CTO is not there to do",
+    question: "What the CTO Advisor subscriptions do not include",
     answer: [
-      "Being explicit about this early prevents most disappointment later. An advisory engagement does not include:",
+      "These are the boundaries of the subscriptions, not of what TRENDev does. Operational leadership is a [Fractional CTO](/services/fractional-cto) engagement, and implementation can be agreed as a separate, tailored delivery mission: see [Can you deliver a project for us?](/faq#can-you-deliver-a-project)",
+      "Being explicit about this early prevents most disappointment later. **CTO Advisor** and **CTO Advisor+** are advisory subscriptions, and they do not include:",
     ],
     bullets: [
       "Operational ownership of your systems, teams or delivery",
@@ -165,7 +166,7 @@ export const faqEntries: FaqEntry[] = [
       "Routine team management",
       "Unlimited code or document review",
     ],
-    keywords: ["exclusions", "not included", "scope"],
+    keywords: ["exclusions", "not included", "scope", "fractional cto"],
     related: ["will-you-write-code", "difference-between-plans"],
   },
 
@@ -173,13 +174,14 @@ export const faqEntries: FaqEntry[] = [
   {
     id: "how-the-engagement-runs",
     topic: "working-together",
-    question: "How does a fractional CTO engagement run, week to week?",
+    question: "How does an advisory engagement run, week to week?",
     answer: [
       "Two things happen on a repeating cycle: scheduled strategic sessions, and substantive advice between them.",
       "On **CTO Advisor** that is typically two strategic sessions a month plus async advice in between. On **CTO Advisor+** it is weekly or biweekly sessions, priority async, and a structured Quarterly Technology Review.",
       "Sessions are working sessions, not status updates. You bring the decision that is blocking you, we work it through, and you leave with a position you can act on. Between sessions you send the things that come up: an architecture proposal to review, a hiring shortlist, a vendor quote that smells wrong, a roadmap you want stress-tested.",
+      "A **Fractional CTO** engagement runs differently: its cadence, presence and authority are scoped with you, because the role is to lead and follow through, not only to advise.",
     ],
-    keywords: ["cadence", "sessions", "meetings", "rhythm"],
+    keywords: ["cadence", "sessions", "meetings", "rhythm", "fractional cto"],
     related: ["what-advisory-capacity-means", "difference-between-plans"],
     featured: true,
   },
@@ -188,12 +190,25 @@ export const faqEntries: FaqEntry[] = [
     topic: "working-together",
     question: "Will you write code?",
     answer: [
-      "Not under the Advisor subscriptions. Routine coding and hands-on implementation are explicitly outside their scope, and that boundary is deliberate: the value of the engagement is independent judgement, and an advisor who is also implementing loses the independence.",
+      "Not under the Advisor subscriptions. Routine coding and hands-on implementation are outside their scope: they are advice, analysis and decision support. That is a boundary of the subscription, not of the firm.",
       "Reading code is different from writing it. Reviewing an architecture, reading a critical module to form a view on a risk, or evaluating a technical proposal are all inside scope.",
-      "If you need someone to genuinely take on execution, that is scoped as part of a [Fractional CTO engagement](/services/fractional-cto), where hands-on execution is included when explicitly agreed.",
+      "Implementation is something TRENDev does, as separately agreed work: hands-on execution within a [Fractional CTO engagement](/services/fractional-cto) when explicitly scoped, or a tailored delivery mission led by Julien with trusted partners he has worked with before. You can start there directly, without an advisory subscription.",
+      "When advice could lead to delivery, the safeguards are plain: recommendations rest on evidence and include credible alternatives, any proposed delivery relationship is disclosed, delivery is a separate scope and price, and you remain free to execute internally or choose another provider.",
     ],
     keywords: ["implementation", "hands on", "development", "build"],
-    related: ["what-a-fractional-cto-does-not-do"],
+    related: ["what-a-fractional-cto-does-not-do", "can-you-deliver-a-project"],
+  },
+  {
+    id: "can-you-deliver-a-project",
+    topic: "working-together",
+    question: "Can you deliver a project for us, not only advise?",
+    answer: [
+      "Yes. Advisory is one way to work with TRENDev, not the limit of it. A defined piece of work, designed and implemented, is a **tailored delivery engagement**, and you do not need to buy advisory first.",
+      "Julien Sié sets the technical direction and stays your point of contact. When the mission needs more hands or specialist expertise, he brings in trusted providers he has worked with repeatedly, and you know who is involved and what they are responsible for.",
+      "Scope, roles, capacity, fees and acceptance criteria are agreed before the work starts, and the work is planned around your existing team and suppliers. It is not a subscription tier and is never bought through checkout: [discuss a delivery project](/#contact).",
+    ],
+    keywords: ["implementation", "delivery", "build", "project", "partners", "subcontract", "outsourcing"],
+    related: ["will-you-write-code", "what-a-fractional-cto-does-not-do"],
   },
   {
     id: "working-with-your-team",
@@ -202,7 +217,7 @@ export const faqEntries: FaqEntry[] = [
     answer: [
       "As a peer to them and an advisor to you, never as a layer above them.",
       "The failure mode to avoid is an outside advisor who undermines the person actually shipping your product. In practice that means your lead developer is in the room for architecture discussions, disagreements get resolved on the technical merits in front of you, and recommendations are things your team can carry rather than things done to them.",
-      "With an outside agency the value is often sharper, because you gain someone with no stake in the size of the invoice reviewing what you are being told.",
+      "With an outside agency the value is often sharper, because you gain a senior outside view of what you are being told, grounded in evidence. If TRENDev could itself be a candidate for the work under review, we say so up front.",
     ],
     keywords: ["agency", "outsourcing", "team", "contractor", "freelancer"],
     related: ["we-already-have-a-cto"],
@@ -213,9 +228,9 @@ export const faqEntries: FaqEntry[] = [
     question: "We already have a CTO. Is there still a reason to talk?",
     answer: ["Sometimes. Three situations come up repeatedly."],
     bullets: [
-      "**A second opinion on a decision that is hard to reverse.** A platform migration, a rewrite, a major vendor commitment. An independent read costs a fraction of the decision.",
+      "**A second opinion on a decision that is hard to reverse.** A platform migration, a rewrite, a major vendor commitment. An outside, evidence-based read costs a fraction of the decision.",
       "**A CTO who has not yet done the next stage.** Someone excellent at ten engineers may not have taken an organisation to fifty. Advisory support for them is cheaper and kinder than replacing them.",
-      "**Board or investor due diligence.** An independent technical view carries weight that an internal one cannot.",
+      "**Board or investor due diligence.** An outside technical view carries weight that an internal one cannot.",
     ],
     keywords: ["second opinion", "due diligence", "existing cto"],
     related: ["working-with-your-team"],
@@ -427,9 +442,10 @@ export const faqEntries: FaqEntry[] = [
     question: "Which plan fits us?",
     answer: ["A rough guide. The free consultation exists to make it precise."],
     bullets: [
-      "**CTO Advisor** if the technology decisions arrive at roughly the pace of a couple a month, you already have someone competent running delivery, and what you want is a sounding board and an independent review.",
+      "**CTO Advisor** if the technology decisions arrive at roughly the pace of a couple a month, you already have someone competent running delivery, and what you want is a sounding board and an outside review.",
       "**CTO Advisor+** if decisions arrive weekly, if the engineering organisation is growing, if you have board or investor conversations that need technical substance, or if you want the quarterly discipline of a structured review.",
       "**Fractional CTO** if you need someone to own something rather than advise on it: a transformation, a governance model, a due diligence process, or a turnaround.",
+      "**None of the plans** if what you need is a defined piece of work designed and implemented: that is a [tailored delivery engagement](/faq#can-you-deliver-a-project), scoped and priced on its own.",
     ],
     keywords: ["choose", "recommend", "which one", "fit"],
     related: ["difference-between-plans", "can-i-switch-plans"],
