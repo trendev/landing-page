@@ -397,6 +397,11 @@ on GitHub Pages (`deploy.yml`) — do not move it.
 - The catch-all rewrite to `/index.html` stands in for the per-route
   `index.html` copies `deploy.yml` makes; Vercel serves real files first.
 - Vercel marks preview URLs `X-Robots-Tag: noindex` itself.
+- The project is `landing-page-31rm` (team `umbratrade`). The *other*
+  `landing-page` project in that team deploys `unleaktrade/landing-page`, a
+  different repo. Leave it alone. The dashboard also sets Output Directory
+  `build` and "Only build Preview deployments", so a branch without
+  `vercel.json` cannot produce a production build either.
 
 ## Gotchas
 
