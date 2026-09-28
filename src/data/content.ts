@@ -1,5 +1,4 @@
 import {
-  Award,
   Brain,
   BrainCircuit,
   CalendarRange,
@@ -13,7 +12,6 @@ import {
   ListChecks,
   Rocket,
   Search,
-  Shield,
   Target,
   TrendingUp,
   Users,
@@ -35,10 +33,10 @@ export const expertise: ServiceItem[] = [
     icon: Users,
     title: "Engineering Management & Leadership",
     description:
-      "Build high-performing teams and establish engineering excellence.",
+      "When adding engineers no longer translates into predictable delivery.",
     detailedContent: {
       overview:
-        "Transform your engineering organization with proven leadership strategies. We help you build high-performing teams, establish best practices, efficient workflows, and create a culture of continuous improvement and innovation.",
+        "As squads multiply, unclear ownership and cross-team dependencies can slow the roadmap. We assess the operating model, clarify responsibilities and help shape hiring and delivery practices. Implementation and ongoing leadership are scoped through a Fractional CTO or tailored mission.",
       benefits: [
         "Build and scale high-performing engineering teams",
         "Establish best practices and efficient workflows",
@@ -54,10 +52,10 @@ export const expertise: ServiceItem[] = [
     icon: Code,
     title: "Full-Stack Development",
     description:
-      "End-to-end web application development from concept to production.",
+      "When the next product milestone needs hands-on engineering capacity.",
     detailedContent: {
       overview:
-        "Leveraging a wide range of programming languages and frameworks to deliver comprehensive solutions. Design and develop robust, scalable web applications with modern technologies. We deliver production-ready solutions that meet your business objectives, from initial concept through deployment and beyond.",
+        "Turn a product requirement into a scoped implementation: applications, APIs, integrations and the work needed to release them. TRENDev leads delivery with trusted partners where the scope calls for them, agreeing testing, acceptance criteria and handover with your team before work starts.",
       benefits: [
         "Design and develop robust, scalable web applications",
         "Create RESTful APIs and integrate third-party services",
@@ -99,10 +97,10 @@ export const expertise: ServiceItem[] = [
     icon: Target,
     title: "CTO as a Service",
     description:
-      "Strategic technical leadership and executive guidance on demand.",
+      "When a transition, hiring plan or platform programme needs senior ownership.",
     detailedContent: {
       overview:
-        "Dedicated executive-level technical leadership that drives results. We become your committed technology partner, providing hands-on strategic guidance and execution support. From board presentations to team building, we deliver the full spectrum of CTO responsibilities with complete accountability for your technology success.",
+        "Bring technology priorities, team structure and board expectations into one actionable plan. A Fractional CTO mission defines the leadership mandate, decision authority and follow-through. For decision support without operational ownership, choose an Advisor subscription instead.",
       benefits: [
         "Strategic technology planning and roadmap development",
         "Technology stack evaluation and selection",
@@ -123,10 +121,10 @@ export const services: ServiceItem[] = [
     icon: Cloud,
     title: "Cloud Solutions & DevOps Strategy",
     description:
-      "Modern cloud infrastructure and automated deployment pipelines.",
+      "When infrastructure, release processes or recovery gaps constrain growth.",
     detailedContent: {
       overview:
-        "Design and implement scalable cloud infrastructure that reduces costs and improves reliability. We help you modernize your infrastructure with cloud-native solutions and DevOps best practices.",
+        "Assess cloud costs, deployment bottlenecks and operational risks before committing to a migration. A tailored delivery mission can cover infrastructure changes, release automation, observability and recovery procedures, with agreed milestones and handover to your engineers.",
       benefits: [
         "Design and implement scalable cloud infrastructure (AWS, Azure, GCP)",
         "Automate deployment pipelines with CI/CD best practices",
@@ -155,7 +153,7 @@ export const services: ServiceItem[] = [
     icon: Coins,
     title: "Blockchain & Web3 Development",
     description:
-      "Smart contract development, security audits, and tokenomics design.",
+      "When an on-chain product needs protocol design and application delivery.",
     detailedContent: {
       overview:
         "Build secure, scalable blockchain solutions from smart contracts to full DeFi platforms. We provide end-to-end blockchain development including smart contract architecture, comprehensive security auditing, token engineering, and Web3 integration. Our expertise spans multiple blockchain ecosystems to deliver production-ready decentralized applications.",
@@ -198,10 +196,10 @@ export const services: ServiceItem[] = [
     icon: Brain,
     title: "AI Consulting & Machine Learning",
     description:
-      "Custom AI/ML solutions and LLM integration for your business.",
+      "When an AI use case needs a credible route from experiment to integration.",
     detailedContent: {
       overview:
-        "Develop custom AI and machine learning solutions tailored to your business needs. From LLM integration to predictive analytics, we help you leverage the power of modern AI technologies to gain competitive advantages.",
+        "Start with the product problem, data constraints and evaluation criteria. Assess feasibility before investing, then scope the integration, deployment and monitoring work separately. An assessment may recommend not using AI; delivery is a distinct mandate, not part of an advisory subscription.",
       benefits: [
         "Develop custom AI/ML solutions tailored to your business needs",
         "Integrate Large Language Models (LLMs) like ChatGPT into applications",
@@ -229,10 +227,10 @@ export const services: ServiceItem[] = [
     icon: Layers,
     title: "Enterprise Architecture",
     description:
-      "Scalable system design and comprehensive technology roadmaps.",
+      "When the architecture that got you here cannot support the next stage.",
     detailedContent: {
       overview:
-        "Design resilient, scalable systems that grow with your business. We create comprehensive architecture strategies that align technology with business goals, ensuring long-term success and adaptability.",
+        "Compare the trade-offs of evolving the current platform, refactoring critical services or changing its architecture. We define target designs and migration sequences around business constraints, with separately scoped implementation when required. A rewrite is an option to justify, not a default recommendation.",
       benefits: [
         "Enterprise system architecture design and documentation",
         "Microservices and distributed systems architecture",
@@ -257,40 +255,22 @@ export const services: ServiceItem[] = [
 
 export const whyChoose: WhyChooseItem[] = [
   {
-    icon: Users,
-    title: "Experienced Leadership",
-    description:
-      "More than 20 years of engineering, architecture and technology leadership, with direct access to Julien Sié as your senior counterpart",
-  },
-  {
     icon: Rocket,
-    title: "Accelerated Time-to-Market",
+    title: "For founders",
     description:
-      "Efficient development processes and innovative technologies enable faster product launches, capturing market opportunities sooner",
+      "Turn a project into a product. Get support with technical feasibility, architecture, an MVP roadmap and implementation — whether you have an engineering team or are putting one together.",
   },
   {
-    icon: Award,
-    title: "Proven Track Record",
+    icon: Users,
+    title: "For growing startups",
     description:
-      "Successful projects across multiple industries and company stages",
+      "Keep product delivery moving as customers and teams grow. Strengthen your architecture, structure your engineering organisation and bring in leadership or delivery capacity for the next stage.",
   },
   {
-    icon: TrendingUp,
-    title: "Scalability & Growth",
+    icon: Compass,
+    title: "For investors",
     description:
-      "Solutions designed to scale with your business, supporting growth without compromising performance",
-  },
-  {
-    icon: Target,
-    title: "Cost Optimization",
-    description:
-      "Reduced downtime and enhanced efficiency through optimized DevOps strategies, streamlining operations and reducing costs",
-  },
-  {
-    icon: Shield,
-    title: "High Resilience",
-    description:
-      "Implementing high resilience and data consistency solutions to minimize system downtime and maximize productivity",
+      "Get a clear technical view before an investment or during portfolio support. Assess the product, architecture, engineering organisation and delivery risks through technical due diligence, then define practical priorities with the founders.",
   },
 ];
 
@@ -378,18 +358,18 @@ export const methodologySteps: MethodologyStep[] = [
     icon: TrendingUp,
     step: "04",
     title: "Scale",
-    summary: "Make it sustainable without you.",
+    summary: "Leave your team ready to carry it forward.",
     points: ["Systems and governance", "Operating model", "Team autonomy"],
   },
 ];
 
-/** Qualitative outcomes shown under the methodology, no numeric claims. */
+/** Agreed outputs, not unverified performance or time-to-market promises. */
 export const outcomes: string[] = [
-  "Deployments from days to minutes",
-  "Higher, safer release frequency",
-  "Leaner cloud infrastructure",
-  "Engineering teams that scale cleanly",
-  "Production AI delivered in weeks, not months",
+  "Priorities and trade-offs",
+  "Named owners and milestones",
+  "Delivery and acceptance criteria",
+  "Operational risks and recovery plans",
+  "Team handover and next steps",
 ];
 
 /** Named, fixed-scope entry points shown in the Offers section. */
@@ -398,28 +378,28 @@ export const offers: ProductizedOffer[] = [
     icon: ClipboardCheck,
     name: "CTO Audit",
     duration: "2-week assessment",
-    summary: "A fast, senior read on the state of your technology and engineering.",
+    summary: "Before a major technical commitment or investment: assess the platform, the team and the risks, then decide what to tackle first.",
     deliverables: ["Architecture review", "Engineering review", "Prioritized action plan"],
   },
   {
     icon: BrainCircuit,
     name: "AI Readiness Assessment",
     duration: "Focused engagement",
-    summary: "Where AI creates real leverage in your product and operations.",
+    summary: "Before committing a team to AI: assess use cases, data readiness and how you would evaluate value.",
     deliverables: ["AI opportunities map", "Risk analysis", "Implementation roadmap"],
   },
   {
     icon: Compass,
     name: "Engineering Scale Blueprint",
     duration: "Strategic engagement",
-    summary: "A clear path to scale delivery as the organization grows.",
+    summary: "When coordination is slowing delivery: define squad ownership, hiring priorities and the operating model.",
     deliverables: ["Operating model", "Org recommendations", "Execution roadmap"],
   },
   {
     icon: CalendarRange,
     name: "90-Day Transformation Plan",
     duration: "90-day plan",
-    summary: "A concrete first quarter of measurable technical change.",
+    summary: "When change spans several teams: turn the direction into a sequenced first-quarter plan with owners and milestones.",
     deliverables: ["Prioritized initiatives", "Milestones", "Leadership plan"],
   },
 ];
@@ -430,7 +410,7 @@ export const offers: ProductizedOffer[] = [
  * the Advisor subscriptions, not a limit of the firm, so the copy below keeps
  * the two apart: what each engagement makes TRENDev responsible for, and how
  * delivery works when a client asks for it. Present the model accurately:
- * Julien plus trusted repeat partners, never a permanent salaried team,
+ * Senior technical leadership plus trusted repeat partners, never an invented salaried team,
  * unlimited capacity or named partners.
  */
 
@@ -443,8 +423,17 @@ export const DELIVERY_CTA_LABEL = "Discuss a delivery project";
  */
 export const engagementModes: EngagementMode[] = [
   {
-    need: "Understand a situation or challenge a decision",
-    engagement: "Bounded assessment or CTO Advisor",
+    need: "Assess a product, a platform or the technology behind an investment",
+    engagement: "Technical assessment & due diligence",
+    responsibility:
+      "A separately scoped review of the technology, team and delivery risks, with findings and recommendations for founders or investors.",
+    deliverables: ["Technical findings and risks", "Prioritised recommendations"],
+    href: "/#offers",
+    cta: "Explore a technical assessment",
+  },
+  {
+    need: "Pressure-test a technology decision before committing resources",
+    engagement: "CTO Advisor",
     responsibility:
       "Evidence, options, recommendations and decision preparation. You keep operational ownership.",
     deliverables: ["Decision brief", "Prioritised assessment"],
@@ -452,16 +441,16 @@ export const engagementModes: EngagementMode[] = [
     cta: "CTO Advisor",
   },
   {
-    need: "Keep a closer advisory rhythm across connected decisions",
+    need: "Keep architecture, hiring and roadmap decisions aligned as you grow",
     engagement: "CTO Advisor+",
     responsibility:
-      "Continuing challenge, governance support and executive preparation. Still advice: no implicit transfer of delivery ownership.",
+      "Recurring decision support, governance reviews and executive preparation. Your team retains delivery ownership.",
     deliverables: ["Sequenced roadmap", "Quarterly Technology Review"],
     href: "/services/cto-advisor-plus",
     cta: "CTO Advisor+",
   },
   {
-    need: "Lead a transition or technology programme",
+    need: "Lead a technology transition or structure a growing engineering organisation",
     engagement: "Fractional CTO",
     responsibility:
       "Explicitly scoped leadership, authority, coordination and follow-through.",
@@ -470,11 +459,11 @@ export const engagementModes: EngagementMode[] = [
     cta: "Fractional CTO",
   },
   {
-    need: "Design and implement an agreed piece of work",
+    need: "Build an MVP, deliver a platform change or launch a product capability",
     engagement: "Tailored delivery engagement",
     responsibility:
       "Defined scope, delivery responsibilities, acceptance criteria and fees. Trusted partners may take part.",
-    deliverables: ["Implementation scope", "Delivered, accepted work"],
+    deliverables: ["Implemented changes", "Agreed validation and handover"],
     href: "/#contact",
     cta: DELIVERY_CTA_LABEL,
   },
@@ -484,15 +473,15 @@ export const engagementModes: EngagementMode[] = [
 export const deliveryPrinciples: DeliveryPrinciple[] = [
   {
     icon: Compass,
-    title: "Julien leads the work",
+    title: "Senior technical accountability",
     description:
-      "Julien Sié sets the technical direction and remains your senior counterpart and point of contact for the whole mission.",
+      "TRENDev provides technical direction and delivery governance, with clear decision ownership, responsibilities and reporting agreed for each mission.",
   },
   {
     icon: Handshake,
-    title: "Trusted, repeat partners",
+    title: "A trusted delivery network",
     description:
-      "When a mission needs more hands or specialist expertise, Julien brings in providers he has worked with repeatedly. You know who is involved and what they are responsible for.",
+      "We assemble the capabilities the work requires through established delivery partnerships. The team and each partner’s responsibilities are agreed for the mission.",
   },
   {
     icon: ClipboardCheck,
@@ -528,27 +517,25 @@ export const adviceSafeguards: string[] = [
  */
 export const proofCases: ProofCase[] = [
   {
-    context: "Organisation of approximately 90 engineers",
+    context: "Approximately 90 engineers · 10 squads",
     problem:
-      "A platform transformation that had to be framed as options the board could decide on.",
-    work: ["Platform transformation", "Board scenarios"],
+      "Moving from a single-tenant platform towards a multi-tenant, API-first model required both architectural choices and a delivery approach the board could assess.",
+    work: ["Compared transformation scenarios for the board", "Evaluated API gateway alternatives", "Worked within the squad facing the greatest delivery constraints"],
   },
   {
     context: "10 engineers across two squads",
     problem:
-      "A team that needed an honest read of its technology and a structure to grow into.",
+      "Technology changes and a growing engineering organisation needed one coherent plan, from mobile and cloud architecture to hiring and executive reporting.",
     work: [
-      "Technical audit",
-      "Organisation design",
-      "Cloud transition",
-      "Roadmap",
-      "Recruitment planning",
+      "Technical audit and organisation design",
+      "Flutter-to-React Native and Azure-to-AWS transition work",
+      "Three-year roadmap, hiring plan and executive reporting",
     ],
   },
   {
-    context: "SaaS service on more than 100 EC2 instances",
+    context: "SaaS · Approximately 15 people · 100+ EC2 instances",
     problem:
-      "An existing SaaS service that needed auditing and refactoring at infrastructure scale.",
+      "A small SaaS organisation operated a service spread across more than 100 EC2 instances. The work connected service refactoring, a target SaaS architecture and disaster recovery planning.",
     work: [
       "Service audit and refactoring",
       "Target architecture",

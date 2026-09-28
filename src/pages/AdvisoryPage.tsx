@@ -6,6 +6,8 @@ import { ComparisonTable } from "@/components/ComparisonTable";
 import { ScopeBoundaryNote } from "@/components/ScopeBoundaryNote";
 import { TierCta } from "@/components/TierCta";
 import { PREREQUISITE_NOTE, pricingTiers } from "@/data/pricing";
+import { DELIVERY_ENQUIRY_EMAIL } from "@/data/content";
+import { positioning } from "@/data/positioning";
 import { useDocumentMeta } from "@/hooks/useDocumentMeta";
 
 interface AdvisoryPageProps {
@@ -33,13 +35,14 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
         <BackLink className="mb-6" />
         <header className="text-center mb-10 sm:mb-14">
           <h1 className="text-4xl sm:text-5xl md:text-6xl mb-4 tracking-tight">
-            Ongoing CTO advisory, as a subscription
+            {positioning.advisory.title}
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Recurring senior judgment behind your technology decisions, on a
-            simple monthly basis. Pick the depth you need, or take the embedded
-            route with a tailored Fractional CTO engagement.
+            {positioning.advisory.description}
           </p>
+          <a href={DELIVERY_ENQUIRY_EMAIL} className="inline-block mt-4 text-accent underline underline-offset-4">
+            {positioning.advisory.deliveryLink}
+          </a>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">

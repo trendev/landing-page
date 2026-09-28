@@ -2,30 +2,26 @@ import { ArrowRight, Repeat } from "lucide-react";
 
 import { Link } from "@/app/router";
 import { ADVISORY_PATH, SECONDARY_CTA_LABEL } from "@/data/pricing";
+import { positioning } from "@/data/positioning";
 
 interface HeroProps {
   onOpenConsultation: () => void;
-  onOpenProjects: () => void;
 }
 
-export function Hero({ onOpenConsultation, onOpenProjects }: HeroProps) {
+export function Hero({ onOpenConsultation }: HeroProps) {
   return (
     <section className="pt-24 sm:pt-32 pb-12 sm:pb-16 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 border border-accent/20 rounded-full mb-6 sm:mb-8">
           <span className="text-xs sm:text-sm">
-            Fractional CTO · AI &amp; Engineering Transformation
+            {positioning.hero.eyebrow}
           </span>
         </div>
         <h1 className="text-4xl sm:text-5xl md:text-7xl mb-4 sm:mb-6 tracking-tight max-w-4xl mx-auto px-4">
-          Senior technology judgement, leadership and delivery
+          {positioning.hero.title}
         </h1>
         <p className="text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-3xl mx-auto px-4">
-          TRENDev is led by Julien Sié, a CTO and architect with more than 20
-          years of experience. We help you assess consequential technology
-          choices, lead change and deliver scoped projects, bringing in trusted
-          partners Julien has worked with repeatedly when the mission calls for
-          it.
+          {positioning.hero.description}
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
           <button
@@ -49,13 +45,16 @@ export function Hero({ onOpenConsultation, onOpenProjects }: HeroProps) {
         {/* Deliberately a text link, not a third button: the two CTAs above are
             the commercial paths and must not compete with a portfolio view. */}
         <div className="mt-5 sm:mt-6 px-4">
-          <button
-            onClick={onOpenProjects}
+          <Link
+            href="/#how-we-deliver"
             className="text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
           >
-            View our work
-          </button>
+            {positioning.hero.workLink}
+          </Link>
         </div>
+        <p className="mt-6 text-sm text-muted-foreground max-w-2xl mx-auto px-4">
+          {positioning.hero.proof}
+        </p>
       </div>
     </section>
   );

@@ -15,7 +15,9 @@ npm run typecheck  # tsc --noEmit — run before considering work done
 npm run build      # production build to ./build
 ```
 
-There are no tests and no linter configured.
+`node scripts/check-positioning.mjs` runs dependency-free content/render smoke
+checks through Vite and React SSR (with test checkout). It does not replace
+responsive browser QA. There is no general test runner or linter configured.
 
 ## Architecture
 
@@ -58,7 +60,7 @@ There are no tests and no linter configured.
   Offers, WhyChoose and Services, and it did not fit the premium boutique
   positioning `/advisory` was built for.
   `EngagementModes` (need → engagement → responsibility → outputs, advise /
-  lead / deliver) and `HowWeDeliver` (Julien + trusted repeat partners, the
+  lead / deliver) and `HowWeDeliver` (senior leadership + trusted repeat partners, the
   advice-to-delivery safeguards, and anonymised `proofCases`) carry the
   firm-level positioning of issue #47. `ScopeBoundaryNote` is site chrome shown
   on `/advisory` and the two Advisor `/services/*` pages, **beside** the frozen
@@ -87,6 +89,14 @@ There are no tests and no linter configured.
     client, never add an undocumented metric or sector label, never merge
     unrelated assignments, and keep company size / engineering headcount /
     squad count distinct.
+  - `positioning.ts` — buyer-facing hero, section introductions and advisory
+    page chrome. Address founders, growing startups and investors with simple
+    service categories, then substantiate them with anonymised proof.
+    Present TRENDev as the consultancy, not an individual’s personal brand.
+    Do not name the founder, describe founder-led delivery, or make a single
+    person the selling point in marketing, FAQ or onboarding copy. Keep
+    required legal identification intact. Proof describes experience brought
+    to engagements, not invented company history. No invented permanent team.
   - `faq.ts` — the knowledge base (~44 entries across 5 topics) behind `/faq`
     and the landing teaser. **Single source of truth**: the teaser renders
     `featuredFaqs` (the `featured` flag) from this same array, so there is no
@@ -190,9 +200,10 @@ There are no tests and no linter configured.
   everything else points at `/`. `BackLink` is `print:hidden`, so it never
   reaches the Terms PDF.
 - **The Hero's commercial CTAs come first.** Two buttons (consultation +
-  advisory plans) carry the hero; "View our work" is a subdued text link
+  advisory plans) carry the hero; "Explore selected engagements" is a subdued text link
   underneath and must not be promoted back to a third button competing with
-  them.
+  them. It points to the anonymised cases; the engineering-resources modal
+  remains available from `HowWeDeliver`.
 - **Two funnels, two buttons — never merge them.** Booking a consultation and
   subscribing are different intents:
   - "Book a free CTO consultation" / "Schedule Free Consultation"
@@ -212,7 +223,7 @@ There are no tests and no linter configured.
   the subscriptions' scope, frozen in the Terms annexes — not a firm-wide
   limit. Don't write absolute "we never implement" or "no commercial interest"
   claims anywhere; use the disclosed-relationship safeguards instead. Present
-  delivery as Julien plus trusted repeat partners — no invented team size,
+  delivery as senior technical leadership with trusted repeat partners — no invented team size,
   partner names or availability commitments.
 - **Do not put a pricing/subscription section on the landing page.** The
   landing page stays Fractional-CTO-oriented end to end; a subscription block
