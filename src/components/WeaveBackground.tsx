@@ -214,6 +214,18 @@ export function WeaveBackground() {
       cellInv: gl.getUniformLocation(prog, "u_cellInv"),
     };
 
+    // Size the canvas to the *large* viewport (100lvh), not innerHeight. On
+    // mobile a slight scroll collapses/expands the address bar, which fires
+    // `resize` with a new innerHeight; tracking it reallocated the buffer (and
+    // rescaled the weave) on every small scroll. The lvh box never changes
+    // with the address bar, so the fixed canvas just runs under it.
+    canvas.style.height =
+      window.CSS && CSS.supports("height", "100lvh") ? "100lvh" : "100vh";
+
+    // Draws one frame at the current clock. Assigned once the uniforms and
+    // clock below exist; resize() must be able to call it before then.
+    let paint = () => {};
+
     let w = 0;
     let h = 0;
     const resize = () => {
@@ -223,15 +235,21 @@ export function WeaveBackground() {
       // runs over ~64% fewer pixels than at 1x and ~4x fewer than retina. This
       // is the single biggest lever for keeping the animation cheap on weak GPUs.
       const dpr = CONFIG.quality[qIndex];
-      w = Math.max(1, Math.floor(window.innerWidth * dpr));
-      h = Math.max(1, Math.floor(window.innerHeight * dpr));
+      const nw = Math.max(1, Math.floor(canvas.clientWidth * dpr));
+      const nh = Math.max(1, Math.floor(canvas.clientHeight * dpr));
+      if (nw === w && nh === h) return;
+      w = nw;
+      h = nh;
+      // Assigning width/height reallocates the drawing buffer and CLEARS it
+      // to transparent. Anything short of a redraw in this same task lets the
+      // browser composite an empty canvas: the page background flashes black
+      // for a frame. So repaint immediately, below.
       canvas.width = w;
       canvas.height = h;
-      canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = window.innerHeight + "px";
       gl.viewport(0, 0, w, h);
       // depends on the backing-store height, so it has to follow every resize
       gl.uniform1f(U.cellInv, 1 / (h * 0.012));
+      paint();
     };
     let qIndex = 0;
     resize();
@@ -292,6 +310,13 @@ export function WeaveBackground() {
       gl.uniform3f(U.H, Lx / hn, Ly / hn, (Lz + 1) / hn);
     };
 
+    paint = () => {
+      gl.uniform2f(U.res, w, h);
+      uploadLight();
+      gl.uniform1f(U.time, reduceMotion ? 3.0 : clock * CONFIG.speed * 6.0);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    };
+
     // Adaptive resolution. A full-screen fragment shader costs exactly what it
     // covers in pixels, so when a device cannot hold the frame budget the only
     // lever that always works is shading fewer of them. Watch the real interval
@@ -329,10 +354,7 @@ export function WeaveBackground() {
       clock += Math.min(dt, FRAME_MS * 2) / 1000;
       mx += (tmx - mx) * 0.1;
       my += (tmy - my) * 0.1;
-      gl.uniform2f(U.res, w, h);
-      uploadLight();
-      gl.uniform1f(U.time, clock * CONFIG.speed * 6.0);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      paint();
       governor(now);
     };
 
@@ -350,10 +372,7 @@ export function WeaveBackground() {
     const onVisibility = () => (document.hidden ? pause() : play());
 
     if (reduceMotion) {
-      gl.uniform2f(U.res, w, h);
-      uploadLight();
-      gl.uniform1f(U.time, 3.0);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      paint();
     } else {
       document.addEventListener("visibilitychange", onVisibility);
       play();
@@ -373,7 +392,7 @@ export function WeaveBackground() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="fixed inset-0 -z-10 h-full w-full print:hidden"
+      className="fixed inset-0 -z-10 h-screen w-full print:hidden"
     />
   );
 }

@@ -389,6 +389,15 @@ glassmorphic** look with an animated woven-wave background. Visual reference
   page-load layout is not blamed on the shader, and `pause()` resets the window
   so a hidden-tab gap never counts as a slow frame. A device that can hold 30fps
   never leaves 0.6x.
+- **Every buffer reallocation repaints synchronously.** Assigning
+  `canvas.width/height` clears the drawing buffer to transparent; if the redraw
+  waits for the next throttled rAF, the browser composites an empty canvas and
+  the whole background flashes black. That was the "black flash on the first
+  scroll" bug: the governor's first downgrade lands ~2s after load, exactly
+  when the visitor starts scrolling. `resize()` therefore calls `paint()`
+  itself, and skips reallocating when the size is unchanged. The canvas is
+  sized to `100lvh`, not `innerHeight`, so the mobile address bar collapsing
+  on scroll never reallocates (or rescales) it.
 - **Uniform-only work belongs on the CPU.** The light direction, half vector,
   `cos/sin(twill)` and the thread-cell reciprocal are computed once per frame
   (or per resize) and passed in as uniforms. They used to be recomputed in every
