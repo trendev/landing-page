@@ -50,8 +50,12 @@ export function Footer({ onOpenCookieSettings }: FooterProps) {
               </Link>
             ))}
             <button
+              type="button"
               onClick={onOpenCookieSettings}
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              // text-sm/font-normal: the base `button` rule in theme.css sets
+              // text-base + medium, which would outrank the nav's inherited
+              // text-sm and make this entry look unlike the links beside it.
+              className="text-sm font-normal text-muted-foreground hover:text-foreground transition-colors"
             >
               Cookie settings
             </button>
