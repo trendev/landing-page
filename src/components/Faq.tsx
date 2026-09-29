@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { Link } from "@/app/router";
 import { FaqItem } from "@/components/FaqItem";
+import { MediumStoriesLink } from "@/components/MediumStoriesLink";
 import { FAQ_PATH, faqTeaser, featuredFaqs } from "@/data/faq";
 
 /**
@@ -44,7 +45,7 @@ export function Faq() {
           ))}
         </div>
 
-        <div className="mt-8 text-center">
+        <div className="mt-8 flex flex-col items-center gap-4">
           <Link
             href={FAQ_PATH}
             className="inline-flex items-center gap-2 text-accent hover:gap-3 transition-all duration-200"
@@ -52,6 +53,7 @@ export function Faq() {
             {faqTeaser.seeAllLabel}
             <ArrowRight aria-hidden="true" className="w-4 h-4" />
           </Link>
+          <MediumStoriesLink />
         </div>
       </div>
     </section>

@@ -12,7 +12,7 @@ try {
   const { AdvisoryPage } = await server.ssrLoadModule('/src/pages/AdvisoryPage.tsx');
   const { ConsultationModal } = await server.ssrLoadModule('/src/components/modals/ConsultationModal.tsx');
   const { positioning } = await server.ssrLoadModule('/src/data/positioning.ts');
-  const { engagementModes, DELIVERY_ENQUIRY_EMAIL, proofCases } = await server.ssrLoadModule('/src/data/content.ts');
+  const { engagementModes, DELIVERY_ENQUIRY_EMAIL, MEDIUM_URL, proofCases } = await server.ssrLoadModule('/src/data/content.ts');
   const landing = renderToStaticMarkup(createElement(LandingPage, { onOpenConsultation() {} }));
   const advisory = renderToStaticMarkup(createElement(AdvisoryPage, { onOpenConsultation() {} }));
   const consultation = renderToStaticMarkup(createElement(ConsultationModal, { onClose() {} }));
@@ -36,6 +36,7 @@ try {
   // The existing FAQ teaser can mention prices; there must be no pricing section.
   assert.ok(!landing.slice(0, landing.indexOf('id="faq"')).includes('€'), 'Do not add a landing-page pricing section');
   assert.ok(!landing.includes('buy.stripe.com'), 'Delivery must not route to checkout');
+  assert.ok(landing.includes(`href="${MEDIUM_URL}"`), 'FAQ teaser must link the Medium publication');
   assert.ok(DELIVERY_ENQUIRY_EMAIL.startsWith('mailto:'));
   assert.ok(landing.includes(DELIVERY_ENQUIRY_EMAIL));
   assert.ok(advisory.includes(DELIVERY_ENQUIRY_EMAIL));

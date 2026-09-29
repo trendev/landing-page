@@ -573,3 +573,4 @@ export const CONTACT_ADDRESS = "contact@trendev.fr";
 export const DELIVERY_ENQUIRY_EMAIL =
   `mailto:${CONTACT_ADDRESS}?subject=Delivery%20project%20enquiry%20from%20TRENDev%20Website`;
 export const GITHUB_URL = "https://github.com/trendev";
+export const MEDIUM_URL = "https://medium.com/tales-of-a-cto";

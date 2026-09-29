@@ -70,21 +70,26 @@ responsive browser QA. There is no general test runner or linter configured.
   `FaqItem` (one disclosure) and `FaqSearch` (input + topic pills + result
   count) build `/faq`; `Faq.tsx` is now only the landing-page **teaser**,
   rendering `featuredFaqs` through the same `FaqItem` so the two surfaces
-  cannot drift.
+  cannot drift. `MediumStoriesLink` (issue #52) is the one outbound link to the
+  Medium publication shared by both FAQ surfaces (the footer links it too). It
+  is a **plain link on purpose**: an embed or a client-side RSS fetch is a
+  third-party request, which would fall under the cookie-consent rules and
+  `/privacy`.
   `TierCta` is the shared Advisor/Fractional purchase CTA, and
   `ComparisonTable` the 3-tier comparison; both are used by `/services/*`
   only. **The landing page has no pricing/subscription section** — see the
   commercial guardrails below.
 - `src/components/modals/` — `Modal` is the shared backdrop wrapper;
   `DetailModal` / `ConsultationModal` / `ProjectsModal` build on it.
-- `src/components/icons/GithubIcon.tsx` — inline GitHub mark (lucide v1 dropped
-  brand icons; do not re-add an icon dependency for it).
+- `src/components/icons/GithubIcon.tsx` / `MediumIcon.tsx` — inline brand marks
+  (lucide v1 dropped brand icons; do not re-add an icon dependency for them).
 - **All page copy lives under `src/data/`**, not in components:
   - `content.ts` — landing sections (expertise, services, whyChoose, projects,
     engagementModels, methodologySteps, outcomes, offers, engagementModes,
     deliveryPrinciples, adviceSafeguards, proofCases) plus `navLinks`,
     `legalLinks`, `CALENDLY_URL`, `DELIVERY_ENQUIRY_EMAIL`,
-    `DELIVERY_CTA_LABEL`, `GITHUB_URL`.
+    `DELIVERY_CTA_LABEL`, `GITHUB_URL`, `MEDIUM_URL` (the "Tales of a CTO"
+    publication, issue #52).
     **`proofCases` are anonymised and source-grounded only**: never name a
     client, never add an undocumented metric or sector label, never merge
     unrelated assignments, and keep company size / engineering headcount /

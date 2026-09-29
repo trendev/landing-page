@@ -1,8 +1,9 @@
 import { Code } from "lucide-react";
 
 import { Link } from "@/app/router";
-import { GITHUB_URL, legalLinks, navLinks } from "@/data/content";
+import { GITHUB_URL, legalLinks, MEDIUM_URL, navLinks } from "@/data/content";
 import { GithubIcon } from "./icons/GithubIcon";
+import { MediumIcon } from "./icons/MediumIcon";
 
 interface FooterProps {
   onOpenCookieSettings: () => void;
@@ -35,6 +36,15 @@ export function Footer({ onOpenCookieSettings }: FooterProps) {
             >
               <GithubIcon className="w-4 h-4" />
               GitHub
+            </a>
+            <a
+              href={MEDIUM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <MediumIcon className="w-4 h-4" />
+              Medium
             </a>
           </nav>
         </div>

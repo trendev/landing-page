@@ -4,6 +4,7 @@ import { useHash } from "@/app/router";
 import { BackLink } from "@/components/BackLink";
 import { FaqItem } from "@/components/FaqItem";
 import { FaqSearch } from "@/components/FaqSearch";
+import { MediumStoriesLink } from "@/components/MediumStoriesLink";
 import { faqEntries, faqIntro, getFaqEntry } from "@/data/faq";
 import { PRIMARY_CTA_LABEL } from "@/data/pricing";
 import { ALL_TOPICS, filterFaqs, type TopicFilter } from "@/lib/faqSearch";
@@ -201,7 +202,8 @@ export function FaqPage({ onOpenConsultation }: FaqPageProps) {
           </div>
         )}
 
-        <div className="mt-10 text-center">
+        <div className="mt-10 flex flex-col items-center gap-6">
+          <MediumStoriesLink />
           <BackLink />
         </div>
       </div>
