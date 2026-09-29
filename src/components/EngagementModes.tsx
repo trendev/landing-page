@@ -6,13 +6,24 @@ import { positioning } from "@/data/positioning";
 import type { EngagementMode } from "@/types";
 
 function ModeLink({ mode }: { mode: EngagementMode }) {
+  // Inline text flow, with the last word and the arrow held together, so the
+  // arrow sits right after the label when it wraps in the narrow table column
+  // (an inline-flex link pushed it to the far edge, and a bare nbsp still
+  // lets the browser break before the svg).
+  const split = mode.cta.lastIndexOf(" ") + 1;
   return (
     <Link
       href={mode.href}
-      className="text-sm text-accent hover:opacity-80 transition-opacity inline-flex items-center gap-1"
+      className="text-sm text-accent hover:opacity-80 transition-opacity"
     >
-      {mode.cta}
-      <ArrowRight className="w-3.5 h-3.5" />
+      {mode.cta.slice(0, split)}
+      <span className="whitespace-nowrap">
+        {mode.cta.slice(split)}
+        <ArrowRight
+          aria-hidden="true"
+          className="inline-block w-3.5 h-3.5 ml-1 align-[-0.125em]"
+        />
+      </span>
     </Link>
   );
 }
