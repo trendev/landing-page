@@ -50,6 +50,7 @@ export const faqTeaser = {
   subtitle:
     "A few of the questions that come up most. The full knowledge base goes considerably deeper.",
   seeAllLabel: "See all questions",
+  mediumLabel: "Read stories from Tales of a CTO on Medium",
 } as const;
 
 export const faqTopics: FaqTopic[] = [
