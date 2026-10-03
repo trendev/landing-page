@@ -85,7 +85,7 @@ responsive browser QA. There is no general test runner or linter configured.
   (lucide v1 dropped brand icons; do not re-add an icon dependency for them).
 - **All page copy lives under `src/data/`**, not in components:
   - `content.ts` — landing sections (expertise, services, whyChoose, projects,
-    engagementModels, methodologySteps, outcomes, offers, engagementModes,
+    methodologySteps, outcomes, offers, engagementModes,
     deliveryPrinciples, adviceSafeguards, proofCases) plus `navLinks`,
     `legalLinks`, `CALENDLY_URL`, `DELIVERY_ENQUIRY_EMAIL`,
     `DELIVERY_CTA_LABEL`, `GITHUB_URL`, `MEDIUM_URL` (the "Tales of a CTO"
@@ -306,13 +306,12 @@ Analytics is **opt-in**, and the implementation has to stay that way:
 
 ## Design direction (2026 dark rebrand)
 
-The site is being rebranded from the current light theme to a **dark, navy,
-glassmorphic** look with an animated woven-wave background. Visual reference
+The site uses a **dark, navy, glassmorphic** look over an animated woven-wave
+background. Visual reference
 (Figma): https://www.figma.com/design/tPzPmXtsgZpjji318sUPUU
 
 - **Brand accent is the single source of truth.** Keep `--accent` in
-  `theme.css` as the brand cyan (currently `#00D9FF`; the Figma comp uses the
-  near-identical `#25D8EC`). Components must reference the `accent` token
+  `theme.css` as the brand cyan (currently `#25D8EC`, matching the Figma comp). Components must reference the `accent` token
   (`bg-accent`, `text-accent`, `border-accent/30`) — never hardcode cyan hexes.
 - **Dark palette** (add as tokens, don't sprinkle literals): background layers
   `#0A1430` -> `#070C1C` -> `#04060D`; text `#F1F4FF` (primary) / `#9DAFD8`
@@ -328,13 +327,12 @@ glassmorphic** look with an animated woven-wave background. Visual reference
   that overlaps *scrolling* content (Header, modal panels, the consent banner
   strip — a handful of small elements at most) may add `backdrop-blur-md`
   locally.
-- **Going dark:** flip the tokens in `src/styles/theme.css` (and/or apply the
-  `.dark` variant) and change the `App.tsx` root from `bg-white` to the dark
-  background. Don't restyle per-component with literals.
-- **Verbatim copy stays *for the rebrand*.** The dark-theme rebrand is visual
-  only — do not rewrite marketing copy as part of it. (Intentional positioning
-  changes — e.g. the hero eyebrow/subhead and the Methodology/Offers sections
-  added for issue #8 — are a separate, deliberate exception.)
+- **Colour changes go through the tokens** in `src/styles/theme.css`; don't
+  restyle per-component with literals. The `App.tsx` root stays transparent so
+  the `WeaveBackground` canvas shows through.
+- **Visual changes don't touch copy.** Restyling is visual only — don't rewrite
+  marketing copy as part of it; positioning copy changes are their own,
+  deliberate change.
 - **Section rhythm.** Sections own their vertical spacing via `py-12 sm:py-16`
   (bottom-only intro sections use `pb-12 sm:pb-16`); the background runs
   continuously, so there are **no** per-section `bg-*` bands — the glass cards
@@ -440,14 +438,14 @@ on GitHub Pages (`deploy.yml`) — do not move it.
   there claims `/privacy`, `/terms` and `/welcome` are FAQ pages too (the
   removed hand-written block did exactly that, and had already drifted from
   the copy it described). Don't move it back. Only the site-wide
-  `Organization` block belongs in `index.html`.
+  `Organization` block belongs in `index.html`. The other exception: subpages
+  override title/description/canonical at runtime via `useDocumentMeta` (which
+  also fires GA SPA pageviews). `index.html` holds only the gtag **stub** and a
+  denied Consent Mode default; `gtag.js` itself is loaded from
+  `src/lib/analytics.ts` after consent — do not re-add the `<script async
+  src="…googletagmanager…">` tag there.
 - **Every FAQ answer must stay in the DOM at all times.** `FaqItem` toggles
   its panel with `inert` + a `grid-template-rows` transition, never by
   unmounting and never with `hidden` (which cannot be animated). The site is
   fully client-rendered, so a collapsed answer that is absent from the DOM is
-  simply invisible to crawlers. This rules out virtualising the list. The one exception: subpages override
-  title/description/canonical at runtime via `useDocumentMeta` (which also
-  fires GA SPA pageviews). `index.html` holds only the gtag **stub** and a
-  denied Consent Mode default; `gtag.js` itself is loaded from
-  `src/lib/analytics.ts` after consent — do not re-add the `<script async
-  src="…googletagmanager…">` tag there.
+  simply invisible to crawlers. This rules out virtualising the list.
