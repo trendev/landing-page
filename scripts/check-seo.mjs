@@ -89,9 +89,19 @@ const notFound = read('404.html');
 assert.match(attr(notFound, 'meta name="robots"', 'content'), /noindex/);
 assert.ok(!notFound.includes('rel="canonical"'), '404.html must not declare a canonical');
 
-for (const asset of ['og-image.jpg', 'favicon.png']) {
+const home = read('index.html');
+for (const asset of ['og-image.jpg', 'favicon.png', 'logo.svg', 'icon-192.png', 'apple-touch-icon.png']) {
   assert.ok(existsSync(join(BUILD, asset)), `Missing /${asset}`);
 }
-assert.equal(attr(read('index.html'), 'meta property="og:image"', 'content'), `${ORIGIN}/og-image.jpg`);
+assert.equal(attr(home, 'meta property="og:image"', 'content'), `${ORIGIN}/og-image.jpg`);
+assert.match(home.match(/<title>([^<]*)<\/title>/)[1], /Fractional CTO/, 'Home title must lead with the offer');
+
+// Google ignores Organization logos under 112px (PNG width/height: bytes 16-23).
+const organization = jsonLd(home).find((block) => block['@type'] === 'Organization');
+const logoUrl = organization.logo.url ?? organization.logo;
+assert.ok(logoUrl.startsWith(`${ORIGIN}/`), 'Organization logo must be on this site');
+const logo = readFileSync(join(BUILD, logoUrl.slice(ORIGIN.length + 1)));
+const [width, height] = [logo.readUInt32BE(16), logo.readUInt32BE(20)];
+assert.ok(width >= 112 && height >= 112 && width === height, `Organization logo is ${width}×${height}`);
 
 console.log(`SEO checks passed: ${paths.length} indexable routes, /welcome and 404 noindex.`);

@@ -467,8 +467,18 @@ subpage as a blank duplicate of the home page.
   a superseded version keeps its own canonical.
 - `public/og-image.jpg` (1200×630) is a capture of the real hero:
   `node scripts/og-image.mjs` against a running build. Re-run after a hero or
-  brand change. `public/favicon.png` is served unhashed at `/favicon.png`
-  because the Organization `logo` points there.
+  brand change.
+- **Icons:** `public/logo.svg` is the source mark (the original 32px favicon
+  redrawn as a vector). `node scripts/generate-icons.mjs` renders
+  `logo-512.png` (the Organization `logo`: Google ignores logos under 112px
+  and shows them on white), `apple-touch-icon.png` (180, opaque) and
+  `icon-192.png`; re-run it after changing the SVG. `public/favicon.png` stays
+  as the legacy 32px icon.
+- **Home title, description and keywords** live in `src/data/siteMeta.ts`.
+  The title leads with "Fractional CTO" (the most-searched name for the
+  offer; `check-seo.mjs` asserts it). Keywords only list services the site
+  names; Google ignores the tag, so ranking work belongs in titles,
+  descriptions and page copy.
 
 ## Gotchas
 

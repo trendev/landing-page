@@ -20,6 +20,7 @@ function siteMetaPlugin(): Plugin {
     SITE_ROBOTS: siteMeta.robots,
     SITE_OG_TITLE: siteMeta.ogTitle,
     SITE_OG_DESCRIPTION: siteMeta.ogDescription,
+    SITE_KEYWORDS: siteMeta.keywords,
   }
   return {
     name: 'trendev-site-meta',

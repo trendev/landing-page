@@ -7,10 +7,7 @@
       <meta name="theme-color" content="#070C1C" />
       <meta name="robots" content="%SITE_ROBOTS%" />
       <meta name="description" content="%SITE_DESCRIPTION%" />
-      <meta
-        name="keywords"
-        content="fractional CTO, CTO as a service, AI consulting, cloud consulting, DevOps consulting, full-stack development, blockchain development, smart contract development, technology consulting"
-      />
+      <meta name="keywords" content="%SITE_KEYWORDS%" />
       <link rel="canonical" href="%SITE_CANONICAL%" />
       <!-- Landing values come from src/data/siteMeta.ts (vite.config.ts fills
            the %SITE_*% placeholders); scripts/prerender.mjs then rewrites the
@@ -32,7 +29,10 @@
       <meta name="twitter:title" content="%SITE_OG_TITLE%" />
       <meta name="twitter:description" content="%SITE_OG_DESCRIPTION%" />
       <meta name="twitter:image" content="https://trendev.fr/og-image.jpg" />
+      <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+      <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
       <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+      <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       <title>%SITE_TITLE%</title>
       <!-- Google tag (gtag.js) — consent-gated.
            Only the dataLayer/gtag stub and a denied Consent Mode default live
@@ -56,7 +56,12 @@
           "@id": "https://trendev.fr/#organization",
           "name": "TRENDev Consulting",
           "url": "https://trendev.fr/",
-          "logo": "https://trendev.fr/favicon.png",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://trendev.fr/logo-512.png",
+            "width": 512,
+            "height": 512
+          },
           "description": "Technology consulting and delivery for founders, growing startups and investors: CTO advisory, technical due diligence, Fractional CTO leadership and scoped implementation across AI, cloud and software engineering.",
           "contactPoint": {
             "@type": "ContactPoint",
@@ -71,6 +76,10 @@
           "knowsAbout": [
             "CTO as a Service",
             "Fractional CTO",
+            "CTO advisory",
+            "Technical due diligence",
+            "Engineering leadership",
+            "Enterprise architecture",
             "AI consulting",
             "Cloud strategy",
             "DevOps consulting",
