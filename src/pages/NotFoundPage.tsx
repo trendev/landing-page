@@ -4,7 +4,7 @@ import { Link } from "@/app/router";
 import { useDocumentMeta } from "@/hooks/useDocumentMeta";
 
 export function NotFoundPage() {
-  useDocumentMeta({ title: "Page not found | TRENDev" });
+  useDocumentMeta({ title: "Page not found | TRENDev", robots: "noindex" });
 
   return (
     <section className="pt-28 sm:pt-32 pb-12 sm:pb-16 px-4 sm:px-6">
