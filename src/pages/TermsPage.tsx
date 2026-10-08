@@ -5,6 +5,7 @@ import { Link } from "@/app/router";
 import { BackLink } from "@/components/BackLink";
 import {
   currentTermsDate,
+  getLoadedTermsVersion,
   hasTermsVersion,
   loadTermsVersion,
   termsVersionSummaries,
@@ -84,11 +85,15 @@ interface TermsPageProps {
  * still 404s immediately instead of flashing a loading state first.
  */
 function useTermsVersion(date: string): TermsVersion | null {
-  const [terms, setTerms] = useState<TermsVersion | null>(null);
+  const [terms, setTerms] = useState<TermsVersion | null>(() =>
+    getLoadedTermsVersion(date),
+  );
 
   useEffect(() => {
     let stale = false;
-    setTerms(null);
+    const cached = getLoadedTermsVersion(date);
+    setTerms(cached);
+    if (cached) return;
     void loadTermsVersion(date).then((loaded) => {
       if (!stale) setTerms(loaded);
     });
@@ -104,13 +109,20 @@ export function TermsPage({ date }: TermsPageProps) {
   const requested = date ?? currentTermsDate;
   const known = hasTermsVersion(requested);
   const terms = useTermsVersion(requested);
+  // Read after mount: the page is prerendered at build time, so a date read
+  // during render would compare against the build day, not the visitor's.
+  const [today, setToday] = useState<string | null>(null);
+  useEffect(() => setToday(todayIso()), []);
 
   useDocumentMeta(
     terms
       ? {
           title: `Terms of Service (v${terms.version}) | TRENDev`,
           description: `TRENDev Professional Services Terms of Service, version ${terms.version}, effective ${terms.effectiveDate}. Professional clients only.`,
-          canonicalPath: date ? `/terms/${date}` : "/terms",
+          // The current version's dated URL serves the same page as /terms,
+          // so it points there; a superseded version is its own document.
+          canonicalPath:
+            date && date !== currentTermsDate ? `/terms/${date}` : "/terms",
         }
       : undefined,
   );
@@ -163,7 +175,8 @@ export function TermsPage({ date }: TermsPageProps) {
             )}
 
             {terms.status === "effective" &&
-              todayIso() < terms.effectiveDate && (
+              today !== null &&
+              today < terms.effectiveDate && (
                 <div className="print:hidden rounded-xl border border-accent/30 bg-accent/10 px-5 py-4 mb-6 sm:mb-8 flex items-start gap-3">
                   <Info className="w-5 h-5 text-accent shrink-0 mt-0.5" />
                   <p className="text-sm sm:text-base text-foreground">

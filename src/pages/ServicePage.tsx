@@ -3,12 +3,14 @@ import { CalendarCheck } from "lucide-react";
 import { Link } from "@/app/router";
 import { BackLink } from "@/components/BackLink";
 import { ComparisonTable } from "@/components/ComparisonTable";
+import { JsonLd } from "@/components/JsonLd";
 import { ScopeBoundaryNote } from "@/components/ScopeBoundaryNote";
 import { TierCta } from "@/components/TierCta";
 import { legalLinks } from "@/data/content";
 import { ADVISORY_PATH, PREREQUISITE_NOTE, pricingTiers } from "@/data/pricing";
 import { getServiceDescription } from "@/data/serviceDescriptions";
 import { useDocumentMeta } from "@/hooks/useDocumentMeta";
+import { breadcrumbList, graph, tierService } from "@/lib/structuredData";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import type { ContentSection } from "@/types";
 
@@ -65,9 +67,18 @@ export function ServicePage({ slug, onOpenConsultation }: ServicePageProps) {
   if (!service || !tier) return <NotFoundPage />;
 
   const selfService = tier.cta.kind === "checkout";
+  const jsonLd = graph(
+    tierService(tier),
+    breadcrumbList([
+      ["Home", "/"],
+      ["CTO Advisory Plans", ADVISORY_PATH],
+      [service.title, `/services/${service.slug}`],
+    ]),
+  );
 
   return (
     <section className="pt-28 sm:pt-32 pb-12 sm:pb-16 px-4 sm:px-6">
+      <JsonLd data={jsonLd} />
       <div className="max-w-4xl mx-auto">
         <BackLink
           href={ADVISORY_PATH}

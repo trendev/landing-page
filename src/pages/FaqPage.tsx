@@ -4,42 +4,48 @@ import { useHash } from "@/app/router";
 import { BackLink } from "@/components/BackLink";
 import { FaqItem } from "@/components/FaqItem";
 import { FaqSearch } from "@/components/FaqSearch";
+import { JsonLd } from "@/components/JsonLd";
 import { MediumStoriesLink } from "@/components/MediumStoriesLink";
 import { faqEntries, faqIntro, getFaqEntry } from "@/data/faq";
 import { PRIMARY_CTA_LABEL } from "@/data/pricing";
 import { ALL_TOPICS, filterFaqs, type TopicFilter } from "@/lib/faqSearch";
 import { stripInline } from "@/lib/inlineMarkup";
+import { breadcrumbList, graph } from "@/lib/structuredData";
 import { useDocumentMeta } from "@/hooks/useDocumentMeta";
 
 /**
  * FAQPage structured data, emitted from this component rather than from
  * index.html.
  *
- * index.html is copied verbatim into every route directory by deploy.yml, so a
+ * Every route's HTML is built from the one index.html template, so a
  * static FAQPage block there would assert that /privacy, /terms and /welcome
  * are FAQ pages too (which is what the outgoing hand-written block did). It had
  * also already drifted from the copy it described, on a repo with no tests to
  * catch it. Emitting from the data makes it per-route correct by construction
- * and impossible to desynchronise. Google executes JS for indexing, and this
- * site is client-rendered anyway, so the markup appears exactly when the
- * content it describes does.
+ * and impossible to desynchronise. The page is prerendered
+ * (scripts/prerender.mjs), so the block ships in /faq's static HTML alongside
+ * the answers it describes.
  */
-const FAQ_JSON_LD = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": "https://trendev.fr/faq",
-  mainEntity: faqEntries.map((entry) => ({
-    "@type": "Question",
-    name: entry.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: [...entry.answer, ...(entry.bullets ?? [])]
-        .map(stripInline)
-        .join(" "),
-    },
-  })),
-  // Cheap defence against a "</script>" ever appearing in the copy.
-}).replace(/</g, "\\u003c");
+const FAQ_JSON_LD = graph(
+  {
+    "@type": "FAQPage",
+    "@id": "https://trendev.fr/faq",
+    mainEntity: faqEntries.map((entry) => ({
+      "@type": "Question",
+      name: entry.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: [...entry.answer, ...(entry.bullets ?? [])]
+          .map(stripInline)
+          .join(" "),
+      },
+    })),
+  },
+  breadcrumbList([
+    ["Home", "/"],
+    ["FAQ", "/faq"],
+  ]),
+);
 
 function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -136,10 +142,7 @@ export function FaqPage({ onOpenConsultation }: FaqPageProps) {
 
   return (
     <section className="pt-28 sm:pt-32 pb-12 sm:pb-16 px-4 sm:px-6">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: FAQ_JSON_LD }}
-      />
+      <JsonLd data={FAQ_JSON_LD} />
       <div className="max-w-3xl mx-auto">
         <BackLink className="mb-6" />
 

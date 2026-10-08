@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useRoute, type Route } from "@/app/router";
 import { ConsentBanner } from "@/components/ConsentBanner";
@@ -56,10 +56,13 @@ export default function App() {
   const route = useRoute();
   const [showConsultationModal, setShowConsultationModal] = useState(false);
   // Shown until the visitor answers it, and reopened from the footer so the
-  // choice can be changed or withdrawn at any time.
-  const [showConsentBanner, setShowConsentBanner] = useState(
-    () => readConsent() === null,
-  );
+  // choice can be changed or withdrawn at any time. Opened after mount rather
+  // than from the initial state: the prerendered HTML cannot know this
+  // visitor's stored choice, and hydration must start from the same tree.
+  const [showConsentBanner, setShowConsentBanner] = useState(false);
+  useEffect(() => {
+    if (readConsent() === null) setShowConsentBanner(true);
+  }, []);
 
   const openConsultation = () => setShowConsultationModal(true);
 

@@ -12,10 +12,12 @@ AI, Cloud, DevOps, Web3). Static site, no backend.
 ```bash
 npm run dev        # dev server at http://localhost:3000 (opens a browser)
 npm run typecheck  # tsc --noEmit — run before considering work done
-npm run build      # production build to ./build
+npm run build      # production build to ./build, every route prerendered
 ```
 
-`node scripts/check-positioning.mjs` runs dependency-free content/render smoke
+`node scripts/check-seo.mjs` (after a build; deploy.yml runs it too) checks the
+prerendered output: per-route canonical/title/robots, one H1, parseable
+JSON-LD, sitemap contents. `node scripts/check-positioning.mjs` runs dependency-free content/render smoke
 checks through Vite and React SSR (with test checkout). It does not replace
 responsive browser QA. There is no general test runner or linter configured.
 
@@ -37,9 +39,10 @@ responsive browser QA. There is no general test runner or linter configured.
   answer. Don't fold the hash into the pathname snapshot instead — that
   re-renders the whole landing tree on every `/#section` click.
   Handles `/#section` hash links from subpages, scroll-to-top, and GA SPA
-  pageviews (via `useDocumentMeta`). GH Pages serves deep links through
-  per-route `index.html` copies created in `.github/workflows/deploy.yml` —
-  **keep that route list in sync with the router and the terms registry**.
+  pageviews (via `useDocumentMeta`). Deep links resolve because every route
+  is prerendered to its own HTML file (see **Prerendering** below);
+  `src/app/staticRoutes.ts` lists them — **keep its static part in sync with
+  `matchRoute`** (service slugs and Terms dates are derived from the data).
 - `src/pages/` — one component per route: `LandingPage` (owns the
   landing-only modal state: DetailModal, ProjectsModal), `AdvisoryPage` (the
   subscription funnel: 3 tiers + `ComparisonTable`), `ServicePage`
@@ -159,11 +162,16 @@ responsive browser QA. There is no general test runner or linter configured.
     a public static URL resolves each buyer to their own subscription — but a
     dead or generic URL is worse than none, hence the empty-string gate.
 - `src/types.ts` — shared types. `src/hooks/` — `useBodyScrollLock` (scroll
-  lock), `useDocumentMeta` (per-route title/description/canonical + GA SPA
-  pageview; `index.html` stays the SEO source of truth for `/` and OG/JSON-LD).
-  It also overrides `robots` per route, restoring the `index.html` default when
-  a page passes none: `deploy.yml` gives every route a real crawlable entry
-  point, so a route that should stay out of search (`/welcome`) must say so.
+  lock), `useDocumentMeta` (per-route title/description/canonical/robots +
+  the og/twitter tags mirroring them + GA SPA pageview). It is the **single
+  source of a page's meta**: at build time the same call is recorded and
+  written into that route's static HTML. The landing head lives in
+  `src/data/siteMeta.ts`, which fills `index.html`'s `%SITE_*%` placeholders
+  (plugin in `vite.config.ts`) and is what the hook restores on `/` — never
+  read the defaults back out of the DOM, since a prerendered subpage's head
+  is no longer the landing one. Every route is a real crawlable page, so a
+  route that should stay out of search (`/welcome`) must pass `robots:
+  "noindex"`, which also keeps it out of the sitemap.
 - `src/lib/analytics.ts` — consent-gated Google Analytics loading. See
   **Cookie consent** below before touching anything analytics-related.
 
@@ -238,8 +246,8 @@ responsive browser QA. There is no general test runner or linter configured.
   not host the plans.
 - Terms versions are immutable once their PDF is committed: publishing a
   change means a new dated module under `src/data/terms/`, a new PDF
-  (`node scripts/generate-terms-pdf.mjs <date>`), and a new deploy.yml route —
-  never edit an accepted version. Full workflow: `docs/legal-versioning.md`.
+  (`node scripts/generate-terms-pdf.mjs <date>`); the dated route is
+  prerendered from the registry automatically — never edit an accepted version. Full workflow: `docs/legal-versioning.md`.
 - **Terms v1.0 (2026-09-01) is the one published version**, and there is only
   one. It was frozen on 2026-08-19, then rewritten **in place** on 2026-08-21
   after the deep legal review of 2026-08-19 and the owner's decisions on it:
@@ -417,8 +425,10 @@ on GitHub Pages (`deploy.yml`) — do not move it.
   no Vercel production deploy. Don't remove it or attach `trendev.fr` there.
 - `buildCommand` pins `VITE_STRIPE_MODE=test`: a `vite build` otherwise selects
   the **live** Payment Links, and a preview must never lead to real checkout.
-- The catch-all rewrite to `/index.html` stands in for the per-route
-  `index.html` copies `deploy.yml` makes; Vercel serves real files first.
+- Previews run the same `npm run build`, so they are prerendered too; Vercel
+  serves the real route files first and the catch-all rewrite to `/index.html`
+  only catches unknown paths (`main.tsx` then renders client-side instead of
+  hydrating, since the prerendered path does not match).
 - Vercel marks preview URLs `X-Robots-Tag: noindex` itself.
 - The project is `landing-page-31rm` (team `umbratrade`). The *other*
   `landing-page` project in that team deploys `unleaktrade/landing-page`, a
@@ -426,26 +436,64 @@ on GitHub Pages (`deploy.yml`) — do not move it.
   `build` and "Only build Preview deployments", so a branch without
   `vercel.json` cannot produce a production build either.
 
+## Prerendering (SEO)
+
+Every route ships as fully rendered static HTML with its own head, then
+hydrates. Before this, all routes served one empty `#root` with the landing
+title and `canonical=/`, so non-JS crawlers and link previews saw every
+subpage as a blank duplicate of the home page.
+
+- `npm run build` = client build, then `vite build --ssr src/entry-server.tsx`
+  (to `build-ssr/`, deleted afterwards), then `scripts/prerender.mjs`, which
+  renders each path in `src/app/staticRoutes.ts` into `build/<route>.html`
+  **and** `build/<route>/index.html` (GH Pages answers `/faq` from `faq.html`
+  with a 200; a directory alone 301s to `/faq/`, and canonicals are
+  slash-less), plus `404.html` (NotFound, `noindex`, no canonical),
+  `sitemap.xml` (indexable, self-canonical routes only) and `robots.txt`.
+  `deploy.yml` has no route list any more.
+- **The render must be hydration-safe.** No `window`, `localStorage`, dates or
+  other visitor-specific values during render: read them in an effect (the
+  consent banner opens after mount; the Terms pre-effective note reads today's
+  date after mount). Hooks over browser stores need a `getServerSnapshot`
+  (`useRoute`, `useHash` in `router.tsx`). React logs any mismatch to the
+  console — check a built page in a browser after changing render logic.
+- **Async data is preloaded, not fetched in an effect, for first render.**
+  `src/app/preloadRoute.ts` loads the lazy Terms chunk before the prerender
+  and before `main.tsx` hydrates, and `TermsPage` starts from the registry's
+  sync cache, so the legal text is in the HTML with no loading flash.
+- `main.tsx` hydrates only when `#root[data-prerendered-path]` matches the
+  current path; otherwise (404 fallback, dev server) it renders client-side.
+- The current Terms version's dated URL canonicalises to `/terms` (same page);
+  a superseded version keeps its own canonical.
+- `public/og-image.jpg` (1200×630) is a capture of the real hero:
+  `node scripts/og-image.mjs` against a running build. Re-run after a hero or
+  brand change. `public/favicon.png` is served unhashed at `/favicon.png`
+  because the Organization `logo` points there.
+
 ## Gotchas
 
 - This repo was originally generated by Figma Make and later refactored into the
   structure above. If you find a giant inline file or a Figma artifact, it's
   drift — prefer the decomposed pattern.
-- `index.html` carries the SEO/OpenGraph/schema.org markup — update site-wide
-  meta there, not in React. **Exception: `FAQPage` JSON-LD is emitted at
-  runtime by `FaqPage`, not from `index.html`.** `deploy.yml` copies the one
-  built `index.html` into every route directory, so a static FAQPage block
-  there claims `/privacy`, `/terms` and `/welcome` are FAQ pages too (the
-  removed hand-written block did exactly that, and had already drifted from
-  the copy it described). Don't move it back. Only the site-wide
-  `Organization` block belongs in `index.html`. The other exception: subpages
-  override title/description/canonical at runtime via `useDocumentMeta` (which
-  also fires GA SPA pageviews). `index.html` holds only the gtag **stub** and a
+- `index.html` is the head **template** for every route: it carries the
+  site-wide OG tags and the `Organization` + `WebSite` JSON-LD; landing
+  title/description/OG copy come from `src/data/siteMeta.ts`. **Page-level
+  JSON-LD is emitted by the page through `<JsonLd>`** (`FAQPage` + breadcrumb
+  on `/faq`, `Service`/`Offer` + breadcrumb on `/advisory` and `/services/*`,
+  built in `src/lib/structuredData.ts` from the rendered data), so the
+  prerender puts it in that route's HTML only. A static FAQPage block in
+  `index.html` would claim `/privacy`, `/terms` and `/welcome` are FAQ pages
+  too (the removed hand-written block did exactly that, and had already
+  drifted from the copy it described). Don't move it back. Offer prices are
+  parsed from `pricingTiers` and always `valueAddedTaxIncluded: false`.
+  Subpages set title/description/canonical via `useDocumentMeta` (which also
+  fires GA SPA pageviews). `index.html` holds only the gtag **stub** and a
   denied Consent Mode default; `gtag.js` itself is loaded from
   `src/lib/analytics.ts` after consent — do not re-add the `<script async
   src="…googletagmanager…">` tag there.
 - **Every FAQ answer must stay in the DOM at all times.** `FaqItem` toggles
   its panel with `inert` + a `grid-template-rows` transition, never by
-  unmounting and never with `hidden` (which cannot be animated). The site is
-  fully client-rendered, so a collapsed answer that is absent from the DOM is
-  simply invisible to crawlers. This rules out virtualising the list.
+  unmounting and never with `hidden` (which cannot be animated). The prerendered
+  `/faq` HTML is the initial render, all panels collapsed, so a collapsed
+  answer that is absent from the DOM is simply invisible to crawlers. This
+  rules out virtualising the list.

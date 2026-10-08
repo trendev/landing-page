@@ -46,8 +46,9 @@ able to re-read what they accepted.
    text). Opening the page in `npm run dev` warns in the console if the two
    disagree.
 3. Generate and commit the PDF: `node scripts/generate-terms-pdf.mjs <new-date>`.
-4. Add `terms/<new-date>` to the per-route entry-point list in
-   `.github/workflows/deploy.yml`.
+4. Nothing to add for the route itself: `npm run build` prerenders one page
+   per `termsVersionSummaries` entry (`src/app/staticRoutes.ts`), so the new
+   dated URL gets its static HTML and sitemap entry automatically.
 5. Deploy, and confirm the new dated route returns HTTP 200 **before** the next
    step: Stripe checkout will link buyers straight at it.
 6. Repoint Stripe at the new dated route:
