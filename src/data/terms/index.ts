@@ -7,8 +7,9 @@ import type { TermsVersion } from "@/types";
  * once its PDF is committed and the version is (or was) purchasable — clients
  * accepted that exact text. Publishing a change means: add a new dated module,
  * register it here, generate + commit its PDF (scripts/generate-terms-pdf.mjs),
- * mark the old version "superseded" (status only), and add the new route to
- * .github/workflows/deploy.yml. See docs/legal-versioning.md.
+ * and mark the old version "superseded" (status only). The new dated route is
+ * prerendered from `termsVersionSummaries` (src/app/staticRoutes.ts), so it
+ * needs no separate route list. See docs/legal-versioning.md.
  *
  * LAZY BY DESIGN: a dated module is ~16 kB of legal prose that only /terms and
  * /terms/<date> ever render, and this registry only ever grows, because
@@ -58,6 +59,20 @@ export function hasTermsVersion(date: string): boolean {
   return date in loaders;
 }
 
+/**
+ * Versions already loaded in this session. Lets a page render the text on its
+ * first render when it is already here: always at prerender time and on
+ * hydration, where entry-server.tsx and main.tsx await the version before
+ * rendering, so the static HTML and the first client render hold the same
+ * text instead of a "Loading…" placeholder.
+ */
+const loaded = new Map<string, TermsVersion>();
+
+/** The version's text if it has already been loaded, without loading it. */
+export function getLoadedTermsVersion(date: string): TermsVersion | null {
+  return loaded.get(date) ?? null;
+}
+
 /** Loads one version's full text. Resolves to null for an unknown date. */
 export async function loadTermsVersion(
   date: string,
@@ -66,6 +81,7 @@ export async function loadTermsVersion(
   if (!load) return null;
 
   const terms = await load();
+  loaded.set(date, terms);
 
   if (import.meta.env.DEV) {
     const summary = termsVersionSummaries.find((entry) => entry.date === date);

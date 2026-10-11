@@ -148,3 +148,4 @@ vite.config.ts.timestamp-*
 
 # Figma sync capture output (scripts/figma-sync/build.mjs)
 figma-out/
+build-ssr

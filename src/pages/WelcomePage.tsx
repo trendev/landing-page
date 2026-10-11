@@ -93,7 +93,7 @@ function Step({ step }: { step: WelcomeStep }) {
  * redirects here after checkout, but the page reads no Stripe data and holds
  * no customer state, so there is nothing here that is specific to the buyer.
  *
- * noindex because deploy.yml gives this route a real crawlable entry point,
+ * noindex because the build prerenders this route as a real crawlable page,
  * and a post-purchase page does not belong in search results.
  */
 export function WelcomePage() {

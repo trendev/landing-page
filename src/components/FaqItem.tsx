@@ -88,8 +88,8 @@ export function FaqItem({
 
       {/*
        * Always rendered, never unmounted: collapsed answers must stay in the
-       * DOM for crawlers, and the site is fully client-rendered so there is no
-       * server HTML to fall back on. `inert` (not `hidden`) does the hiding,
+       * DOM for crawlers: the prerendered /faq HTML is the initial render, with
+       * every answer collapsed. `inert` (not `hidden`) does the hiding,
        * because `hidden` cannot be transitioned; inert still removes the panel
        * from the accessibility tree and from the tab order.
        */}

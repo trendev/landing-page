@@ -6,10 +6,10 @@ import {
 
 /**
  * Minimal client-side router (no dependency — matches the repo's zero-dep
- * ethos, cf. WeaveBackground). GitHub Pages serves 404.html (a copy of
- * index.html) for unknown paths and deploy.yml pre-creates per-route
- * index.html copies, so deep links resolve; here we only need pathname
- * matching + history.pushState navigation.
+ * ethos, cf. WeaveBackground). The build prerenders a static HTML file per
+ * route (src/app/staticRoutes.ts, scripts/prerender.mjs) and a 404.html that
+ * GitHub Pages serves for unknown paths, so deep links resolve; here we only
+ * need pathname matching + history.pushState navigation.
  */
 
 export type Route =
@@ -100,15 +100,45 @@ function getPathname(): string {
   return window.location.pathname;
 }
 
+/**
+ * The path being prerendered (scripts/prerender.mjs, via entry-server). There
+ * is no `window` at build time, so the route comes from here instead.
+ */
+let serverPathname = "/";
+
+export function setServerPathname(pathname: string): void {
+  serverPathname = pathname;
+}
+
+/**
+ * Hydration renders with this snapshot. In the browser it is the real path, so
+ * the first client render picks the same page the prerendered HTML holds.
+ */
+function getServerPathname(): string {
+  return typeof window === "undefined" ? serverPathname : getPathname();
+}
+
 /** Current route, re-rendered on pushState/popstate. */
 export function useRoute(): Route {
-  const pathname = useSyncExternalStore(subscribe, getPathname);
+  const pathname = useSyncExternalStore(
+    subscribe,
+    getPathname,
+    getServerPathname,
+  );
   return matchRoute(pathname);
+}
+
+/**
+ * The prerendered HTML has no hash, and nothing renders from it directly (only
+ * effects read it), so hydration starts from "" and the real hash follows.
+ */
+function getServerHash(): string {
+  return "";
 }
 
 /** Current `location.hash` (including the leading "#"), or "" when absent. */
 export function useHash(): string {
-  return useSyncExternalStore(subscribeHash, getHash);
+  return useSyncExternalStore(subscribeHash, getHash, getServerHash);
 }
 
 /**

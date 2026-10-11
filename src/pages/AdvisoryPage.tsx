@@ -8,7 +8,17 @@ import { TierCta } from "@/components/TierCta";
 import { PREREQUISITE_NOTE, pricingTiers } from "@/data/pricing";
 import { DELIVERY_ENQUIRY_EMAIL } from "@/data/content";
 import { positioning } from "@/data/positioning";
+import { JsonLd } from "@/components/JsonLd";
 import { useDocumentMeta } from "@/hooks/useDocumentMeta";
+import { breadcrumbList, graph, tierService } from "@/lib/structuredData";
+
+const ADVISORY_JSON_LD = graph(
+  ...pricingTiers.map(tierService),
+  breadcrumbList([
+    ["Home", "/"],
+    ["CTO Advisory Plans", "/advisory"],
+  ]),
+);
 
 interface AdvisoryPageProps {
   onOpenConsultation: () => void;
@@ -31,6 +41,7 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
 
   return (
     <section className="pt-28 sm:pt-32 pb-12 sm:pb-16 px-4 sm:px-6">
+      <JsonLd data={ADVISORY_JSON_LD} />
       <div className="max-w-6xl mx-auto">
         <BackLink className="mb-6" />
         <header className="text-center mb-10 sm:mb-14">
