@@ -1,6 +1,6 @@
 import { CalendarCheck, ClipboardList, Mail } from "lucide-react";
 
-import { CALENDLY_URL, CONTACT_ADDRESS } from "@/data/content";
+import { ADVISORY_BOOKING_URL, CONTACT_ADDRESS } from "@/data/content";
 import { STRIPE_PORTAL_LOGIN_URL } from "@/data/stripe";
 import type {
   ContentSection,
@@ -242,11 +242,12 @@ export const welcomeSteps: WelcomeStep[] = [
     step: "02",
     heading: "Schedule your first working session",
     paragraphs: [
-      "Pick a slot that suits you. We will use it to agree priorities and to decide what the first month should actually move.",
+      "Book a 60-minute working session using the dedicated calendar for existing CTO Advisor and CTO Advisor+ clients. We will agree priorities and the next steps. This session counts towards your subscription’s advisory capacity; no additional payment is collected when booking.",
     ],
+    note: "Use the same email address as at checkout. If you need a different session length or cannot find a suitable slot, contact contact@trendev.fr.",
     cta: {
-      label: "Book your first session",
-      href: CALENDLY_URL,
+      label: "Book your first working session",
+      href: ADVISORY_BOOKING_URL,
       primary: true,
     },
   },

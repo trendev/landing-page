@@ -2,6 +2,10 @@
 
 Guidance for working in this repo.
 
+## Introductory booking update (7 November 2026)
+
+Consultation CTAs now navigate directly to `CALENDLY_URL`; the consultation modal has been removed. The free introductory call is 20 minutes, for fit and next-step clarification, with no required preparation and no free audit promise. This supersedes modal-specific guidance below. Paid Advisor/Advisor+ working sessions use `ADVISORY_BOOKING_URL` from the welcome page: a dedicated 60-minute calendar, counted within subscription capacity, with no additional checkout. The public introductory event was verified at 20 minutes. The welcome page and Calendly link do not verify subscription status; identify the client by their checkout email. Prices and contractual service definitions are unchanged.
+
 ## What this is
 
 Single-page marketing landing page for **TRENDev Consulting** (Fractional CTO,

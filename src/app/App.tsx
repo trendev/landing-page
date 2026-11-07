@@ -5,8 +5,7 @@ import { ConsentBanner } from "@/components/ConsentBanner";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { WeaveBackground } from "@/components/WeaveBackground";
-import { ConsultationModal } from "@/components/modals/ConsultationModal";
-import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+import { CALENDLY_URL } from "@/data/content";
 import { readConsent, setConsent } from "@/lib/analytics";
 import { AdvisoryPage } from "@/pages/AdvisoryPage";
 import { FaqPage } from "@/pages/FaqPage";
@@ -54,7 +53,6 @@ function Page({
 
 export default function App() {
   const route = useRoute();
-  const [showConsultationModal, setShowConsultationModal] = useState(false);
   // Shown until the visitor answers it, and reopened from the footer so the
   // choice can be changed or withdrawn at any time. Opened after mount rather
   // than from the initial state: the prerendered HTML cannot know this
@@ -64,9 +62,7 @@ export default function App() {
     if (readConsent() === null) setShowConsentBanner(true);
   }, []);
 
-  const openConsultation = () => setShowConsultationModal(true);
-
-  useBodyScrollLock(showConsultationModal);
+  const openConsultation = () => window.location.assign(CALENDLY_URL);
 
   return (
     // Root stays transparent so the fixed, -z-10 WeaveBackground canvas shows
@@ -90,10 +86,6 @@ export default function App() {
           }}
           onDismiss={() => setShowConsentBanner(false)}
         />
-      )}
-
-      {showConsultationModal && (
-        <ConsultationModal onClose={() => setShowConsultationModal(false)} />
       )}
     </div>
   );

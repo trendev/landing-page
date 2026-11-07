@@ -12,8 +12,6 @@
   { "path": "/nope", "slug": "notfound", "name": "404" },
 
   { "path": "/", "slug": "overlay-consent", "name": "Overlay - Cookie consent", "h": 900, "showConsent": true },
-  { "path": "/", "slug": "overlay-consultation", "name": "Overlay - Consultation modal", "h": 900,
-    "before": "(()=>{const b=[...document.querySelectorAll('header button')].find(e=>/consultation/i.test(e.innerText));b&&b.click();})()" },
   { "path": "/", "slug": "overlay-projects", "name": "Overlay - Projects modal", "h": 900,
     "before": "(()=>{const b=[...document.querySelectorAll('button,a')].find(e=>/explore our engineering resources/i.test(e.innerText));b&&b.click();})()" },
   { "path": "/", "slug": "overlay-detail", "name": "Overlay - Expertise detail modal", "h": 900,
