@@ -34,7 +34,7 @@ runner. Chromium comes from `PLAYWRIGHT_BROWSERS_PATH` where one is provisioned.
   404. Keep `routes.json` in sync with `src/app/router.tsx` and
   `.github/workflows/deploy.yml`.
 - **Four overlay states** the routes alone never show: the cookie consent
-  banner, and the consultation / projects / expertise-detail modals. These are
+  banner, and the projects / expertise-detail modals. These are
   driven by the `before` snippet on the route entry and clipped to `h` px.
 - **Text as text.** Each visual line is measured character by character, so
   soft wraps become separate lines and an inline `<strong>` or link inside a

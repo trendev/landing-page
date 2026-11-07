@@ -1,7 +1,7 @@
 import { ArrowRight, Repeat } from "lucide-react";
 
 import { Link } from "@/app/router";
-import { ADVISORY_PATH, SECONDARY_CTA_LABEL } from "@/data/pricing";
+import { ADVISORY_PATH, PRIMARY_CTA_LABEL, SECONDARY_CTA_LABEL } from "@/data/pricing";
 import { positioning } from "@/data/positioning";
 
 interface HeroProps {
@@ -28,7 +28,7 @@ export function Hero({ onOpenConsultation }: HeroProps) {
             onClick={onOpenConsultation}
             className="px-5 sm:px-6 py-2.5 sm:py-3 bg-accent text-accent-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base"
           >
-            Schedule Free Consultation
+            {PRIMARY_CTA_LABEL}
             <ArrowRight className="w-4 h-4" />
           </button>
           {/* Distinct intent, distinct button: booking a call and subscribing

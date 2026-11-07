@@ -18,8 +18,8 @@ import type { ComparisonRow, PricingTier } from "@/types";
 
 export const TAX_NOTE = "excluding applicable taxes";
 
-/** Frozen site-wide primary CTA copy (issue #13). */
-export const PRIMARY_CTA_LABEL = "Book a free CTO consultation";
+/** Site-wide introductory booking CTA. */
+export const PRIMARY_CTA_LABEL = "Book a free 20-minute call";
 
 /**
  * Second funnel entry point (issue #13). Booking a consultation and
@@ -34,11 +34,11 @@ export const SECONDARY_CTA_LABEL = "See CTO advisory plans";
  * which leaves no room beside the logo under ~360px and collides with it below
  * 320px. Same action, same promise, fewer words.
  */
-export const PRIMARY_CTA_LABEL_SHORT = "Free consultation";
+export const PRIMARY_CTA_LABEL_SHORT = "Free 20-min call";
 
 /** Shown adjacent to the Advisor/Advisor+ purchase CTAs — keep them together. */
 export const PREREQUISITE_NOTE =
-  "Prerequisite: please schedule your free CTO consultation before subscribing.";
+  "Prerequisite: please schedule your free 20-minute introductory call before subscribing.";
 
 /**
  * Stripe checkout links moved to `@/data/stripe` (issue #16): they are now

@@ -10,12 +10,10 @@ const server = await createServer({ server: { middlewareMode: true }, appType: '
 try {
   const { LandingPage } = await server.ssrLoadModule('/src/pages/LandingPage.tsx');
   const { AdvisoryPage } = await server.ssrLoadModule('/src/pages/AdvisoryPage.tsx');
-  const { ConsultationModal } = await server.ssrLoadModule('/src/components/modals/ConsultationModal.tsx');
   const { positioning } = await server.ssrLoadModule('/src/data/positioning.ts');
   const { engagementModes, DELIVERY_ENQUIRY_EMAIL, MEDIUM_URL, proofCases } = await server.ssrLoadModule('/src/data/content.ts');
   const landing = renderToStaticMarkup(createElement(LandingPage, { onOpenConsultation() {} }));
   const advisory = renderToStaticMarkup(createElement(AdvisoryPage, { onOpenConsultation() {} }));
-  const consultation = renderToStaticMarkup(createElement(ConsultationModal, { onClose() {} }));
 
   assert.equal((landing.match(/<h1\b/g) || []).length, 1);
   assert.ok(landing.includes(positioning.hero.title));
@@ -44,8 +42,11 @@ try {
   assert.ok(advisory.includes('excluding applicable taxes'));
   assert.ok(advisory.includes('before subscribing'));
   assert.ok(advisory.includes('buy.stripe.com/test_'), 'Smoke checks must use test checkout');
-  assert.ok(!consultation.includes('buy.stripe.com'));
-  assert.ok(consultation.includes('calendly.com'));
+  assert.ok(landing.includes('free 20-minute call'));
+  assert.ok(landing.includes('calendly.com'));
+  const appSource = readFileSync('src/app/App.tsx', 'utf8');
+  assert.ok(!appSource.includes('ConsultationModal'));
+  assert.ok(!readFileSync('src/data/welcome.ts', 'utf8').includes('CALENDLY_URL'), 'Paid sessions must not use the introductory calendar');
   assert.ok(engagementModes.some(mode => mode.engagement === 'Technical assessment & due diligence' && mode.href === '/#offers'));
   assert.ok(engagementModes.some(mode => mode.engagement === 'CTO Advisor'));
   for (const unsupported of ['Deployments from days to minutes', 'Production AI delivered in weeks', 'measurable returns']) {

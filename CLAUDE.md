@@ -2,6 +2,10 @@
 
 Guidance for working in this repo.
 
+## Introductory booking update (7 November 2026)
+
+Consultation CTAs now navigate directly to `CALENDLY_URL`; the consultation modal has been removed. The free introductory call is 20 minutes, for fit and next-step clarification, with no required preparation and no free audit promise. This supersedes modal-specific guidance below. Paid working sessions are arranged separately through the welcome-page email CTA and must not use the introductory calendar. Before deploying this change, verify the existing Calendly event has actually been changed to 20 minutes. Prices and contractual service definitions are unchanged.
+
 ## What this is
 
 Single-page marketing landing page for **TRENDev Consulting** (Fractional CTO,

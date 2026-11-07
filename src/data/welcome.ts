@@ -1,6 +1,6 @@
 import { CalendarCheck, ClipboardList, Mail } from "lucide-react";
 
-import { CALENDLY_URL, CONTACT_ADDRESS } from "@/data/content";
+import { CONTACT_ADDRESS } from "@/data/content";
 import { STRIPE_PORTAL_LOGIN_URL } from "@/data/stripe";
 import type {
   ContentSection,
@@ -242,11 +242,11 @@ export const welcomeSteps: WelcomeStep[] = [
     step: "02",
     heading: "Schedule your first working session",
     paragraphs: [
-      "Pick a slot that suits you. We will use it to agree priorities and to decide what the first month should actually move.",
+      "Email your availability so we can agree the duration and agenda of your first working session. This is separate from the free 20-minute introductory call.",
     ],
     cta: {
-      label: "Book your first session",
-      href: CALENDLY_URL,
+      label: "Arrange your first working session",
+      href: `mailto:${CONTACT_ADDRESS}?subject=Schedule%20my%20first%20advisory%20working%20session`,
       primary: true,
     },
   },

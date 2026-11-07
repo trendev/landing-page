@@ -457,8 +457,8 @@ export const faqEntries: FaqEntry[] = [
     question: "Why do I have to book a free consultation before subscribing?",
     answer: [
       "Because a subscription that starts badly wastes your money and my time.",
-      "The consultation does three things. It confirms there is genuine fit. It gives me enough context that the first working session is productive rather than introductory. And it fairly often establishes that you need something other than what you were about to buy.",
-      "It is free, it carries no obligation, and it is the required first step before subscribing.",
+      "The free introductory call lasts 20 minutes. We clarify your situation, the decision or project at stake, and the support you need. We then decide whether there is a useful next step and who would own the work. It may establish that a different kind of support is more appropriate.",
+      "No preparation or documents are required. This is a fit conversation, not a free audit or a working session. It carries no obligation and remains the required first step before subscribing.",
     ],
     keywords: ["consultation", "discovery call", "prerequisite", "free"],
     related: ["which-plan-fits-us"],
@@ -618,8 +618,8 @@ export const faqEntries: FaqEntry[] = [
     topic: "getting-started",
     question: "How do I book the first session?",
     answer: [
-      "Through the scheduling link on your [welcome page](/welcome), which uses the same booking system as the free consultation.",
-      "Choose a convenient slot for a free consultation with TRENDev to discuss your project, your priorities and the support you need.",
+      "Use the scheduling contact on your [welcome page](/welcome) to agree a working session within your engagement. Paid working sessions are separate from the free introductory call.",
+      "The duration and agenda of working sessions are agreed within your engagement; they are not limited to the 20-minute introductory format.",
     ],
     keywords: ["book", "schedule", "calendly", "appointment", "first session"],
     related: ["prepare-for-the-first-session"],

@@ -55,7 +55,7 @@ export const positioning = {
   cta: {
     title: "Let’s talk about your next step",
     description:
-      "A product to launch, a team to scale or technology to assess? Tell us what you are working towards. We’ll discuss the support you need and a practical way to start. For implementation, you can send a project brief directly — no advisory subscription required.",
+      "An agency proposal to assess, a migration to unblock, a CTO transition or a technical review before an investment? Start with a free 20-minute call. We clarify your situation, the support and responsibility you need, and whether there is a useful next step. No preparation or commitment required. This is an introductory conversation, not a technical audit. You can also email a project brief directly.",
   },
   advisory: {
     title: "CTO advice and leadership for your business",
