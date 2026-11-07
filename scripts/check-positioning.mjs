@@ -46,7 +46,14 @@ try {
   assert.ok(landing.includes('calendly.com'));
   const appSource = readFileSync('src/app/App.tsx', 'utf8');
   assert.ok(!appSource.includes('ConsultationModal'));
-  assert.ok(!readFileSync('src/data/welcome.ts', 'utf8').includes('CALENDLY_URL'), 'Paid sessions must not use the introductory calendar');
+  const { welcomeSteps } = await server.ssrLoadModule('/src/data/welcome.ts');
+  const { CALENDLY_URL, ADVISORY_BOOKING_URL } = await server.ssrLoadModule('/src/data/content.ts');
+  const { WelcomePage } = await server.ssrLoadModule('/src/pages/WelcomePage.tsx');
+  const welcome = renderToStaticMarkup(createElement(WelcomePage));
+  assert.notEqual(ADVISORY_BOOKING_URL, CALENDLY_URL, 'Paid sessions need a separate event');
+  assert.equal(welcomeSteps.find(step => step.id === 'schedule-session').cta.href, ADVISORY_BOOKING_URL);
+  assert.ok(welcome.includes(`href="${ADVISORY_BOOKING_URL}"`), 'Onboarding must render the paid-session link');
+  assert.ok(!landing.includes(ADVISORY_BOOKING_URL), 'The paid calendar is not a prospect CTA');
   assert.ok(engagementModes.some(mode => mode.engagement === 'Technical assessment & due diligence' && mode.href === '/#offers'));
   assert.ok(engagementModes.some(mode => mode.engagement === 'CTO Advisor'));
   for (const unsupported of ['Deployments from days to minutes', 'Production AI delivered in weeks', 'measurable returns']) {

@@ -567,6 +567,9 @@ export const legalLinks = [
 /** Shared external links used across CTAs. */
 export const CALENDLY_URL =
   "https://calendly.com/whyvrafvr/trendev-consult";
+/** Booking for existing Advisor clients; counted within subscription capacity. */
+export const ADVISORY_BOOKING_URL =
+  "https://calendly.com/whyvrafvr/advisory-working-session";
 /** Bare address, for display and for pages that build their own mailto. */
 export const CONTACT_ADDRESS = "contact@trendev.fr";
 /** Prefilled delivery-project mailto: never routed to subscription checkout. */

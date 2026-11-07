@@ -618,8 +618,8 @@ export const faqEntries: FaqEntry[] = [
     topic: "getting-started",
     question: "How do I book the first session?",
     answer: [
-      "Use the scheduling contact on your [welcome page](/welcome) to agree a working session within your engagement. Paid working sessions are separate from the free introductory call.",
-      "The duration and agenda of working sessions are agreed within your engagement; they are not limited to the 20-minute introductory format.",
+      "Use the dedicated advisory booking link on your [welcome page](/welcome) to book a 60-minute working session. This calendar is for existing CTO Advisor and CTO Advisor+ clients, separate from the free 20-minute introductory call.",
+      "The session counts towards your subscription’s advisory capacity, with no additional payment collected when booking. Use the same email address as at checkout. Contact us if you need a different session length or cannot find a suitable slot.",
     ],
     keywords: ["book", "schedule", "calendly", "appointment", "first session"],
     related: ["prepare-for-the-first-session"],
