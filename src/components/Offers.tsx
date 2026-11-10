@@ -32,7 +32,12 @@ const decisionReview = pricingTiers.find(
 function DecisionReviewCard({ onOpenConsultation }: OffersProps) {
   const Icon = decisionReview.icon;
   return (
-    <article className="glass rounded-2xl border-accent/40 p-6 sm:p-8 mb-10 sm:mb-14">
+    <article className="relative glass rounded-2xl border-accent/40 p-6 sm:p-8 mb-10 sm:mb-14">
+      {decisionReview.badge && (
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs sm:text-sm whitespace-nowrap">
+          {decisionReview.badge}
+        </span>
+      )}
       <div className="grid gap-6 md:grid-cols-2 md:gap-10">
         <div>
           <div className="flex items-center gap-4 mb-4">
@@ -73,11 +78,7 @@ function DecisionReviewCard({ onOpenConsultation }: OffersProps) {
             ))}
           </ul>
           <div className="flex flex-col gap-3 mt-auto">
-            <TierCta
-              tier={decisionReview}
-              onOpenConsultation={onOpenConsultation}
-              primary
-            />
+            <TierCta tier={decisionReview} onOpenConsultation={onOpenConsultation} />
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={onOpenConsultation}

@@ -5,9 +5,9 @@ import type { TermsVersion } from "@/types";
  *
  * STATUS: EFFECTIVE. Approved by the owner on 2026-11-10 (issue #59), the day
  * live checkout for CTO Decision Review opened, so it is the version served at
- * /terms from then on. Like v1.0 before it, it is accepted at checkout ahead of
- * its effective date; S3 and S14 make the version accepted at purchase the one
- * that governs, and /terms says so until the date arrives. The text is now
+ * /terms from then on. It takes effect the same day (owner decision; the
+ * 2026-12-01 date proposed in the draft was dropped before anything was
+ * published under it), so no pre-effective window applies. The text is now
  * frozen: `status` may only change to "superseded" (docs/legal-versioning.md).
  *
  * WHY A NEW VERSION: v1.0 S1 covers the CTO Advisor and CTO Advisor+
@@ -45,12 +45,12 @@ import type { TermsVersion } from "@/types";
  * import from src/data/serviceDescriptions.ts: importing live data would make
  * an immutable contract mutable.
  */
-export const termsV20261201: TermsVersion = {
+export const termsV20261110: TermsVersion = {
   version: "1.1",
   status: "effective",
-  effectiveDate: "2026-12-01",
+  effectiveDate: "2026-11-10",
   lastUpdated: "2026-11-10",
-  pdfPath: "/terms/trendev-terms-of-service-2026-12-01.pdf",
+  pdfPath: "/terms/trendev-terms-of-service-2026-11-10.pdf",
   sections: [
     {
       id: "scope-eligibility",

@@ -7,7 +7,7 @@
   { "path": "/services/fractional-cto", "slug": "svc-fractional", "name": "Fractional CTO" },
   { "path": "/faq", "slug": "faq", "name": "FAQ" },
   { "path": "/terms", "slug": "terms", "name": "Terms v1.0" },
-  { "path": "/terms/2026-12-01", "slug": "terms-v1-1", "name": "Terms v1.1" },
+  { "path": "/terms/2026-11-10", "slug": "terms-v1-1", "name": "Terms v1.1" },
   { "path": "/legal", "slug": "legal", "name": "Legal notice" },
   { "path": "/privacy", "slug": "privacy", "name": "Privacy" },
   { "path": "/welcome", "slug": "welcome", "name": "Welcome" },

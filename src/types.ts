@@ -155,6 +155,12 @@ export interface PricingTier {
   /** Billing/cancellation small print shown on the card. */
   billingNotes: string[];
   recommended?: boolean;
+  /**
+   * A selling badge above the card, styled like "Recommended". Advisor+ stays
+   * the recommended plan; CTO Decision Review uses this to be the obvious
+   * entry point (owner request, 2026-11-10). Its CTA is accent-coloured too.
+   */
+  badge?: string;
   cta: {
     label: string;
     /**

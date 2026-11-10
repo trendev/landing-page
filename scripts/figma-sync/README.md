@@ -30,7 +30,7 @@ runner. Chromium comes from `PLAYWRIGHT_BROWSERS_PATH` where one is provisioned.
 ## What it captures
 
 - **Every route the router serves** — `/`, `/advisory`, the four
-  `/services/*`, `/faq`, `/terms` and `/terms/2026-12-01`, `/legal`,
+  `/services/*`, `/faq`, `/terms` and `/terms/2026-11-10`, `/legal`,
   `/privacy`, `/welcome` and `/welcome/decision-review`, plus the 404. Keep `routes.json` in sync with `src/app/router.tsx` and
   `.github/workflows/deploy.yml`.
 - **Four overlay states** the routes alone never show: the cookie consent

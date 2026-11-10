@@ -14,13 +14,13 @@ function isCheckoutTier(id: TierId): id is CheckoutTierId {
  * issue #16 filled STRIPE_PAYMENT_LINKS, checkout CTAs became direct links to
  * Stripe-hosted checkout.
  *
- * `primary` gives a non-recommended tier the accent style, for a card where
- * this is the main action (the CTO Decision Review card on the landing page).
+ * The recommended tier and a badged tier (CTO Decision Review) get the accent
+ * style; `primary` overrides it where a page needs to.
  */
 export function TierCta({
   tier,
   onOpenConsultation,
-  primary = tier.recommended,
+  primary = tier.recommended || Boolean(tier.badge),
 }: {
   tier: PricingTier;
   onOpenConsultation: () => void;

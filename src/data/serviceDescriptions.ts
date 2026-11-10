@@ -21,7 +21,7 @@ import type { ServiceDescription } from "@/types";
  * (Terms S2).
  *
  * The same parity rule binds cto-decision-review to Annex C of Terms v1.1
- * (src/data/terms/2026-12-01.ts), the first version that covers it. v1.1 was
+ * (src/data/terms/2026-11-10.ts), the first version that covers it. v1.1 was
  * approved on 2026-11-10 and is frozen, so changing this description now means
  * a new Terms version; scripts/check-offers.mjs fails on any divergence.
  *
@@ -55,7 +55,7 @@ export const serviceDescriptions: ServiceDescription[] = [
     tierId: "cto-decision-review",
     title: "CTO Decision Review",
     version: "1.0",
-    effectiveDate: "2026-12-01",
+    effectiveDate: "2026-11-10",
     lastUpdated: "2026-11-10",
     metaDescription:
       "CTO Decision Review: an independent review of one technical decision, with a written decision brief and a walkthrough. €1,500 one-time, excluding applicable taxes, up to 4 hours in total.",

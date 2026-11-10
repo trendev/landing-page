@@ -98,7 +98,8 @@ export const pricingTiers: PricingTier[] = [
       "One payment; no subscription or renewal",
       "Delivery timing agreed after the fit and scope review",
     ],
-    cta: { label: "Buy CTO Decision Review", kind: "checkout" },
+    badge: "Best way to start",
+    cta: { label: "Get your Decision Review", kind: "checkout" },
     servicePath: DECISION_REVIEW_PATH,
   },
   {

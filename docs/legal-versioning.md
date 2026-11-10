@@ -22,7 +22,7 @@ able to re-read what they accepted.
   any text is loaded.
 - Routes: `/terms` serves the current version; `/terms/<effective-date>`
   serves each version immutably. Published: `/terms/2026-09-01` (v1.0,
-  superseded) and `/terms/2026-12-01` (v1.1, effective, current, see below).
+  superseded) and `/terms/2026-11-10` (v1.1, effective, current, see below).
 - Each version has a committed PDF at
   `public/terms/trendev-terms-of-service-<date>.pdf`, generated **from the
   built dated route** by `scripts/generate-terms-pdf.mjs`, so the PDF matches
@@ -164,7 +164,7 @@ inside the Terms version the buyer accepts.
       `src/data/terms/2026-09-01.ts` was corrected to say so, without touching
       a character of the contract text.
 
-## v1.1 (2026-12-01): covering CTO Decision Review (issue #59)
+## v1.1 (2026-11-10): covering CTO Decision Review (issue #59)
 
 v1.0 §1 covers the two Advisor subscriptions only, and its mechanics are
 monthly, so the one-off CTO Decision Review approved on 2026-11-10 cannot be
@@ -179,8 +179,8 @@ adding a separate agreement.
   (18) reproduces `/services/cto-decision-review`. The module header lists every
   change.
 - **Drafts do not become current.** `currentTermsDate` is the newest version
-  whose status is not `"draft"`, so `/terms` keeps serving v1.0 while v1.1 is
-  reviewed at `/terms/2026-12-01` (draft banner, `noindex`, out of the sitemap).
+  whose status is not `"draft"`, so `/terms` kept serving v1.0 while v1.1 was
+  reviewed at its dated route (draft banner, `noindex`, out of the sitemap).
   Before this, the newest entry was current by position, which would have put
   an unapproved draft in front of every Advisor buyer.
 - **Approved on 2026-11-10.** The owner approved the text and decided the same
@@ -197,8 +197,10 @@ adding a separate agreement.
   payment despite a reminder.
 - v1.1 is `"effective"` in the module and in `termsVersionSummaries`, v1.0 is
   `"superseded"` (status only), and the v1.1 PDF was regenerated without the
-  draft banner. Checkout opens ahead of 2026-12-01, so the pre-effective note
-  on `/terms` renders again until that date, as it did for v1.0.
+  draft banner. The owner set the effective date to the approval day, so the
+  module, route and PDF moved from the proposed `2026-12-01` to `2026-11-10`
+  before anything was published under the old date, and the pre-effective
+  note on `/terms` stays dormant.
 - **After the deploy** (step 5 above, the dated route must answer 200 first):
   repoint the account-wide Terms of Service URL in the Dashboard and the two
   Advisor links' consent message and metadata to v1.1, in both modes. The

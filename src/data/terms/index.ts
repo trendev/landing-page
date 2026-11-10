@@ -38,7 +38,7 @@ export interface TermsVersionSummary {
  * entry, and `loadTermsVersion` warns about it in dev.
  */
 export const termsVersionSummaries: TermsVersionSummary[] = [
-  { date: "2026-12-01", version: "1.1", status: "effective" },
+  { date: "2026-11-10", version: "1.1", status: "effective" },
   { date: "2026-09-01", version: "1.0", status: "superseded" },
 ];
 
@@ -49,7 +49,7 @@ export const termsVersionSummaries: TermsVersionSummary[] = [
  * so this map cannot be generated from the summaries above.
  */
 const loaders: Record<string, () => Promise<TermsVersion>> = {
-  "2026-12-01": () => import("./2026-12-01").then((m) => m.termsV20261201),
+  "2026-11-10": () => import("./2026-11-10").then((m) => m.termsV20261110),
   "2026-09-01": () => import("./2026-09-01").then((m) => m.termsV20260901),
 };
 

@@ -65,12 +65,12 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
             <div
               key={tier.id}
               className={`relative p-6 glass rounded-2xl flex flex-col ${
-                tier.recommended ? "border-accent/40" : ""
+                tier.recommended || tier.badge ? "border-accent/40" : ""
               }`}
             >
-              {tier.recommended && (
+              {(tier.badge || tier.recommended) && (
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs whitespace-nowrap">
-                  Recommended
+                  {tier.badge ?? "Recommended"}
                 </span>
               )}
               <h2 className="text-xl sm:text-2xl mb-1">{tier.name}</h2>

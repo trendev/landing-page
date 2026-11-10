@@ -209,7 +209,9 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
   a cheaper audit; `billing`, not the price label, decides how it is described.
 - **CTO Decision Review can be bought directly; the call is recommended, not
   required** (owner decision, 2026-11-10, reversing the call-first rule of the
-  first #59 draft). Its CTA is "Buy CTO Decision Review" (`cta.kind:
+  first #59 draft), and it is actively sold: a "Best way to start" badge
+  (`badge`, styled like Advisor+'s "Recommended", which Advisor+ keeps) and an
+  accent CTA "Get your Decision Review" (`cta.kind:
   "checkout"`, `STRIPE_PAYMENT_LINKS["cto-decision-review"]`, payment mode,
   quantity 1, live and test), always with "Book a free 20-minute call first"
   beside it. Terms v1.1 §15 then has the question agreed in writing before any
@@ -279,11 +281,12 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
   change means a new dated module under `src/data/terms/`, a new PDF
   (`node scripts/generate-terms-pdf.mjs <date>`); the dated route is
   prerendered from the registry automatically — never edit an accepted version. Full workflow: `docs/legal-versioning.md`.
-- **Terms v1.1 (2026-12-01) is the current version**, approved by the owner on
+- **Terms v1.1 (2026-11-10) is the current version**, approved by the owner on
   2026-11-10 (issue #59): v1.0 plus a one-off §15 and Annex C for CTO Decision
-  Review, Annexes A/B byte-identical. It is served at `/terms` and accepted at
-  checkout ahead of its effective date (the pre-effective note on `/terms` is
-  active again until 2026-12-01). Its text is frozen like v1.0's. The registry
+  Review, Annexes A/B byte-identical. It is served at `/terms` and takes
+  effect the day it was approved, so the pre-effective note stays dormant (the
+  draft's proposed 2026-12-01 date was dropped). Its text is frozen like
+  v1.0's. The registry
   serves the newest **non-draft** version, so a future draft never displaces
   it; see `docs/legal-versioning.md`.
 - **Terms v1.0 (2026-09-01) is superseded** (status only, 2026-11-10) and keeps

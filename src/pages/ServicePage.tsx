@@ -140,7 +140,6 @@ export function ServicePage({ slug, onOpenConsultation }: ServicePageProps) {
             <TierCta
               tier={tier}
               onOpenConsultation={onOpenConsultation}
-              primary={tier.recommended || oneTime}
             />
             {oneTime && (
               <button

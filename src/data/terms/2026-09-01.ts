@@ -14,7 +14,7 @@ import type { TermsVersion } from "@/types";
  * EFFECTIVE from 2026-09-01. Lawyer review and accountant validation completed
  * on 2026-08-19, and the owner approved this text on 2026-08-21.
  *
- * SUPERSEDED on 2026-11-10 by v1.1 (src/data/terms/2026-12-01.ts), which adds
+ * SUPERSEDED on 2026-11-10 by v1.1 (src/data/terms/2026-11-10.ts), which adds
  * CTO Decision Review. Only `status` changed; subscriptions accepted under this
  * version stay governed by it (S14).
  *

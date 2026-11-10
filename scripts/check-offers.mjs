@@ -89,7 +89,7 @@ try {
   const content = await load('/src/data/content.ts');
   const terms = await load('/src/data/terms/index.ts');
   const { termsV20260901: v10 } = await load('/src/data/terms/2026-09-01.ts');
-  const { termsV20261201: v11 } = await load('/src/data/terms/2026-12-01.ts');
+  const { termsV20261110: v11 } = await load('/src/data/terms/2026-11-10.ts');
   const { pricingTiers, comparisonRows } = pricing;
   const tier = (id) => pricingTiers.find((candidate) => candidate.id === id);
   const decisionReview = serviceDescriptions.find((service) => service.slug === DR);
@@ -107,7 +107,8 @@ try {
     for (const offer of pricingTiers) assert.equal(offer.taxNote, 'excluding applicable taxes');
     assert.equal(tier('fractional-cto').cta.kind, 'contact', 'Fractional CTO stays contact-only');
     assert.equal(tier(DR).cta.kind, 'checkout', 'Decision Review is bought by direct checkout (owner decision, 2026-11-10)');
-    assert.equal(tier(DR).cta.label, 'Buy CTO Decision Review');
+    assert.equal(tier(DR).cta.label, 'Get your Decision Review');
+    assert.equal(tier(DR).badge, 'Best way to start');
     assert.ok(!tier(DR).recommended, 'Advisor+ stays the recommended tier');
     assert.ok(tier('cto-advisor-plus').recommended);
   });
@@ -205,7 +206,7 @@ try {
     // Advisor checkout itself is untouched: /advisory still links test checkout.
     assert.ok(pages.advisory.includes(stripe.STRIPE_PAYMENT_LINKS['cto-advisor']));
     for (const html of [pages.landing, pages.service]) {
-      assert.ok(html.includes('Buy CTO Decision Review'));
+      assert.ok(html.includes('Get your Decision Review'));
       assert.ok(html.includes('Book a free 20-minute call first'), 'The recommended call stays beside the purchase button');
       assert.ok(html.includes('Recommended: a free 20-minute introductory call before purchase'));
       assert.ok(!html.includes(content.ADVISORY_BOOKING_URL), 'The paid-session calendar is not a prospect CTA');
@@ -259,7 +260,7 @@ try {
     assert.equal(v10.status, 'superseded');
     assert.equal(v10.version, '1.0');
     assert.equal(v11.status, 'effective');
-    assert.equal(terms.currentTermsDate, '2026-12-01');
+    assert.equal(terms.currentTermsDate, '2026-11-10');
     // A draft still never becomes current.
     assert.ok(terms.termsVersionSummaries.every((entry) => entry.status !== 'draft' || entry.date !== terms.currentTermsDate));
     const summary = terms.termsVersionSummaries.find((entry) => entry.date === v11.effectiveDate);
@@ -288,7 +289,7 @@ try {
     const { matchRoute } = await load('/src/app/router.tsx');
     assert.deepEqual(matchRoute('/welcome/decision-review'), { kind: 'welcome', variant: 'decision-review' });
     const { staticRoutes } = await load('/src/app/staticRoutes.ts');
-    for (const path of ['/services/cto-decision-review', '/welcome/decision-review', '/terms/2026-12-01']) {
+    for (const path of ['/services/cto-decision-review', '/welcome/decision-review', '/terms/2026-11-10']) {
       assert.ok(staticRoutes.includes(path), `${path} is not prerendered`);
     }
   });

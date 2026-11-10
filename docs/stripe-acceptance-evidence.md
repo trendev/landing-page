@@ -336,7 +336,7 @@ not what a given buyer accepted.
 
 **The link is published on the site** (owner decision, 2026-11-10): the
 Decision Review card on the landing page, `/advisory` and
-`/services/cto-decision-review` link it as "Buy CTO Decision Review", always
+`/services/cto-decision-review` link it as "Get your Decision Review", always
 with the free 20-minute call beside it as the recommended first step. It is
 the landing page's only checkout; `scripts/check-offers.mjs` and
 `check-positioning.mjs` hold both rules. (The first draft of #59 kept it
@@ -351,7 +351,7 @@ unpublished and sent it after the call; that rule is gone.)
 - Payment Link `plink_1UaFKnHxg3uOgAWorERq7nui`
   (`https://buy.stripe.com/test_9B600jgRzfE20n8bJ75AQ07`): quantity fixed at
   1, no promotion codes, `terms_of_service: required` with a consent message
-  naming Terms **v1.1 (2026-12-01)**, Section 15 and Annex C, required business
+  naming Terms **v1.1 (2026-11-10)**, Section 15 and Annex C, required business
   legal name + B2B confirmation, required billing address, tax-ID collection,
   automatic tax, `customer_creation: always`, invoice creation on, completion
   at `https://trendev.fr/welcome/decision-review`.
@@ -370,6 +370,12 @@ All three carry the six keys on the session and on the payment intent
 (checked on `pi_3UaFPkHxg3uOgAWo1vDOP967`), and redirect to
 `/welcome/decision-review`. Test-mode tax registrations checked first: FR
 `standard` and `oss_union` are active.
+
+These three purchases predate the owner's choice of effective date, so their
+evidence keys name the proposed `2026-12-01`. Both links (test and live) and
+both products were then repointed in place to `2026-11-10`: consent message,
+`metadata`, `payment_intent_data.metadata` and the invoice metadata. No live
+purchase was ever made under the old date.
 
 ### Live (2026-11-10)
 
@@ -391,9 +397,9 @@ All three carry the six keys on the session and on the payment intent
 
 ### After the deploy (owner)
 
-1. Confirm `https://trendev.fr/terms/2026-12-01` answers 200.
+1. Confirm `https://trendev.fr/terms/2026-11-10` answers 200.
 2. Dashboard → Settings → Public business details → *Terms of service* URL to
-   `https://trendev.fr/terms/2026-12-01` (no API). It is shared by every link,
+   `https://trendev.fr/terms/2026-11-10` (no API). It is shared by every link,
    which is why v1.1 covers the Advisor tiers too.
 3. Repoint the two Advisor links' consent message and metadata to v1.1 in
    place, in both modes (see `docs/legal-versioning.md`, "Repointing Stripe is

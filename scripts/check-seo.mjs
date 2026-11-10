@@ -37,8 +37,8 @@ assert.ok(read('robots.txt').includes(`Sitemap: ${ORIGIN}/sitemap.xml`));
 const urls = [...read('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 const paths = urls.map((url) => url.slice(ORIGIN.length) || '/');
 for (const path of MUST_BE_INDEXED) assert.ok(paths.includes(path), `Sitemap misses ${path}`);
-for (const path of ['/welcome', '/welcome/decision-review', '/terms/2026-12-01']) {
-  // 2026-12-01 is the current version: its dated URL canonicalises to /terms.
+for (const path of ['/welcome', '/welcome/decision-review', '/terms/2026-11-10']) {
+  // 2026-11-10 is the current version: its dated URL canonicalises to /terms.
   assert.ok(!paths.includes(path), `${path} is noindex and must stay out of the sitemap`);
 }
 
@@ -98,8 +98,8 @@ for (const file of ['welcome.html', 'welcome/decision-review.html']) {
   assert.match(attr(read(file), 'meta name="robots"', 'content'), /noindex/, `${file} must be noindex`);
 }
 // Terms v1.1 (approved 2026-11-10) is served at /terms; v1.0 keeps its own URL.
-assert.equal(attr(read('terms/2026-12-01.html'), 'link rel="canonical"', 'href'), `${ORIGIN}/terms`);
-assert.ok(!/noindex/.test(attr(read('terms/2026-12-01.html'), 'meta name="robots"', 'content') ?? ''), 'v1.1 is no longer a draft');
+assert.equal(attr(read('terms/2026-11-10.html'), 'link rel="canonical"', 'href'), `${ORIGIN}/terms`);
+assert.ok(!/noindex/.test(attr(read('terms/2026-11-10.html'), 'meta name="robots"', 'content') ?? ''), 'v1.1 is no longer a draft');
 assert.ok(read('terms.html').includes('Version <!-- -->1.1') || read('terms.html').includes('Version 1.1'), '/terms serves v1.1');
 assert.ok(paths.includes('/terms/2026-09-01'), 'The superseded v1.0 stays published and indexed');
 const notFound = read('404.html');
