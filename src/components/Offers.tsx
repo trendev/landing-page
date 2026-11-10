@@ -1,6 +1,7 @@
 import { ArrowRight, CalendarCheck, Check, Info } from "lucide-react";
 
 import { Link } from "@/app/router";
+import { ProductIcon } from "@/components/ProductIcon";
 import { TierCta } from "@/components/TierCta";
 import { offers } from "@/data/content";
 import { positioning } from "@/data/positioning";
@@ -30,7 +31,6 @@ const decisionReview = pricingTiers.find(
  * purchase button as the recommended first step.
  */
 function DecisionReviewCard({ onOpenConsultation }: OffersProps) {
-  const Icon = decisionReview.icon;
   return (
     <article className="relative glass rounded-2xl border-highlight/40 p-6 sm:p-8 mb-10 sm:mb-14">
       {decisionReview.badge && (
@@ -41,9 +41,11 @@ function DecisionReviewCard({ onOpenConsultation }: OffersProps) {
       <div className="grid gap-6 md:grid-cols-2 md:gap-10">
         <div>
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center shrink-0">
-              <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />
-            </div>
+            <ProductIcon
+              tierId={decisionReview.id}
+              size={56}
+              className="w-12 h-12 sm:w-14 sm:h-14"
+            />
             <h3 className="text-2xl sm:text-3xl">{decisionReview.name}</h3>
           </div>
           <p className="text-lg sm:text-xl text-foreground mb-3">

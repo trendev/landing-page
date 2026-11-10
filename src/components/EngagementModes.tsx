@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 
 import { Link } from "@/app/router";
+import { ProductIcon } from "@/components/ProductIcon";
 import { engagementModes } from "@/data/content";
 import { positioning } from "@/data/positioning";
 import type { EngagementMode } from "@/types";
@@ -81,8 +82,11 @@ export function EngagementModes() {
                     {mode.need}
                   </td>
                   <td className="px-5 py-5 w-[20%]">
-                    <div className="text-foreground mb-2">
-                      {mode.engagement}
+                    <div className="flex items-center gap-3 text-foreground mb-2">
+                      {mode.tierId && (
+                        <ProductIcon tierId={mode.tierId} size={40} />
+                      )}
+                      <span>{mode.engagement}</span>
                     </div>
                     <ModeLink mode={mode} />
                   </td>
@@ -102,7 +106,10 @@ export function EngagementModes() {
           {engagementModes.map((mode) => (
             <div key={mode.engagement} className="glass rounded-2xl p-5">
               <p className="text-xs text-muted-foreground mb-1">{mode.need}</p>
-              <h3 className="mb-2">{mode.engagement}</h3>
+              <h3 className="flex items-center gap-3 mb-2">
+                {mode.tierId && <ProductIcon tierId={mode.tierId} size={48} />}
+                <span>{mode.engagement}</span>
+              </h3>
               <p className="text-sm text-muted-foreground mb-3">
                 {mode.responsibility}
               </p>

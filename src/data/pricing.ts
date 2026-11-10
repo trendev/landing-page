@@ -1,5 +1,3 @@
-import { Building2, Gem, MessagesSquare, Scale } from "lucide-react";
-
 import type { ComparisonRow, PricingTier } from "@/types";
 
 /**
@@ -81,7 +79,6 @@ export const pricingTiers: PricingTier[] = [
     // First on purpose: it is the bounded entry point. Its four hours are a
     // TOTAL for one decision, never per month, and never "a cheaper audit".
     id: "cto-decision-review",
-    icon: Scale,
     name: "CTO Decision Review",
     price: "€1,500",
     priceSuffix: " one-time",
@@ -104,7 +101,6 @@ export const pricingTiers: PricingTier[] = [
   },
   {
     id: "cto-advisor",
-    icon: MessagesSquare,
     name: "CTO Advisor",
     price: "€1,500",
     priceSuffix: "/month",
@@ -136,7 +132,6 @@ export const pricingTiers: PricingTier[] = [
   },
   {
     id: "cto-advisor-plus",
-    icon: Gem,
     name: "CTO Advisor+",
     price: "€2,500",
     priceSuffix: "/month",
@@ -170,7 +165,6 @@ export const pricingTiers: PricingTier[] = [
   },
   {
     id: "fractional-cto",
-    icon: Building2,
     name: "Fractional CTO",
     price: "From €6,000",
     priceSuffix: "/month",

@@ -1,5 +1,6 @@
 import { Check, Minus } from "lucide-react";
 
+import { ProductIcon } from "@/components/ProductIcon";
 import { comparisonRows, pricingTiers } from "@/data/pricing";
 
 /** Renders a boolean as ✓/—; alignment is the caller's job. */
@@ -34,9 +35,10 @@ export function ComparisonTable() {
         {pricingTiers.map((tier) => (
           <div key={tier.id} className="glass rounded-2xl p-5">
             <h3
-              className={`mb-4 ${tier.recommended ? "text-accent" : "text-foreground"}`}
+              className={`flex items-center gap-3 mb-4 ${tier.recommended ? "text-accent" : "text-foreground"}`}
             >
-              {tier.name}
+              <ProductIcon tierId={tier.id} size={40} />
+              <span>{tier.name}</span>
             </h3>
             <dl className="space-y-0">
               {comparisonRows.map((row) => (
@@ -69,7 +71,10 @@ export function ComparisonTable() {
                     tier.recommended ? "text-accent" : "text-foreground"
                   }`}
                 >
-                  {tier.name}
+                  <div className="flex flex-col items-center gap-2">
+                    <ProductIcon tierId={tier.id} size={40} />
+                    <span>{tier.name}</span>
+                  </div>
                 </th>
               ))}
             </tr>

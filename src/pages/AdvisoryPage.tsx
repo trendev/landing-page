@@ -3,6 +3,7 @@ import { ArrowRight, CalendarCheck, Check } from "lucide-react";
 import { Link } from "@/app/router";
 import { BackLink } from "@/components/BackLink";
 import { ComparisonTable } from "@/components/ComparisonTable";
+import { ProductIcon } from "@/components/ProductIcon";
 import { ScopeBoundaryNote } from "@/components/ScopeBoundaryNote";
 import { TierCta } from "@/components/TierCta";
 import {
@@ -83,7 +84,10 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
                   </span>
                 )
               )}
-              <h2 className="text-xl sm:text-2xl mb-1">{tier.name}</h2>
+              <h2 className="flex items-center gap-3 text-xl sm:text-2xl mb-2">
+                <ProductIcon tierId={tier.id} size={48} />
+                <span>{tier.name}</span>
+              </h2>
               <div className="mb-1">
                 <span className="text-2xl sm:text-3xl text-foreground">
                   {tier.price}

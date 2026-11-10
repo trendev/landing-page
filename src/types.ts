@@ -59,6 +59,8 @@ export interface EngagementMode {
   /** Where to go next: a route (`/services/...`) or the delivery enquiry. */
   href: string;
   cta: string;
+  /** Set only on the rows that are a named offer; shows its product icon (issue #61). */
+  tierId?: TierId;
 }
 
 export interface DeliveryPrinciple {
@@ -134,7 +136,6 @@ export type BillingMode = "one-time" | "monthly" | "tailored";
 
 export interface PricingTier {
   id: TierId;
-  icon: LucideIcon;
   name: string;
   /** Display price, e.g. "€1,500" or "From €6,000". */
   price: string;

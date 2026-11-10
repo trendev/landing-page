@@ -131,6 +131,14 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
     the comparison (`values` keyed by `TierId`, so a column cannot shift),
     `PRIMARY_CTA_LABEL`, `PREREQUISITE_NOTE`, and the `DECISION_REVIEW_*`
     copy (summary, "recommended" call note, call button label, boundary note).
+  - `productVisuals.ts`: the product icon of each offer (issue #61), keyed by
+    `TierId`, the same artwork as its Stripe Product image (documented in
+    `docs/product-icon-family.md`). `ProductIcon` renders it, always beside the
+    product name (`alt=""`), on the four named offers only: never on the
+    separately scoped assessments or generic categories. Pages load the small
+    WebP derivatives (`node scripts/generate-product-icons.mjs`, needs `cwebp`),
+    never the 1254px masters (`check-offers.mjs` guards both). A new artwork gets a new `-v2` file, not an
+    overwrite.
   - `stripe.ts` — `STRIPE_PAYMENT_LINKS`, **selected by environment**: test
     links under `vite` (dev), live links under `vite build`, overridable with
     `VITE_STRIPE_MODE=test|live`. Use the override when previewing a production

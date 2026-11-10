@@ -441,6 +441,7 @@ export const engagementModes: EngagementMode[] = [
     deliverables: ["Written decision brief", "Walkthrough of the findings"],
     href: "/services/cto-decision-review",
     cta: "CTO Decision Review",
+    tierId: "cto-decision-review",
   },
   {
     need: "Get recurring advice on architecture, roadmap and hiring decisions",
@@ -450,6 +451,7 @@ export const engagementModes: EngagementMode[] = [
     deliverables: ["Recurring decision support", "Substantive async advice"],
     href: "/services/cto-advisor",
     cta: "CTO Advisor",
+    tierId: "cto-advisor",
   },
   {
     need: "Keep architecture, hiring and roadmap decisions aligned as you grow",
@@ -459,6 +461,7 @@ export const engagementModes: EngagementMode[] = [
     deliverables: ["Sequenced roadmap", "Quarterly Technology Review"],
     href: "/services/cto-advisor-plus",
     cta: "CTO Advisor+",
+    tierId: "cto-advisor-plus",
   },
   {
     need: "Lead a technology transition or structure a growing engineering organisation",
@@ -468,6 +471,7 @@ export const engagementModes: EngagementMode[] = [
     deliverables: ["Transition plan", "Governance and follow-through"],
     href: "/services/fractional-cto",
     cta: "Fractional CTO",
+    tierId: "fractional-cto",
   },
   {
     need: "Build an MVP, deliver a platform change or launch a product capability",

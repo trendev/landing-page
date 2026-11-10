@@ -4,6 +4,7 @@ import { Link } from "@/app/router";
 import { BackLink } from "@/components/BackLink";
 import { ComparisonTable } from "@/components/ComparisonTable";
 import { JsonLd } from "@/components/JsonLd";
+import { ProductIcon } from "@/components/ProductIcon";
 import { ScopeBoundaryNote } from "@/components/ScopeBoundaryNote";
 import { TierCta } from "@/components/TierCta";
 import { legalLinks } from "@/data/content";
@@ -104,6 +105,11 @@ export function ServicePage({ slug, onOpenConsultation }: ServicePageProps) {
             Service description · version {service.version} · effective{" "}
             {service.effectiveDate}
           </p>
+          <ProductIcon
+            tierId={tier.id}
+            size={72}
+            className="mx-auto mb-4"
+          />
           <h1 className="text-4xl sm:text-5xl mb-4">{service.title}</h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-5">
             {tier.tagline}

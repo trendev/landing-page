@@ -294,6 +294,49 @@ try {
     }
   });
 
+  await test('product icons (#61): one per tier, small derivatives, same mapping on every surface', async () => {
+    const { existsSync, statSync, readFileSync } = await import('node:fs');
+    const { productVisuals } = await load('/src/data/productVisuals.ts');
+    const ids = pricing.pricingTiers.map((t) => t.id);
+    assert.deepEqual(Object.keys(productVisuals).sort(), [...ids].sort());
+    for (const id of ids) {
+      const { master, src, srcSet } = productVisuals[id];
+      assert.equal(master, `/images/products/${id}-v1.png`);
+      const png = readFileSync(`public${master}`);
+      assert.equal(png.readUInt32BE(16), 1254, `${id} master is the approved 1254px original`);
+      for (const file of srcSet.split(', ').map((entry) => entry.split(' ')[0])) {
+        assert.ok(existsSync(`public${file}`), `missing derivative ${file}`);
+        assert.ok(statSync(`public${file}`).size < 20_000, `${file} is not a small derivative`);
+      }
+      assert.ok(srcSet.startsWith(src));
+    }
+    const icon = (id) => `src="${productVisuals[id].src}"`;
+    const { LandingPage } = await load('/src/pages/LandingPage.tsx');
+    const { AdvisoryPage } = await load('/src/pages/AdvisoryPage.tsx');
+    const { ServicePage } = await load('/src/pages/ServicePage.tsx');
+    const props = { onOpenConsultation() {} };
+    const landing = render(LandingPage, props);
+    const advisory = render(AdvisoryPage, props);
+    const count = (html, s) => html.split(s).length - 1;
+    // Selector rows (desktop + mobile) for all four, plus the review card.
+    for (const id of ids) assert.ok(count(landing, icon(id)) >= 2, `landing selector lacks ${id}`);
+    assert.ok(count(landing, icon(DR)) >= 3, 'the review card shows its icon');
+    // /advisory: card + mobile comparison card + desktop comparison header.
+    for (const id of ids) assert.equal(count(advisory, icon(id)), 3, `/advisory ${id}`);
+    for (const { slug, tierId } of serviceDescriptions) {
+      const html = render(ServicePage, { ...props, slug });
+      const header = html.slice(0, html.indexOf('<h1'));
+      assert.ok(header.includes(icon(tierId)), `${slug} heading lacks its own icon`);
+      for (const other of ids.filter((id) => id !== tierId)) assert.ok(!header.includes(icon(other)), `${slug} heading shows ${other}`);
+    }
+    for (const html of [landing, advisory]) {
+      assert.ok(!/src="\/images\/products\/[^"]+\.png"/.test(html), 'a 1.1 MiB master is loaded as a thumbnail');
+      for (const img of html.match(/<img[^>]+\/images\/products\/[^>]+>/g)) {
+        assert.ok(img.includes('alt=""') && /width="\d+"/.test(img) && /height="\d+"/.test(img), `icon must be decorative and sized: ${img}`);
+      }
+    }
+  });
+
   await test('FAQ: every published id survives, the four review entries exist and link validly', () => {
     const ids = new Set(faqEntries.map((entry) => entry.id));
     for (const id of PUBLISHED_FAQ_IDS) assert.ok(ids.has(id), `Published FAQ id removed: ${id}`);
