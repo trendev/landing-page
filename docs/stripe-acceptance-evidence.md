@@ -395,15 +395,26 @@ purchase was ever made under the old date.
   buyer without a valid VAT ID is not charged destination VAT in live.
 - No live purchase was made.
 
-### After the deploy (owner)
+### Go-live (2026-11-10, issue #62)
 
-1. Confirm `https://trendev.fr/terms/2026-11-10` answers 200.
-2. Dashboard → Settings → Public business details → *Terms of service* URL to
-   `https://trendev.fr/terms/2026-11-10` (no API). It is shared by every link,
-   which is why v1.1 covers the Advisor tiers too.
-3. Repoint the two Advisor links' consent message and metadata to v1.1 in
-   place, in both modes (see `docs/legal-versioning.md`, "Repointing Stripe is
-   cheaper…"). Until then, Advisor checkout still names v1.0, whose Annexes are
-   byte-identical to v1.1's.
-4. Optionally, one owner-performed live purchase and refund to read back the
-   evidence on a real session.
+PR #60 merged and deployed on 2026-11-10; live checkout for the review opened
+with it. Then, the same day:
+
+1. `https://trendev.fr/terms/2026-11-10`, `/terms` (v1.1, Annex C present),
+   `/services/cto-decision-review` and `/welcome/decision-review` answer 200,
+   and the landing page links only the live review checkout.
+2. Dashboard → Settings → Business details → Public details → *Terms of
+   service URL* set to `https://trendev.fr/terms/2026-11-10` (was
+   `/terms/2026-09-01`). There is no API for it, and the sandbox has no copy of
+   its own: test mode shows the live setting.
+3. Both Advisor links repointed to v1.1 in place, in live
+   (`plink_1U7kQxHxg3uOgAWoveHMrENC`, `plink_1U7kR7Hxg3uOgAWoEDq3P70U`) and test
+   (`plink_1U67LcHxg3uOgAWoV6c8oaTS`, `plink_1U67LqHxg3uOgAWofCQlI3Sw`): the
+   consent message names v1.1 (2026-11-10) with the same Annex A/B wording, and
+   `terms_version`, `terms_date`, `terms_url` read 1.1 / 2026-11-10 in both
+   `metadata` and `subscription_data.metadata`. The full six-key map was posted
+   to `subscription_data.metadata` and read back with all six keys. The
+   `buy.stripe.com` URLs are unchanged. The four Advisor products' metadata
+   was updated to match.
+4. Still optional and owner-performed: one live purchase and refund of the
+   review to read the evidence back on a real session.
