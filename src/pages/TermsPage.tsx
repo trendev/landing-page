@@ -123,6 +123,8 @@ export function TermsPage({ date }: TermsPageProps) {
           // so it points there; a superseded version is its own document.
           canonicalPath:
             date && date !== currentTermsDate ? `/terms/${date}` : "/terms",
+          // A draft is published for review, not for search.
+          ...(terms.status === "draft" ? { robots: "noindex, follow" } : {}),
         }
       : undefined,
   );
@@ -169,7 +171,7 @@ export function TermsPage({ date }: TermsPageProps) {
                   <strong>DRAFT: pending legal review.</strong> These Terms are
                   a draft and are not yet in force. They must be reviewed by a
                   French IT/commercial lawyer and approved before any
-                  self-service subscription is offered under them.
+                  self-service purchase is offered under them.
                 </p>
               </div>
             )}
@@ -185,11 +187,10 @@ export function TermsPage({ date }: TermsPageProps) {
                     </strong>{" "}
                     Checkout is open ahead of the effective date shown above.
                     This is the version presented and accepted at checkout
-                    today, and it governs your subscription from the date of
-                    purchase: the agreement is formed when the first payment is
-                    confirmed (Section 3), and the version accepted at purchase
-                    keeps governing the subscription for as long as it runs
-                    (Section 14).
+                    today, and it governs your purchase from the date of
+                    purchase: the agreement is formed when payment is confirmed
+                    (Section 3), and the version accepted at purchase keeps
+                    governing the service for as long as it runs (Section 14).
                   </p>
                 </div>
               )}

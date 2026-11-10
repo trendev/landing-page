@@ -19,7 +19,7 @@ export type Route =
   | { kind: "terms"; date?: string }
   | { kind: "legal" }
   | { kind: "privacy" }
-  | { kind: "welcome" }
+  | { kind: "welcome"; variant?: "decision-review" }
   | { kind: "faq" }
   | { kind: "notFound" };
 
@@ -37,6 +37,9 @@ export function matchRoute(pathname: string): Route {
   if (path === "/privacy") return { kind: "privacy" };
   if (path === "/terms") return { kind: "terms" };
   if (path === "/welcome") return { kind: "welcome" };
+  // One-off purchases complete here (issue #59): no subscription to onboard.
+  if (path === "/welcome/decision-review")
+    return { kind: "welcome", variant: "decision-review" };
   if (path === "/faq") return { kind: "faq" };
 
   const terms = path.match(/^\/terms\/(\d{4}-\d{2}-\d{2})$/);

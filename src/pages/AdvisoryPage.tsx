@@ -3,9 +3,14 @@ import { ArrowRight, CalendarCheck, Check } from "lucide-react";
 import { Link } from "@/app/router";
 import { BackLink } from "@/components/BackLink";
 import { ComparisonTable } from "@/components/ComparisonTable";
+import { ProductIcon } from "@/components/ProductIcon";
 import { ScopeBoundaryNote } from "@/components/ScopeBoundaryNote";
 import { TierCta } from "@/components/TierCta";
-import { PREREQUISITE_NOTE, pricingTiers } from "@/data/pricing";
+import {
+  DECISION_REVIEW_PREREQUISITE_NOTE,
+  PREREQUISITE_NOTE,
+  pricingTiers,
+} from "@/data/pricing";
 import { DELIVERY_ENQUIRY_EMAIL } from "@/data/content";
 import { positioning } from "@/data/positioning";
 import { JsonLd } from "@/components/JsonLd";
@@ -25,8 +30,8 @@ interface AdvisoryPageProps {
 }
 
 /**
- * The subscription funnel, deliberately its own page rather than a landing
- * section. Two different intents need two different entry points: the primary
+ * The offers page (one-off review, subscriptions, Fractional CTO), deliberately
+ * its own page rather than a landing section. Two different intents need two different entry points: the primary
  * CTA books a consultation, this page is where a visitor who already knows
  * what they want goes to compare and subscribe. It also gives the offers a
  * shareable, indexable URL to send to a prospect.
@@ -35,7 +40,7 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
   useDocumentMeta({
     title: "CTO Advisory Plans | TRENDev",
     description:
-      "Three ways to work with a senior CTO: CTO Advisor (€1,500/month), CTO Advisor+ (€2,500/month) and Fractional CTO (from €6,000/month), all excluding applicable taxes. Cancel anytime on the Advisor subscriptions.",
+      "Four ways to work with a senior CTO: CTO Decision Review (€1,500 one-time, one decision), CTO Advisor (€1,500/month), CTO Advisor+ (€2,500/month) and Fractional CTO (from €6,000/month), all excluding applicable taxes.",
     canonicalPath: "/advisory",
   });
 
@@ -56,20 +61,33 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
           </a>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch">
           {pricingTiers.map((tier) => (
             <div
               key={tier.id}
-              className={`relative p-6 sm:p-8 glass rounded-2xl flex flex-col ${
-                tier.recommended ? "border-accent/40" : ""
+              className={`relative p-6 glass rounded-2xl flex flex-col ${
+                tier.badge
+                  ? "border-highlight/40"
+                  : tier.recommended
+                    ? "border-accent/40"
+                    : ""
               }`}
             >
-              {tier.recommended && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs whitespace-nowrap">
-                  Recommended
+              {tier.badge ? (
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-highlight text-highlight-foreground text-xs whitespace-nowrap">
+                  {tier.badge}
                 </span>
+              ) : (
+                tier.recommended && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs whitespace-nowrap">
+                    Recommended
+                  </span>
+                )
               )}
-              <h2 className="text-xl sm:text-2xl mb-1">{tier.name}</h2>
+              <h2 className="flex items-center gap-3 text-xl sm:text-2xl mb-2">
+                <ProductIcon tierId={tier.id} size={48} />
+                <span>{tier.name}</span>
+              </h2>
               <div className="mb-1">
                 <span className="text-2xl sm:text-3xl text-foreground">
                   {tier.price}
@@ -102,6 +120,13 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
                   </li>
                 ))}
               </ul>
+              {/* The recommended call, adjacent to this offer's own CTA. */}
+              {tier.billing === "one-time" && (
+                <p className="text-xs text-foreground mb-5 flex items-start gap-2">
+                  <CalendarCheck className="w-4 h-4 text-accent shrink-0" />
+                  <span>{DECISION_REVIEW_PREREQUISITE_NOTE}</span>
+                </p>
+              )}
               <div className="mt-auto">
                 <TierCta tier={tier} onOpenConsultation={onOpenConsultation} />
                 <div className="text-center mt-3">
@@ -138,7 +163,7 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
 
         <div className="mt-12 sm:mt-16">
           <h2 className="text-2xl sm:text-3xl text-center mb-6">
-            Compare the three engagements
+            Compare the four engagements
           </h2>
           <ComparisonTable />
         </div>

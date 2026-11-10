@@ -1,11 +1,11 @@
-import { Building2, Gem, MessagesSquare } from "lucide-react";
-
 import type { ComparisonRow, PricingTier } from "@/types";
 
 /**
- * The three public premium CTO offers (epic #12, frozen in issue #13).
- * Exactly three offers; names, prices, capacity and cancellation mechanics
- * are frozen — do not edit without a new commercial decision on the epic.
+ * The four public CTO offers. The three recurring/leadership offers were frozen
+ * in issue #13 (epic #12); CTO Decision Review, a one-off entry offer, was
+ * added by the owner's commercial decision of 2026-11-10 (issue #59). Names,
+ * prices, capacity and cancellation mechanics are frozen: do not edit without
+ * a new commercial decision.
  *
  * Commercial guardrails:
  * - Prices always display "excluding applicable taxes" (worldwide B2B; tax
@@ -36,9 +36,37 @@ export const SECONDARY_CTA_LABEL = "See CTO advisory plans";
  */
 export const PRIMARY_CTA_LABEL_SHORT = "Free 20-min call";
 
-/** Shown adjacent to the Advisor/Advisor+ purchase CTAs — keep them together. */
+/**
+ * Shown adjacent to the purchase CTAs; keep them together. Worded for every
+ * offer, one-off purchases included, not only subscriptions (issue #59).
+ */
 export const PREREQUISITE_NOTE =
-  "Prerequisite: please schedule your free 20-minute introductory call before subscribing.";
+  "Prerequisite: a free 20-minute introductory call before starting an engagement.";
+
+/* ── CTO Decision Review (issue #59) ────────────────────────────────────── */
+
+export const DECISION_REVIEW_PATH = "/services/cto-decision-review";
+export const DECISION_REVIEW_LINK_LABEL = "View CTO Decision Review";
+
+/** The homepage card's lead sentence, below the tagline. */
+export const DECISION_REVIEW_SUMMARY =
+  "Reviewing a development proposal, a migration or a rewrite? Get a focused review of one technical decision, a concise written brief and a walkthrough of the findings.";
+
+/**
+ * Kept beside every Decision Review purchase CTA. The call is recommended,
+ * not required: the review can be bought straight from the site (owner
+ * decision, 2026-11-10), and Terms v1.1 S15 then has the question agreed in
+ * writing before any work starts. The shared PREREQUISITE_NOTE stays for the
+ * other offers.
+ */
+export const DECISION_REVIEW_PREREQUISITE_NOTE =
+  "Recommended: a free 20-minute introductory call before purchase, to confirm fit, agree the question and check that the review fits the scope. No preparation or commitment required. You can also buy directly: we then agree the question in writing before any work starts.";
+
+/** Secondary CTA beside the Decision Review purchase button. */
+export const DECISION_REVIEW_CALL_LABEL = "Book a free 20-minute call first";
+
+export const DECISION_REVIEW_BOUNDARY_NOTE =
+  "Your team keeps decision and delivery ownership. Broader investigation or implementation requires a separate agreement.";
 
 /**
  * Stripe checkout links moved to `@/data/stripe` (issue #16): they are now
@@ -48,11 +76,35 @@ export const PREREQUISITE_NOTE =
 
 export const pricingTiers: PricingTier[] = [
   {
+    // First on purpose: it is the bounded entry point. Its four hours are a
+    // TOTAL for one decision, never per month, and never "a cheaper audit".
+    id: "cto-decision-review",
+    name: "CTO Decision Review",
+    price: "€1,500",
+    priceSuffix: " one-time",
+    billing: "one-time",
+    taxNote: TAX_NOTE,
+    tagline: "A clear recommendation before you commit.",
+    features: [
+      "One decision and an agreed set of documents.",
+      "Facts, unknowns, options, recommendation and remaining checks.",
+      "A written decision brief and walkthrough.",
+      "Up to 4 hours total, including preparation and documentation.",
+    ],
+    billingNotes: [
+      "One payment; no subscription or renewal",
+      "Delivery timing agreed after the fit and scope review",
+    ],
+    badge: "Best way to start",
+    cta: { label: "Get your Decision Review", kind: "checkout" },
+    servicePath: DECISION_REVIEW_PATH,
+  },
+  {
     id: "cto-advisor",
-    icon: MessagesSquare,
     name: "CTO Advisor",
     price: "€1,500",
     priceSuffix: "/month",
+    billing: "monthly",
     taxNote: TAX_NOTE,
     tagline:
       "Recurring senior CTO judgment for founders and executives who need decisions, direction, and a sounding board, without operational overhead.",
@@ -80,10 +132,10 @@ export const pricingTiers: PricingTier[] = [
   },
   {
     id: "cto-advisor-plus",
-    icon: Gem,
     name: "CTO Advisor+",
     price: "€2,500",
     priceSuffix: "/month",
+    billing: "monthly",
     taxNote: TAX_NOTE,
     tagline:
       "Deeper recurring CTO governance: closer cadence, priority access, and structured oversight of architecture, roadmap and engineering delivery.",
@@ -113,10 +165,10 @@ export const pricingTiers: PricingTier[] = [
   },
   {
     id: "fractional-cto",
-    icon: Building2,
     name: "Fractional CTO",
     price: "From €6,000",
     priceSuffix: "/month",
+    billing: "tailored",
     taxNote: TAX_NOTE,
     tagline:
       "Embedded CTO leadership for organisations that need transformation, execution governance, or board-facing technical leadership.",
@@ -139,20 +191,166 @@ export const pricingTiers: PricingTier[] = [
   },
 ];
 
-/** Comparison table frozen in issue #13 — values per [Advisor, Advisor+, Fractional]. */
+/**
+ * The comparison. The Advisor, Advisor+ and Fractional values are the ones
+ * frozen in issue #13; issue #59 added the Decision Review column and the
+ * "Best for", "Written output" and "First step" rows. Keyed by tier,
+ * so a column can never shift.
+ */
 export const comparisonRows: ComparisonRow[] = [
-  { label: "Price", values: ["€1,500/month", "€2,500/month", "from €6,000/month"] },
-  { label: "Capacity", values: ["up to 4h/month", "up to 8h/month", "tailored / reserved days"] },
-  { label: "Strategic sessions", values: ["typically 2/month", "weekly or biweekly", "embedded cadence"] },
-  { label: "Async advisory", values: [true, "✓ priority", true] },
-  { label: "Architecture / roadmap", values: ["review", "deeper review", "ownership / governance"] },
-  { label: "Quarterly Technology Review", values: [false, "✓ within capacity", "✓ as required"] },
-  { label: "Engineering organisation", values: ["advice", "deeper involvement", "ownership / execution"] },
-  { label: "Board / investor", values: ["occasional prep", true, true] },
-  { label: "DD / high-stakes", values: [false, "limited preparation", true] },
-  { label: "Operational ownership", values: [false, false, "✓ when scoped"] },
-  { label: "Hands-on execution", values: [false, false, "✓ when scoped"] },
-  { label: "Subscription", values: ["monthly", "monthly", "tailored agreement"] },
-  { label: "Cancel anytime", values: [true, true, "per scoped engagement"] },
-  { label: "Rollover", values: [false, false, "per agreement"] },
+  {
+    label: "Best for",
+    values: {
+      "cto-decision-review": "one scoped technical decision",
+      "cto-advisor": "recurring advice and decision support",
+      "cto-advisor-plus": "deeper recurring governance and review",
+      "fractional-cto": "technology leadership and operational ownership",
+    },
+  },
+  {
+    label: "Price",
+    values: {
+      "cto-decision-review": "€1,500 one-time",
+      "cto-advisor": "€1,500/month",
+      "cto-advisor-plus": "€2,500/month",
+      "fractional-cto": "from €6,000/month",
+    },
+  },
+  {
+    label: "Capacity",
+    values: {
+      "cto-decision-review": "up to 4h total, all work included",
+      "cto-advisor": "up to 4h/month",
+      "cto-advisor-plus": "up to 8h/month",
+      "fractional-cto": "tailored / reserved days",
+    },
+  },
+  {
+    label: "Strategic sessions",
+    values: {
+      "cto-decision-review": "walkthrough of the decision brief, within total capacity",
+      "cto-advisor": "typically 2/month",
+      "cto-advisor-plus": "weekly or biweekly",
+      "fractional-cto": "embedded cadence",
+    },
+  },
+  {
+    label: "Written output",
+    values: {
+      "cto-decision-review":
+        "decision brief: facts, unknowns, options, recommendation, remaining checks",
+      "cto-advisor": "substantive written advice, within capacity",
+      "cto-advisor-plus": "prioritised quarterly recommendations",
+      "fractional-cto": "per scoped engagement",
+    },
+  },
+  {
+    label: "Async advisory",
+    values: {
+      "cto-decision-review": "no ongoing advisory access",
+      "cto-advisor": true,
+      "cto-advisor-plus": "✓ priority",
+      "fractional-cto": true,
+    },
+  },
+  {
+    label: "Architecture / roadmap",
+    values: {
+      "cto-decision-review": "only as needed for the agreed decision",
+      "cto-advisor": "review",
+      "cto-advisor-plus": "deeper review",
+      "fractional-cto": "ownership / governance",
+    },
+  },
+  {
+    label: "Quarterly Technology Review",
+    values: {
+      "cto-decision-review": false,
+      "cto-advisor": false,
+      "cto-advisor-plus": "✓ within capacity",
+      "fractional-cto": "✓ as required",
+    },
+  },
+  {
+    label: "Engineering organisation",
+    values: {
+      "cto-decision-review": "only if directly part of the agreed decision",
+      "cto-advisor": "advice",
+      "cto-advisor-plus": "deeper involvement",
+      "fractional-cto": "ownership / execution",
+    },
+  },
+  {
+    label: "Board / investor",
+    values: {
+      "cto-decision-review":
+        "decision brief may inform discussion; ongoing preparation not included",
+      "cto-advisor": "occasional prep",
+      "cto-advisor-plus": true,
+      "fractional-cto": true,
+    },
+  },
+  {
+    label: "DD / high-stakes",
+    values: {
+      "cto-decision-review": "no comprehensive due diligence; separately scoped",
+      "cto-advisor": false,
+      "cto-advisor-plus": "limited preparation",
+      "fractional-cto": true,
+    },
+  },
+  {
+    label: "Operational ownership",
+    values: {
+      "cto-decision-review": false,
+      "cto-advisor": false,
+      "cto-advisor-plus": false,
+      "fractional-cto": "✓ when scoped",
+    },
+  },
+  {
+    label: "Hands-on execution",
+    values: {
+      "cto-decision-review": false,
+      "cto-advisor": false,
+      "cto-advisor-plus": false,
+      "fractional-cto": "✓ when scoped",
+    },
+  },
+  {
+    label: "Billing / subscription",
+    values: {
+      "cto-decision-review": "one payment; no subscription or renewal",
+      "cto-advisor": "monthly",
+      "cto-advisor-plus": "monthly",
+      "fractional-cto": "tailored agreement",
+    },
+  },
+  {
+    label: "Cancel anytime",
+    values: {
+      "cto-decision-review": "not a monthly subscription; one-off cancellation terms apply",
+      "cto-advisor": true,
+      "cto-advisor-plus": true,
+      "fractional-cto": "per scoped engagement",
+    },
+  },
+  {
+    label: "Rollover",
+    values: {
+      "cto-decision-review": "not applicable; one agreed review",
+      "cto-advisor": false,
+      "cto-advisor-plus": false,
+      "fractional-cto": "per agreement",
+    },
+  },
+  {
+    label: "First step",
+    values: {
+      "cto-decision-review": "free 20-minute introductory call, recommended",
+      "cto-advisor": "free 20-minute introductory call",
+      "cto-advisor-plus": "free 20-minute introductory call",
+      "fractional-cto": "free 20-minute introductory call",
+    },
+  },
 ];

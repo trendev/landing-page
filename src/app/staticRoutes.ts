@@ -22,4 +22,5 @@ export const staticRoutes: string[] = [
   "/legal",
   "/privacy",
   "/welcome",
+  "/welcome/decision-review",
 ];

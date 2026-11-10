@@ -21,8 +21,8 @@ able to re-read what they accepted.
   because the version-history nav and the dated-route 404 check need it before
   any text is loaded.
 - Routes: `/terms` serves the current version; `/terms/<effective-date>`
-  serves each version immutably. Currently one published version:
-  `/terms/2026-09-01` (v1.0).
+  serves each version immutably. Published: `/terms/2026-09-01` (v1.0,
+  superseded) and `/terms/2026-11-10` (v1.1, effective, current, see below).
 - Each version has a committed PDF at
   `public/terms/trendev-terms-of-service-<date>.pdf`, generated **from the
   built dated route** by `scripts/generate-terms-pdf.mjs`, so the PDF matches
@@ -163,6 +163,48 @@ inside the Terms version the buyer accepts.
       escape hatch described below is spent; the header comment in
       `src/data/terms/2026-09-01.ts` was corrected to say so, without touching
       a character of the contract text.
+
+## v1.1 (2026-11-10): covering CTO Decision Review (issue #59)
+
+v1.0 §1 covers the two Advisor subscriptions only, and its mechanics are
+monthly, so the one-off CTO Decision Review approved on 2026-11-10 cannot be
+sold under it. Stripe holds a single account-wide Terms of Service URL, so one
+document has to cover every self-service product: v1.1 extends v1.0 rather than
+adding a separate agreement.
+
+- **Scope of the change.** §1, §2, §3 and §14 change by a few words each; a new
+  §15 carries the one-off terms and switches off §4, §7 and the recurring parts
+  of §6 for the review, so the Advisor text reviewed in August is untouched.
+  Annexes A and B are byte-identical to v1.0 (renumbered 16 and 17); Annex C
+  (18) reproduces `/services/cto-decision-review`. The module header lists every
+  change.
+- **Drafts do not become current.** `currentTermsDate` is the newest version
+  whose status is not `"draft"`, so `/terms` kept serving v1.0 while v1.1 was
+  reviewed at its dated route (draft banner, `noindex`, out of the sitemap).
+  Before this, the newest entry was current by position, which would have put
+  an unapproved draft in front of every Advisor buyer.
+- **Approved on 2026-11-10.** The owner approved the text and decided the same
+  day that the review can be bought straight from the site. That decision
+  landed before approval was recorded, as the last pre-approval correction:
+  §15 now makes the introductory call recommended rather than required, has
+  the Agreed Scope confirmed in writing before any work starts, and adds a
+  full refund if the buyer skipped the call and TRENDev declines the decision
+  before work starts. Annex C and `/services/cto-decision-review` changed
+  with it. The other §15 defaults stand: no refund once paid otherwise;
+  reschedule at no charge on provider non-delivery, with a full refund if the
+  brief is not delivered within 90 days of receiving the agreed documents;
+  lapse without refund if the documents are not provided within 90 days of
+  payment despite a reminder.
+- v1.1 is `"effective"` in the module and in `termsVersionSummaries`, v1.0 is
+  `"superseded"` (status only), and the v1.1 PDF was regenerated without the
+  draft banner. The owner set the effective date to the approval day, so the
+  module, route and PDF moved from the proposed `2026-12-01` to `2026-11-10`
+  before anything was published under the old date, and the pre-effective
+  note on `/terms` stays dormant.
+- **After the deploy** (step 5 above, the dated route must answer 200 first):
+  repoint the account-wide Terms of Service URL in the Dashboard and the two
+  Advisor links' consent message and metadata to v1.1, in both modes. The
+  checklist is at the end of `docs/stripe-acceptance-evidence.md`.
 
 ## v1.0 was amended in place on 2026-08-21
 

@@ -6,6 +6,7 @@
   "scripts": {
     "build": "vite build && vite build --ssr src/entry-server.tsx --outDir build-ssr && node scripts/prerender.mjs",
     "dev": "vite",
+    "test": "node scripts/check-offers.mjs && node scripts/check-positioning.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

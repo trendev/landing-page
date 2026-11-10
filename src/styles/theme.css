@@ -20,6 +20,12 @@
   --accent: #25D8EC;
   --accent-foreground: #04141A; /* dark ink for text on accent fills */
 
+  /* Selling highlight: the "Best way to start" badge (CTO Decision Review).
+     Deliberately not the accent, so it never reads as Advisor+'s
+     "Recommended". Badges and borders only; CTAs stay on the accent. */
+  --highlight: #FFB547;
+  --highlight-foreground: #1F1300; /* dark ink for text on highlight fills */
+
   /* Lines & focus */
   --border: rgba(255, 255, 255, 0.12); /* glass hairline */
   --ring: #25D8EC;
@@ -41,6 +47,8 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-highlight: var(--highlight);
+  --color-highlight-foreground: var(--highlight-foreground);
   --color-border: var(--border);
   --color-ring: var(--ring);
   --radius-sm: calc(var(--radius) - 4px);
@@ -279,6 +287,8 @@
     --muted-foreground: #374357;
     --accent: #0e7490;
     --accent-foreground: #ffffff;
+    --highlight: #b45309;
+    --highlight-foreground: #ffffff;
     --border: rgba(15, 23, 42, 0.25);
     --ring: #0e7490;
   }

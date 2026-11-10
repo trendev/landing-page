@@ -38,7 +38,8 @@ export interface TermsVersionSummary {
  * entry, and `loadTermsVersion` warns about it in dev.
  */
 export const termsVersionSummaries: TermsVersionSummary[] = [
-  { date: "2026-09-01", version: "1.0", status: "effective" },
+  { date: "2026-11-10", version: "1.1", status: "effective" },
+  { date: "2026-09-01", version: "1.0", status: "superseded" },
 ];
 
 /**
@@ -48,11 +49,21 @@ export const termsVersionSummaries: TermsVersionSummary[] = [
  * so this map cannot be generated from the summaries above.
  */
 const loaders: Record<string, () => Promise<TermsVersion>> = {
+  "2026-11-10": () => import("./2026-11-10").then((m) => m.termsV20261110),
   "2026-09-01": () => import("./2026-09-01").then((m) => m.termsV20260901),
 };
 
-/** The version served at /terms. */
-export const currentTermsDate: string = termsVersionSummaries[0].date;
+/**
+ * The version served at /terms: the newest one that is not a draft. A draft is
+ * published at its dated route for review (and for test-mode checkout) without
+ * displacing the version buyers actually accept today; approving it, i.e.
+ * flipping its status to "effective" here and in its module, is what makes it
+ * current (issue #59).
+ */
+export const currentTermsDate: string = (
+  termsVersionSummaries.find((summary) => summary.status !== "draft") ??
+  termsVersionSummaries[0]
+).date;
 
 /** Whether a dated route exists, answerable without loading the text. */
 export function hasTermsVersion(date: string): boolean {

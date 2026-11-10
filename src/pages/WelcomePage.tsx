@@ -3,10 +3,13 @@ import { ArrowRight, TriangleAlert } from "lucide-react";
 import { BackLink } from "@/components/BackLink";
 import { WelcomeContextForm } from "@/components/WelcomeContextForm";
 import {
+  DECISION_REVIEW_WELCOME_SUBTITLE,
   WELCOME_BILLING_NOTE,
   WELCOME_SAVE_NOTE,
   WELCOME_SUBTITLE,
   WELCOME_TITLE,
+  decisionReviewClosing,
+  decisionReviewSteps,
   manageBilling,
   welcomeClosing,
   welcomeSteps,
@@ -96,14 +99,32 @@ function Step({ step }: { step: WelcomeStep }) {
  * noindex because the build prerenders this route as a real crawlable page,
  * and a post-purchase page does not belong in search results.
  */
-export function WelcomePage() {
-  useDocumentMeta({
-    title: "Welcome | TRENDev",
-    description:
-      "Onboarding for new TRENDev CTO Advisor and CTO Advisor+ clients: share your context, schedule your first working session, and prepare useful materials.",
-    canonicalPath: "/welcome",
-    robots: "noindex, follow",
-  });
+export function WelcomePage({
+  variant,
+}: {
+  /** "decision-review": the one-off purchase (issue #59). */
+  variant?: "decision-review";
+}) {
+  const oneOff = variant === "decision-review";
+  useDocumentMeta(
+    oneOff
+      ? {
+          title: "Welcome, CTO Decision Review | TRENDev",
+          description:
+            "Next steps after purchasing a TRENDev CTO Decision Review: check the agreed question, send the agreed documents, and agree the timing and the walkthrough.",
+          canonicalPath: "/welcome/decision-review",
+          robots: "noindex, follow",
+        }
+      : {
+          title: "Welcome | TRENDev",
+          description:
+            "Onboarding for new TRENDev CTO Advisor and CTO Advisor+ clients: share your context, schedule your first working session, and prepare useful materials.",
+          canonicalPath: "/welcome",
+          robots: "noindex, follow",
+        },
+  );
+  const steps = oneOff ? decisionReviewSteps : welcomeSteps;
+  const closing = oneOff ? decisionReviewClosing : welcomeClosing;
 
   return (
     <section className="pt-28 sm:pt-32 pb-12 sm:pb-16 px-4 sm:px-6">
@@ -112,7 +133,9 @@ export function WelcomePage() {
 
         <header className="mb-8 sm:mb-10 text-center">
           <h1 className="text-3xl sm:text-4xl mb-2">{WELCOME_TITLE}</h1>
-          <p className="text-lg text-muted-foreground">{WELCOME_SUBTITLE}</p>
+          <p className="text-lg text-muted-foreground">
+            {oneOff ? DECISION_REVIEW_WELCOME_SUBTITLE : WELCOME_SUBTITLE}
+          </p>
           <p className="text-sm text-muted-foreground mt-4 max-w-xl mx-auto">
             {WELCOME_BILLING_NOTE}
           </p>
@@ -124,14 +147,14 @@ export function WelcomePage() {
         </header>
 
         <ol className="space-y-6">
-          {welcomeSteps.map((step) => (
+          {steps.map((step) => (
             <Step key={step.id} step={step} />
           ))}
         </ol>
 
         <article className="glass rounded-2xl p-6 sm:p-8 mt-6">
-          <h2 className="text-lg sm:text-xl mb-3">{welcomeClosing.heading}</h2>
-          {welcomeClosing.paragraphs?.map((paragraph) => (
+          <h2 className="text-lg sm:text-xl mb-3">{closing.heading}</h2>
+          {closing.paragraphs?.map((paragraph) => (
             <p
               key={paragraph}
               className="text-sm sm:text-base text-muted-foreground mb-3 leading-relaxed"
@@ -141,7 +164,8 @@ export function WelcomePage() {
           ))}
         </article>
 
-        {manageBilling && (
+        {/* No plan to manage after a one-off payment. */}
+        {manageBilling && !oneOff && (
           <article className="glass rounded-2xl p-6 sm:p-8 mt-6">
             <h2 className="text-lg sm:text-xl mb-3">{manageBilling.heading}</h2>
             {manageBilling.paragraphs.map((paragraph) => (

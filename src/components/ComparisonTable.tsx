@@ -1,5 +1,6 @@
 import { Check, Minus } from "lucide-react";
 
+import { ProductIcon } from "@/components/ProductIcon";
 import { comparisonRows, pricingTiers } from "@/data/pricing";
 
 /** Renders a boolean as ✓/—; alignment is the caller's job. */
@@ -16,25 +17,28 @@ function Cell({ value }: { value: string | boolean }) {
 }
 
 /**
- * Tier comparison frozen in issue #13.
+ * Offer comparison: issue #13's three columns plus CTO Decision Review
+ * (issue #59).
  *
- * Two layouts, same data. A 3-column table needs ~42rem to stay legible, so on
- * a phone it can only be delivered as a horizontally scrolling table, which is
- * poor UI: the row labels scroll away from their values and nothing signals
- * there is more to the right. Below `md` each tier becomes its own card with
- * label/value rows, which reads naturally in a single vertical scroll. The
- * table returns at `md`, where it is genuinely the better presentation.
+ * Two layouts, same data. Four offer columns plus the label column need
+ * ~60rem to stay legible, so on anything narrower they could only be a
+ * horizontally scrolling table, which is poor UI: the row labels scroll away
+ * from their values and nothing signals there is more to the right. Below `lg`
+ * each offer becomes its own card with label/value rows, which reads naturally
+ * in a single vertical scroll. The table returns at `lg`, where it fits
+ * without being squeezed into the old three-column width.
  */
 export function ComparisonTable() {
   return (
     <>
-      <div className="space-y-4 md:hidden">
-        {pricingTiers.map((tier, tierIndex) => (
+      <div className="grid gap-4 md:grid-cols-2 lg:hidden">
+        {pricingTiers.map((tier) => (
           <div key={tier.id} className="glass rounded-2xl p-5">
             <h3
-              className={`mb-4 ${tier.recommended ? "text-accent" : "text-foreground"}`}
+              className={`flex items-center gap-3 mb-4 ${tier.recommended ? "text-accent" : "text-foreground"}`}
             >
-              {tier.name}
+              <ProductIcon tierId={tier.id} size={40} />
+              <span>{tier.name}</span>
             </h3>
             <dl className="space-y-0">
               {comparisonRows.map((row) => (
@@ -44,7 +48,7 @@ export function ComparisonTable() {
                 >
                   <dt className="text-sm text-muted-foreground">{row.label}</dt>
                   <dd className="text-sm text-foreground text-right flex justify-end shrink-0 max-w-[55%]">
-                    <Cell value={row.values[tierIndex]} />
+                    <Cell value={row.values[tier.id]} />
                   </dd>
                 </div>
               ))}
@@ -53,8 +57,8 @@ export function ComparisonTable() {
         ))}
       </div>
 
-      <div className="hidden md:block glass rounded-2xl overflow-x-auto">
-        <table className="w-full min-w-[42rem] text-sm border-separate border-spacing-0">
+      <div className="hidden lg:block glass rounded-2xl overflow-x-auto">
+        <table className="w-full min-w-[60rem] text-sm border-separate border-spacing-0">
           <thead>
             <tr>
               <th className="sticky left-0 bg-card/90 text-left px-4 sm:px-6 py-4 border-b border-border font-normal text-muted-foreground">
@@ -63,11 +67,14 @@ export function ComparisonTable() {
               {pricingTiers.map((tier) => (
                 <th
                   key={tier.id}
-                  className={`px-4 sm:px-6 py-4 border-b border-border text-center ${
+                  className={`px-4 py-4 border-b border-border text-center w-[19%] ${
                     tier.recommended ? "text-accent" : "text-foreground"
                   }`}
                 >
-                  {tier.name}
+                  <div className="flex flex-col items-center gap-2">
+                    <ProductIcon tierId={tier.id} size={40} />
+                    <span>{tier.name}</span>
+                  </div>
                 </th>
               ))}
             </tr>
@@ -85,13 +92,13 @@ export function ComparisonTable() {
                   >
                     {row.label}
                   </th>
-                  {row.values.map((value, tierIndex) => (
+                  {pricingTiers.map((tier) => (
                     <td
-                      key={pricingTiers[tierIndex].id}
-                      className={`px-4 sm:px-6 py-3 ${borderClass}`}
+                      key={tier.id}
+                      className={`px-4 py-3 ${borderClass}`}
                     >
                       <div className="flex justify-center text-center">
-                        <Cell value={value} />
+                        <Cell value={row.values[tier.id]} />
                       </div>
                     </td>
                   ))}

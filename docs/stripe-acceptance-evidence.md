@@ -316,3 +316,94 @@ charged:
 
 Deleting customers is not exposed through the Stripe MCP tools, so remove them
 from the Dashboard. Tracked as a task list on its own issue.
+
+## CTO Decision Review: one-off checkout (issue #59)
+
+A one-off €1,500 purchase, not a subscription, so the evidence cannot live on
+`subscription_data.metadata` (there is no subscription object). It is recorded
+in three places instead, all with the same six keys (`tier_id`,
+`terms_version`, `terms_date`, `terms_url`, `service_description`,
+`service_description_url`):
+
+| Where | Why |
+|---|---|
+| Payment Link / Checkout Session `metadata` | What the buyer was shown |
+| `payment_intent_data.metadata` | Durable on the payment itself |
+| `invoice_creation.invoice_data.metadata` | Durable on the invoice; `invoice_creation` must be enabled, a payment-mode link issues no invoice otherwise |
+
+Product metadata is **not** acceptance evidence: it describes the catalogue,
+not what a given buyer accepted.
+
+**The link is published on the site** (owner decision, 2026-11-10): the
+Decision Review card on the landing page, `/advisory` and
+`/services/cto-decision-review` link it as "Get your Decision Review", always
+with the free 20-minute call beside it as the recommended first step. It is
+the landing page's only checkout; `scripts/check-offers.mjs` and
+`check-positioning.mjs` hold both rules. (The first draft of #59 kept it
+unpublished and sent it after the call; that rule is gone.)
+
+### As configured (test mode, 2026-11-10)
+
+- Product `prod_VbSFbm2arjmx0z`, price `price_1UaFKcHxg3uOgAWoo9jGWZEw`:
+  `unit_amount=150000`, `eur`, `one_time`, `tax_behavior=exclusive`,
+  `txcd_20060048`. Test mirror of live `prod_VbQBhxpb4VHolf` /
+  `price_1UaDLPHxg3uOgAWoKkkIDKA3`.
+- Payment Link `plink_1UaFKnHxg3uOgAWorERq7nui`
+  (`https://buy.stripe.com/test_9B600jgRzfE20n8bJ75AQ07`): quantity fixed at
+  1, no promotion codes, `terms_of_service: required` with a consent message
+  naming Terms **v1.1 (2026-11-10)**, Section 15 and Annex C, required business
+  legal name + B2B confirmation, required billing address, tax-ID collection,
+  automatic tax, `customer_creation: always`, invoice creation on, completion
+  at `https://trendev.fr/welcome/decision-review`.
+
+### Verified (test mode, 2026-11-10)
+
+Three purchases through the hosted page with card 4242, read back via the API:
+
+| Buyer | Session | Tax | Result |
+|---|---|---|---|
+| FR business, FR VAT ID | `cs_test_a1HArqSZ…` | €300 (20% FR VAT), total €1,800 | `mode: payment`, `subscription: null`, invoice `in_1UaFMwHxg3uOgAWoIOEzGZRF` |
+| DE business, DE VAT ID | `cs_test_a1nQJSat…` | €0, `tax_exempt: reverse` | invoice `in_1UaFPmHxg3uOgAWo0pr9X8eP` |
+| US business, no tax ID | `cs_test_a1BC0C0q…` | €0 | invoice `in_1UaFQ6Hxg3uOgAWod3s8IyeS` |
+
+All three carry the six keys on the session and on the payment intent
+(checked on `pi_3UaFPkHxg3uOgAWo1vDOP967`), and redirect to
+`/welcome/decision-review`. Test-mode tax registrations checked first: FR
+`standard` and `oss_union` are active.
+
+These three purchases predate the owner's choice of effective date, so their
+evidence keys name the proposed `2026-12-01`. Both links (test and live) and
+both products were then repointed in place to `2026-11-10`: consent message,
+`metadata`, `payment_intent_data.metadata` and the invoice metadata. No live
+purchase was ever made under the old date.
+
+### Live (2026-11-10)
+
+- Product `prod_VbQBhxpb4VHolf`, price `price_1UaDLPHxg3uOgAWoKkkIDKA3`
+  (unchanged: €1,500, `one_time`, `exclusive`, `txcd_20060048`). Product
+  description and metadata now say the call is recommended
+  (`intro_call_required=false`, `intro_call_recommended=true`), in both modes.
+- Payment Link `plink_1UaJh6Hxg3uOgAWoM9m1QI2D`
+  (`https://buy.stripe.com/14A4gzcBjgI6b1M6oN5AQ04`), created field-for-field
+  from the test link after the owner approved Terms v1.1 and read back through
+  the API: same consent message, custom fields, tax-ID collection, automatic
+  tax, invoice creation, six keys in all three places, redirect to
+  `/welcome/decision-review`.
+- Live tax registrations checked first: FR `standard` only
+  (`taxreg_1U68dSHxg3uOgAWod8hIGPxi`), the same as for the Advisor links. Test
+  mode also has `oss_union`; live does not (see the OSS note above), so an EU
+  buyer without a valid VAT ID is not charged destination VAT in live.
+- No live purchase was made.
+
+### After the deploy (owner)
+
+1. Confirm `https://trendev.fr/terms/2026-11-10` answers 200.
+2. Dashboard → Settings → Public business details → *Terms of service* URL to
+   `https://trendev.fr/terms/2026-11-10` (no API). It is shared by every link,
+   which is why v1.1 covers the Advisor tiers too.
+3. Repoint the two Advisor links' consent message and metadata to v1.1 in
+   place, in both modes (see `docs/legal-versioning.md`, "Repointing Stripe is
+   cheaper…"). Until then, Advisor checkout still names v1.0, whose Annexes are
+   byte-identical to v1.1's.
+4. Optionally, one owner-performed live purchase and refund to read back the
+   evidence on a real session.

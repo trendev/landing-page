@@ -29,9 +29,9 @@ runner. Chromium comes from `PLAYWRIGHT_BROWSERS_PATH` where one is provisioned.
 
 ## What it captures
 
-- **Every route the router serves** — `/`, `/advisory`, the three
-  `/services/*`, `/faq`, `/terms`, `/legal`, `/privacy`, `/welcome`, plus the
-  404. Keep `routes.json` in sync with `src/app/router.tsx` and
+- **Every route the router serves** — `/`, `/advisory`, the four
+  `/services/*`, `/faq`, `/terms` and `/terms/2026-11-10`, `/legal`,
+  `/privacy`, `/welcome` and `/welcome/decision-review`, plus the 404. Keep `routes.json` in sync with `src/app/router.tsx` and
   `.github/workflows/deploy.yml`.
 - **Four overlay states** the routes alone never show: the cookie consent
   banner, and the projects / expertise-detail modals. These are
@@ -43,6 +43,10 @@ runner. Chromium comes from `PLAYWRIGHT_BROWSERS_PATH` where one is provisioned.
   stay centred once Figma re-shapes them in Inter.
 - **Lucide icons** as real vectors, deduplicated per page, with `currentColor`
   resolved to the computed colour.
+- **Raster images** (the product icons, issue #61) as embedded PNG `<image>`
+  layers, redrawn at 3x from the largest WebP derivative, so a frame shows the
+  real artwork instead of a placeholder box. PNG rather than WebP because
+  Figma's SVG import is not reliable with WebP.
 - **Placeholder text in empty fields.** A placeholder lives in the browser's
   shadow DOM and has no text node, so the character walker cannot see it and an
   empty field would capture as a blank box, which is how the `/welcome` context

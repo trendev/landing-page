@@ -136,7 +136,9 @@ export function toSvg(d, weaveDataUri) {
       continue;
     }
     if (n.t === 'img') {
-      out.push(`<rect x="${num(n.x)}" y="${num(n.y)}" width="${num(n.w)}" height="${num(n.h)}" fill="#0E1A3A"/>`);
+      out.push(n.dataUri
+        ? `<image x="${num(n.x)}" y="${num(n.y)}" width="${num(n.w)}" height="${num(n.h)}" preserveAspectRatio="xMidYMid meet" xlink:href="${n.dataUri}"/>`
+        : `<rect x="${num(n.x)}" y="${num(n.y)}" width="${num(n.w)}" height="${num(n.h)}" fill="#0E1A3A"/>`);
     }
   }
   out.push('</svg>');

@@ -14,8 +14,8 @@ const read = (file) => readFileSync(join(BUILD, file), 'utf8');
 
 /** Published URLs (Stripe redirects, legal references, inbound links). */
 const MUST_BE_INDEXED = [
-  '/', '/advisory', '/faq', '/services/cto-advisor', '/services/cto-advisor-plus',
-  '/services/fractional-cto', '/terms', '/legal', '/privacy',
+  '/', '/advisory', '/faq', '/services/cto-decision-review', '/services/cto-advisor',
+  '/services/cto-advisor-plus', '/services/fractional-cto', '/terms', '/legal', '/privacy',
 ];
 
 const attr = (html, tag, name) =>
@@ -37,7 +37,10 @@ assert.ok(read('robots.txt').includes(`Sitemap: ${ORIGIN}/sitemap.xml`));
 const urls = [...read('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 const paths = urls.map((url) => url.slice(ORIGIN.length) || '/');
 for (const path of MUST_BE_INDEXED) assert.ok(paths.includes(path), `Sitemap misses ${path}`);
-assert.ok(!paths.includes('/welcome'), '/welcome is noindex and must stay out of the sitemap');
+for (const path of ['/welcome', '/welcome/decision-review', '/terms/2026-11-10']) {
+  // 2026-11-10 is the current version: its dated URL canonicalises to /terms.
+  assert.ok(!paths.includes(path), `${path} is noindex and must stay out of the sitemap`);
+}
 
 const titles = new Map();
 for (const path of paths) {
@@ -72,7 +75,7 @@ const typesOn = (file) => types(jsonLd(read(file)));
 assert.ok(typesOn('index.html').includes('Organization'));
 assert.ok(typesOn('faq.html').includes('FAQPage'));
 assert.ok(!typesOn('privacy.html').includes('FAQPage'), 'FAQPage must stay on /faq only');
-assert.equal(typesOn('advisory.html').filter((type) => type === 'Service').length, 3);
+assert.equal(typesOn('advisory.html').filter((type) => type === 'Service').length, 4);
 assert.ok(typesOn('services/cto-advisor.html').includes('BreadcrumbList'));
 for (const block of jsonLd(read('advisory.html'))) {
   for (const node of block['@graph'] ?? [block]) {
@@ -80,11 +83,25 @@ for (const block of jsonLd(read('advisory.html'))) {
     const spec = node.offers.priceSpecification;
     assert.equal(spec.valueAddedTaxIncluded, false, `${node.name}: prices exclude taxes`);
     assert.equal(spec.priceCurrency, 'EUR');
+    // The one-off review must never reach a rich result as monthly (issue #59).
+    if (node.name === 'CTO Decision Review') assert.ok(!spec.unitCode, 'Decision Review JSON-LD is monthly');
   }
 }
+const review = read('services/cto-decision-review.html');
+assert.ok(typesOn('services/cto-decision-review.html').includes('BreadcrumbList'));
+for (const tag of ['meta name="description"', 'meta property="og:description"']) {
+  const text = attr(review, tag, 'content');
+  assert.ok(/one-time/.test(text) && !/month/i.test(text), `${tag} on the review page must read one-time`);
+}
 
-const welcome = read('welcome.html');
-assert.match(attr(welcome, 'meta name="robots"', 'content'), /noindex/);
+for (const file of ['welcome.html', 'welcome/decision-review.html']) {
+  assert.match(attr(read(file), 'meta name="robots"', 'content'), /noindex/, `${file} must be noindex`);
+}
+// Terms v1.1 (approved 2026-11-10) is served at /terms; v1.0 keeps its own URL.
+assert.equal(attr(read('terms/2026-11-10.html'), 'link rel="canonical"', 'href'), `${ORIGIN}/terms`);
+assert.ok(!/noindex/.test(attr(read('terms/2026-11-10.html'), 'meta name="robots"', 'content') ?? ''), 'v1.1 is no longer a draft');
+assert.ok(read('terms.html').includes('Version <!-- -->1.1') || read('terms.html').includes('Version 1.1'), '/terms serves v1.1');
+assert.ok(paths.includes('/terms/2026-09-01'), 'The superseded v1.0 stays published and indexed');
 const notFound = read('404.html');
 assert.match(attr(notFound, 'meta name="robots"', 'content'), /noindex/);
 assert.ok(!notFound.includes('rel="canonical"'), '404.html must not declare a canonical');

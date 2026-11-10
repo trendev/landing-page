@@ -34,10 +34,14 @@ export function breadcrumbList(crumbs: Array<[name: string, path: string]>) {
 }
 
 /**
- * One public offer as a Service with its monthly price. Prices are parsed from
- * the frozen display strings in `@/data/pricing` rather than restated, and are
+ * One public offer as a Service with its price. Prices are parsed from the
+ * frozen display strings in `@/data/pricing` rather than restated, and are
  * always marked VAT-exclusive, matching "excluding applicable taxes". A
  * "From €6,000" price becomes a minimum, not a fixed price.
+ *
+ * The billing unit comes from `tier.billing`, never from the label: a
+ * one-time offer (CTO Decision Review, issue #59) carries no unit at all, so
+ * no rich result or social preview can present it as monthly.
  */
 export function tierService(tier: PricingTier) {
   const amount = Number(tier.price.replace(/[^\d]/g, ""));
@@ -49,7 +53,8 @@ export function tierService(tier: PricingTier) {
     "@type": "Service",
     "@id": `${url}#service`,
     name: tier.name,
-    serviceType: "CTO advisory",
+    serviceType:
+      tier.billing === "one-time" ? "Technical decision review" : "CTO advisory",
     description: tier.tagline,
     url,
     provider: { "@id": ORGANIZATION_ID },
@@ -59,11 +64,15 @@ export function tierService(tier: PricingTier) {
       priceCurrency: "EUR",
       ...(isMinimum ? {} : { price: amount }),
       priceSpecification: {
-        "@type": "UnitPriceSpecification",
+        "@type":
+          tier.billing === "one-time"
+            ? "PriceSpecification"
+            : "UnitPriceSpecification",
         priceCurrency: "EUR",
         ...(isMinimum ? { minPrice: amount } : { price: amount }),
-        unitCode: "MON",
-        unitText: "month",
+        ...(tier.billing === "one-time"
+          ? {}
+          : { unitCode: "MON", unitText: "month" }),
         valueAddedTaxIncluded: false,
       },
     },

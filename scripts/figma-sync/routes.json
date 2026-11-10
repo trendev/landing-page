@@ -1,14 +1,17 @@
 [
   { "path": "/", "slug": "landing", "name": "Landing", "weave": true },
   { "path": "/advisory", "slug": "advisory", "name": "Advisory" },
+  { "path": "/services/cto-decision-review", "slug": "svc-decision-review", "name": "CTO Decision Review" },
   { "path": "/services/cto-advisor", "slug": "svc-advisor", "name": "CTO Advisor" },
   { "path": "/services/cto-advisor-plus", "slug": "svc-advisor-plus", "name": "CTO Advisor+" },
   { "path": "/services/fractional-cto", "slug": "svc-fractional", "name": "Fractional CTO" },
   { "path": "/faq", "slug": "faq", "name": "FAQ" },
   { "path": "/terms", "slug": "terms", "name": "Terms v1.0" },
+  { "path": "/terms/2026-11-10", "slug": "terms-v1-1", "name": "Terms v1.1" },
   { "path": "/legal", "slug": "legal", "name": "Legal notice" },
   { "path": "/privacy", "slug": "privacy", "name": "Privacy" },
   { "path": "/welcome", "slug": "welcome", "name": "Welcome" },
+  { "path": "/welcome/decision-review", "slug": "welcome-decision-review", "name": "Welcome - Decision Review" },
   { "path": "/nope", "slug": "notfound", "name": "404" },
 
   { "path": "/", "slug": "overlay-consent", "name": "Overlay - Cookie consent", "h": 900, "showConsent": true },

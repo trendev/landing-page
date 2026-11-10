@@ -59,6 +59,8 @@ export interface EngagementMode {
   /** Where to go next: a route (`/services/...`) or the delivery enquiry. */
   href: string;
   cta: string;
+  /** Set only on the rows that are a named offer; shows its product icon (issue #61). */
+  tierId?: TierId;
 }
 
 export interface DeliveryPrinciple {
@@ -119,16 +121,27 @@ export interface FaqEntry {
 
 /* ── Premium CTO offers (epic #12) ─────────────────────────────────────── */
 
-export type TierId = "cto-advisor" | "cto-advisor-plus" | "fractional-cto";
+export type TierId =
+  | "cto-decision-review"
+  | "cto-advisor"
+  | "cto-advisor-plus"
+  | "fractional-cto";
+
+/**
+ * How an offer is paid for. Explicit on purpose (issue #59): recurring
+ * behaviour must never be inferred from a price label, and the JSON-LD, the
+ * card copy and the checkout mode all branch on it.
+ */
+export type BillingMode = "one-time" | "monthly" | "tailored";
 
 export interface PricingTier {
   id: TierId;
-  icon: LucideIcon;
   name: string;
   /** Display price, e.g. "€1,500" or "From €6,000". */
   price: string;
-  /** e.g. "/month". */
+  /** e.g. "/month" or " one-time". */
   priceSuffix: string;
+  billing: BillingMode;
   /** Always "excluding applicable taxes" — never present French VAT as universal. */
   taxNote: string;
   /** Outcome-first value proposition; capacity is never the headline. */
@@ -143,9 +156,19 @@ export interface PricingTier {
   /** Billing/cancellation small print shown on the card. */
   billingNotes: string[];
   recommended?: boolean;
+  /**
+   * A selling badge above the card, shaped like "Recommended" but in the
+   * `highlight` colour so the two never read as the same signal. Advisor+ stays
+   * the recommended plan; CTO Decision Review uses this to be the obvious
+   * entry point (owner request, 2026-11-10). Its CTA is accent-coloured too.
+   */
+  badge?: string;
   cta: {
     label: string;
-    /** "checkout" → Stripe link (consultation fallback while unset); "contact" → consultation. */
+    /**
+     * "checkout" → Stripe link (consultation fallback while unset);
+     * "contact" → consultation.
+     */
     kind: "checkout" | "contact";
   };
   /** Route of the full service description, e.g. "/services/cto-advisor". */
@@ -154,8 +177,11 @@ export interface PricingTier {
 
 export interface ComparisonRow {
   label: string;
-  /** One value per tier (Advisor, Advisor+, Fractional). Booleans render as ✓/—. */
-  values: [string | boolean, string | boolean, string | boolean];
+  /**
+   * One value per tier, keyed by id so a new column can never shift values
+   * onto the wrong offer. Booleans render as ✓/—.
+   */
+  values: Record<TierId, string | boolean>;
 }
 
 /* ── Long-form page content (service descriptions, legal pages) ────────── */

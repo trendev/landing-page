@@ -1,6 +1,11 @@
 import type { TierId } from "@/types";
 
-/** Tiers that can be bought self-service. Fractional CTO is contact-only. */
+/**
+ * Tiers bought through a public checkout button. Fractional CTO is
+ * contact-only. CTO Decision Review joined on 2026-11-10 (issue #59): the
+ * owner decided it can be bought straight from the site, with the free
+ * introductory call recommended rather than required.
+ */
 export type CheckoutTierId = Exclude<TierId, "fractional-cto">;
 
 type PaymentLinks = Record<CheckoutTierId, string>;
@@ -43,6 +48,14 @@ type PaymentLinks = Record<CheckoutTierId, string>;
  * `metadata` merges.
  */
 const TEST_PAYMENT_LINKS: PaymentLinks = {
+  // CTO Decision Review: plink_1UaFKnHxg3uOgAWorERq7nui on
+  // prod_VbSFbm2arjmx0z / price_1UaFKcHxg3uOgAWoo9jGWZEw, created 2026-11-10.
+  // A one-time payment, never a subscription: €1,500 exclusive of tax,
+  // quantity fixed at 1, Terms v1.1 consent naming Section 15 and Annex C, the
+  // six evidence keys in `metadata`, `payment_intent_data.metadata` and the
+  // invoice's metadata (there is no `subscription_data`), invoice creation on,
+  // completion at /welcome/decision-review instead of /welcome.
+  "cto-decision-review": "https://buy.stripe.com/test_9B600jgRzfE20n8bJ75AQ07",
   "cto-advisor": "https://buy.stripe.com/test_00wbJ1atb8bA4Do28x5AQ05",
   "cto-advisor-plus": "https://buy.stripe.com/test_eVq9AT9p7dvU3zk7sR5AQ06",
 };
@@ -74,6 +87,11 @@ const TEST_PAYMENT_LINKS: PaymentLinks = {
  * through the window expired with it. Every gate is now behind us.
  */
 const LIVE_PAYMENT_LINKS: PaymentLinks = {
+  // CTO Decision Review: plink_1UaJh6Hxg3uOgAWoM9m1QI2D on
+  // prod_VbQBhxpb4VHolf / price_1UaDLPHxg3uOgAWoKkkIDKA3, created 2026-11-10
+  // field-for-field from the test link above, once the owner approved Terms
+  // v1.1. Live tax registration: FR standard only, as for the Advisor links.
+  "cto-decision-review": "https://buy.stripe.com/14A4gzcBjgI6b1M6oN5AQ04",
   "cto-advisor": "https://buy.stripe.com/9B628r58RcrQ1rc6oN5AQ01",
   "cto-advisor-plus": "https://buy.stripe.com/7sY6oHfNv9fE9XI6oN5AQ02",
 };
