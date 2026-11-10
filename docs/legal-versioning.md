@@ -22,7 +22,7 @@ able to re-read what they accepted.
   any text is loaded.
 - Routes: `/terms` serves the current version; `/terms/<effective-date>`
   serves each version immutably. Published: `/terms/2026-09-01` (v1.0,
-  effective, current) and `/terms/2026-12-01` (v1.1, draft, see below).
+  superseded) and `/terms/2026-12-01` (v1.1, effective, current, see below).
 - Each version has a committed PDF at
   `public/terms/trendev-terms-of-service-<date>.pdf`, generated **from the
   built dated route** by `scripts/generate-terms-pdf.mjs`, so the PDF matches
@@ -164,7 +164,7 @@ inside the Terms version the buyer accepts.
       `src/data/terms/2026-09-01.ts` was corrected to say so, without touching
       a character of the contract text.
 
-## v1.1 (2026-12-01): draft covering CTO Decision Review (issue #59)
+## v1.1 (2026-12-01): covering CTO Decision Review (issue #59)
 
 v1.0 §1 covers the two Advisor subscriptions only, and its mechanics are
 monthly, so the one-off CTO Decision Review approved on 2026-11-10 cannot be
@@ -183,16 +183,26 @@ adding a separate agreement.
   reviewed at `/terms/2026-12-01` (draft banner, `noindex`, out of the sitemap).
   Before this, the newest entry was current by position, which would have put
   an unapproved draft in front of every Advisor buyer.
-- **Open owner decisions** (proposed defaults are in the text): no refund once
-  paid; on provider non-delivery, reschedule at no charge, with a full refund if
-  the brief is not delivered within 90 days of receiving the agreed documents;
+- **Approved on 2026-11-10.** The owner approved the text and decided the same
+  day that the review can be bought straight from the site. That decision
+  landed before approval was recorded, as the last pre-approval correction:
+  §15 now makes the introductory call recommended rather than required, has
+  the Agreed Scope confirmed in writing before any work starts, and adds a
+  full refund if the buyer skipped the call and TRENDev declines the decision
+  before work starts. Annex C and `/services/cto-decision-review` changed
+  with it. The other §15 defaults stand: no refund once paid otherwise;
+  reschedule at no charge on provider non-delivery, with a full refund if the
+  brief is not delivered within 90 days of receiving the agreed documents;
   lapse without refund if the documents are not provided within 90 days of
   payment despite a reminder.
-- **Test checkout only** points at v1.1. Live activation is the checklist at the
-  end of `docs/stripe-acceptance-evidence.md`.
-- v1.0 is not touched. When v1.1 is approved: set its status to `"effective"`
-  in the module and in `termsVersionSummaries`, set v1.0 to `"superseded"`
-  (status only), regenerate the v1.1 PDF, deploy, then repoint Stripe.
+- v1.1 is `"effective"` in the module and in `termsVersionSummaries`, v1.0 is
+  `"superseded"` (status only), and the v1.1 PDF was regenerated without the
+  draft banner. Checkout opens ahead of 2026-12-01, so the pre-effective note
+  on `/terms` renders again until that date, as it did for v1.0.
+- **After the deploy** (step 5 above, the dated route must answer 200 first):
+  repoint the account-wide Terms of Service URL in the Dashboard and the two
+  Advisor links' consent message and metadata to v1.1, in both modes. The
+  checklist is at the end of `docs/stripe-acceptance-evidence.md`.
 
 ## v1.0 was amended in place on 2026-08-21
 

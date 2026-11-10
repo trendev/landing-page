@@ -2,13 +2,11 @@ import type { TierId } from "@/types";
 
 /**
  * Tiers bought through a public checkout button. Fractional CTO is
- * contact-only, and CTO Decision Review is bought through a link sent after
- * the introductory call (see DECISION_REVIEW_PAYMENT_LINKS below).
+ * contact-only. CTO Decision Review joined on 2026-11-10 (issue #59): the
+ * owner decided it can be bought straight from the site, with the free
+ * introductory call recommended rather than required.
  */
-export type CheckoutTierId = Exclude<
-  TierId,
-  "fractional-cto" | "cto-decision-review"
->;
+export type CheckoutTierId = Exclude<TierId, "fractional-cto">;
 
 type PaymentLinks = Record<CheckoutTierId, string>;
 
@@ -50,6 +48,14 @@ type PaymentLinks = Record<CheckoutTierId, string>;
  * `metadata` merges.
  */
 const TEST_PAYMENT_LINKS: PaymentLinks = {
+  // CTO Decision Review: plink_1UaFKnHxg3uOgAWorERq7nui on
+  // prod_VbSFbm2arjmx0z / price_1UaFKcHxg3uOgAWoo9jGWZEw, created 2026-11-10.
+  // A one-time payment, never a subscription: €1,500 exclusive of tax,
+  // quantity fixed at 1, Terms v1.1 consent naming Section 15 and Annex C, the
+  // six evidence keys in `metadata`, `payment_intent_data.metadata` and the
+  // invoice's metadata (there is no `subscription_data`), invoice creation on,
+  // completion at /welcome/decision-review instead of /welcome.
+  "cto-decision-review": "https://buy.stripe.com/test_9B600jgRzfE20n8bJ75AQ07",
   "cto-advisor": "https://buy.stripe.com/test_00wbJ1atb8bA4Do28x5AQ05",
   "cto-advisor-plus": "https://buy.stripe.com/test_eVq9AT9p7dvU3zk7sR5AQ06",
 };
@@ -81,6 +87,11 @@ const TEST_PAYMENT_LINKS: PaymentLinks = {
  * through the window expired with it. Every gate is now behind us.
  */
 const LIVE_PAYMENT_LINKS: PaymentLinks = {
+  // CTO Decision Review: plink_1UaJh6Hxg3uOgAWoM9m1QI2D on
+  // prod_VbQBhxpb4VHolf / price_1UaDLPHxg3uOgAWoKkkIDKA3, created 2026-11-10
+  // field-for-field from the test link above, once the owner approved Terms
+  // v1.1. Live tax registration: FR standard only, as for the Advisor links.
+  "cto-decision-review": "https://buy.stripe.com/14A4gzcBjgI6b1M6oN5AQ04",
   "cto-advisor": "https://buy.stripe.com/9B628r58RcrQ1rc6oN5AQ01",
   "cto-advisor-plus": "https://buy.stripe.com/7sY6oHfNv9fE9XI6oN5AQ02",
 };
@@ -96,35 +107,6 @@ export const STRIPE_MODE: "test" | "live" =
 
 export const STRIPE_PAYMENT_LINKS: PaymentLinks =
   STRIPE_MODE === "live" ? LIVE_PAYMENT_LINKS : TEST_PAYMENT_LINKS;
-
-/**
- * CTO Decision Review checkout (issue #59): a one-time payment, never a
- * subscription, quantity fixed at one, completing at /welcome/decision-review.
- *
- * NEVER RENDERED ON THE SITE. The issue forbids a public "buy now" route that
- * would let a prospect skip the fit and scope confirmation, so the public CTA
- * is always the free introductory call; TRENDev sends this link once the
- * question has been agreed. It lives here, like the subscription links, so the
- * link set stays reviewable in the diff; scripts/check-offers.mjs fails if any
- * rendered page contains it.
- *
- * Live stays empty until Terms v1.1, which is the first version to cover
- * Decision Review, is approved and effective. The live Product and Price
- * already exist (prod_VbQBhxpb4VHolf, price_1UaDLPHxg3uOgAWoKkkIDKA3).
- */
-export const DECISION_REVIEW_PAYMENT_LINKS = {
-  // plink_1UaFKnHxg3uOgAWorERq7nui on prod_VbSFbm2arjmx0z /
-  // price_1UaFKcHxg3uOgAWoo9jGWZEw (test mirror of the live product), created
-  // 2026-11-10: one-time €1,500 exclusive of tax, quantity 1, Terms v1.1
-  // consent naming Section 15 and Annex C, the six evidence keys in
-  // `metadata`, `payment_intent_data.metadata` and the invoice's metadata,
-  // invoice creation on, completion at /welcome/decision-review.
-  test: "https://buy.stripe.com/test_9B600jgRzfE20n8bJ75AQ07",
-  live: "",
-} as const;
-
-export const DECISION_REVIEW_PAYMENT_LINK: string =
-  DECISION_REVIEW_PAYMENT_LINKS[STRIPE_MODE];
 
 /**
  * Stripe Customer Portal login page (issue #17), split by mode like the

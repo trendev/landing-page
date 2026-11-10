@@ -319,9 +319,9 @@ export const decisionReviewSteps: WelcomeStep[] = [
     id: "confirm-question",
     icon: ClipboardList,
     step: "01",
-    heading: "Check the agreed question",
+    heading: "Confirm the question",
     paragraphs: [
-      "Your review covers the decision, the questions and the documents agreed during the introductory call. If anything has changed since, tell us before the work starts: the review is scoped to one decision and up to 4 hours in total.",
+      "Your review covers one decision, the questions and the documents agreed in writing before any work starts. If you had an introductory call, they are the ones agreed there: tell us if anything has changed since. If you bought directly, email us the decision you want reviewed and we agree the scope with you first. The review is scoped to one decision and up to 4 hours in total.",
     ],
   },
   {

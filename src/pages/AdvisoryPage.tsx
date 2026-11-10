@@ -106,8 +106,8 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
                   </li>
                 ))}
               </ul>
-              {/* "Before purchase", adjacent to this offer's own CTA. */}
-              {tier.cta.kind === "call" && (
+              {/* The recommended call, adjacent to this offer's own CTA. */}
+              {tier.billing === "one-time" && (
                 <p className="text-xs text-foreground mb-5 flex items-start gap-2">
                   <CalendarCheck className="w-4 h-4 text-accent shrink-0" />
                   <span>{DECISION_REVIEW_PREREQUISITE_NOTE}</span>

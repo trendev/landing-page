@@ -187,11 +187,10 @@ export function TermsPage({ date }: TermsPageProps) {
                     </strong>{" "}
                     Checkout is open ahead of the effective date shown above.
                     This is the version presented and accepted at checkout
-                    today, and it governs your subscription from the date of
-                    purchase: the agreement is formed when the first payment is
-                    confirmed (Section 3), and the version accepted at purchase
-                    keeps governing the subscription for as long as it runs
-                    (Section 14).
+                    today, and it governs your purchase from the date of
+                    purchase: the agreement is formed when payment is confirmed
+                    (Section 3), and the version accepted at purchase keeps
+                    governing the service for as long as it runs (Section 14).
                   </p>
                 </div>
               )}

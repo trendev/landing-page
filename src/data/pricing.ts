@@ -55,11 +55,17 @@ export const DECISION_REVIEW_SUMMARY =
   "Reviewing a development proposal, a migration or a rewrite? Get a focused review of one technical decision, a concise written brief and a walkthrough of the findings.";
 
 /**
- * The more specific "before purchase" wording, kept beside every Decision
- * Review CTA. The shared PREREQUISITE_NOTE stays for the other offers.
+ * Kept beside every Decision Review purchase CTA. The call is recommended,
+ * not required: the review can be bought straight from the site (owner
+ * decision, 2026-11-10), and Terms v1.1 S15 then has the question agreed in
+ * writing before any work starts. The shared PREREQUISITE_NOTE stays for the
+ * other offers.
  */
 export const DECISION_REVIEW_PREREQUISITE_NOTE =
-  "Prerequisite: a free 20-minute introductory call before purchase. We confirm fit, agree the question and check that the review fits the scope. No preparation or commitment required.";
+  "Recommended: a free 20-minute introductory call before purchase, to confirm fit, agree the question and check that the review fits the scope. No preparation or commitment required. You can also buy directly: we then agree the question in writing before any work starts.";
+
+/** Secondary CTA beside the Decision Review purchase button. */
+export const DECISION_REVIEW_CALL_LABEL = "Book a free 20-minute call first";
 
 export const DECISION_REVIEW_BOUNDARY_NOTE =
   "Your team keeps decision and delivery ownership. Broader investigation or implementation requires a separate agreement.";
@@ -92,7 +98,7 @@ export const pricingTiers: PricingTier[] = [
       "One payment; no subscription or renewal",
       "Delivery timing agreed after the fit and scope review",
     ],
-    cta: { label: PRIMARY_CTA_LABEL, kind: "call" },
+    cta: { label: "Buy CTO Decision Review", kind: "checkout" },
     servicePath: DECISION_REVIEW_PATH,
   },
   {
@@ -193,7 +199,7 @@ export const pricingTiers: PricingTier[] = [
 /**
  * The comparison. The Advisor, Advisor+ and Fractional values are the ones
  * frozen in issue #13; issue #59 added the Decision Review column and the
- * "Best for", "Written output" and "Required first step" rows. Keyed by tier,
+ * "Best for", "Written output" and "First step" rows. Keyed by tier,
  * so a column can never shift.
  */
 export const comparisonRows: ComparisonRow[] = [
@@ -344,9 +350,9 @@ export const comparisonRows: ComparisonRow[] = [
     },
   },
   {
-    label: "Required first step",
+    label: "First step",
     values: {
-      "cto-decision-review": "free 20-minute introductory call",
+      "cto-decision-review": "free 20-minute introductory call, recommended",
       "cto-advisor": "free 20-minute introductory call",
       "cto-advisor-plus": "free 20-minute introductory call",
       "fractional-cto": "free 20-minute introductory call",

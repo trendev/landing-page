@@ -334,9 +334,13 @@ in three places instead, all with the same six keys (`tier_id`,
 Product metadata is **not** acceptance evidence: it describes the catalogue,
 not what a given buyer accepted.
 
-**The link is never published on the site.** The public CTA is always the free
-20-minute call; TRENDev sends the link once the question is agreed.
-`scripts/check-offers.mjs` fails if a rendered page contains it.
+**The link is published on the site** (owner decision, 2026-11-10): the
+Decision Review card on the landing page, `/advisory` and
+`/services/cto-decision-review` link it as "Buy CTO Decision Review", always
+with the free 20-minute call beside it as the recommended first step. It is
+the landing page's only checkout; `scripts/check-offers.mjs` and
+`check-positioning.mjs` hold both rules. (The first draft of #59 kept it
+unpublished and sent it after the call; that rule is gone.)
 
 ### As configured (test mode, 2026-11-10)
 
@@ -367,17 +371,33 @@ All three carry the six keys on the session and on the payment intent
 `/welcome/decision-review`. Test-mode tax registrations checked first: FR
 `standard` and `oss_union` are active.
 
-### Before live activation
+### Live (2026-11-10)
 
-1. Owner/lawyer approve Terms v1.1, including the open Section 15 defaults
-   (refund and lapse rules); flip it to `effective` and regenerate its PDF.
-2. Account-wide Dashboard → Settings → Public business details → *Terms of
-   service* URL to `https://trendev.fr/terms/2026-12-01` (no API). It is shared
-   by every link, which is why v1.1 covers the Advisor tiers too. Repoint the
-   two Advisor links' consent message and metadata to v1.1 in place (see
-   `docs/legal-versioning.md`, "Repointing Stripe is cheaper…").
-3. Check `GET /v1/tax/registrations` in **live** mode (registrations are
-   per-mode), then create the live Payment Link field-for-field from the test
-   one and fill `DECISION_REVIEW_PAYMENT_LINKS.live`.
-4. One owner-performed live-mode read-back of the link before sending it to a
-   client.
+- Product `prod_VbQBhxpb4VHolf`, price `price_1UaDLPHxg3uOgAWoKkkIDKA3`
+  (unchanged: €1,500, `one_time`, `exclusive`, `txcd_20060048`). Product
+  description and metadata now say the call is recommended
+  (`intro_call_required=false`, `intro_call_recommended=true`), in both modes.
+- Payment Link `plink_1UaJh6Hxg3uOgAWoM9m1QI2D`
+  (`https://buy.stripe.com/14A4gzcBjgI6b1M6oN5AQ04`), created field-for-field
+  from the test link after the owner approved Terms v1.1 and read back through
+  the API: same consent message, custom fields, tax-ID collection, automatic
+  tax, invoice creation, six keys in all three places, redirect to
+  `/welcome/decision-review`.
+- Live tax registrations checked first: FR `standard` only
+  (`taxreg_1U68dSHxg3uOgAWod8hIGPxi`), the same as for the Advisor links. Test
+  mode also has `oss_union`; live does not (see the OSS note above), so an EU
+  buyer without a valid VAT ID is not charged destination VAT in live.
+- No live purchase was made.
+
+### After the deploy (owner)
+
+1. Confirm `https://trendev.fr/terms/2026-12-01` answers 200.
+2. Dashboard → Settings → Public business details → *Terms of service* URL to
+   `https://trendev.fr/terms/2026-12-01` (no API). It is shared by every link,
+   which is why v1.1 covers the Advisor tiers too.
+3. Repoint the two Advisor links' consent message and metadata to v1.1 in
+   place, in both modes (see `docs/legal-versioning.md`, "Repointing Stripe is
+   cheaper…"). Until then, Advisor checkout still names v1.0, whose Annexes are
+   byte-identical to v1.1's.
+4. Optionally, one owner-performed live purchase and refund to read back the
+   evidence on a real session.

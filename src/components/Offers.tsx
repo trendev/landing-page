@@ -1,10 +1,12 @@
 import { ArrowRight, CalendarCheck, Check, Info } from "lucide-react";
 
 import { Link } from "@/app/router";
+import { TierCta } from "@/components/TierCta";
 import { offers } from "@/data/content";
 import { positioning } from "@/data/positioning";
 import {
   DECISION_REVIEW_BOUNDARY_NOTE,
+  DECISION_REVIEW_CALL_LABEL,
   DECISION_REVIEW_LINK_LABEL,
   DECISION_REVIEW_PREREQUISITE_NOTE,
   DECISION_REVIEW_SUMMARY,
@@ -23,7 +25,9 @@ const decisionReview = pricingTiers.find(
  * The bounded entry offer (issue #59), built from its pricing tier so the
  * homepage, /advisory and the service page cannot disagree on price or scope.
  * It is the one price the landing page shows: a single one-off review, not a
- * subscription section. The plans stay on /advisory.
+ * subscription section. The plans stay on /advisory. It can be bought here
+ * directly (owner decision, 2026-11-10); the free call stays beside the
+ * purchase button as the recommended first step.
  */
 function DecisionReviewCard({ onOpenConsultation }: OffersProps) {
   const Icon = decisionReview.icon;
@@ -68,20 +72,27 @@ function DecisionReviewCard({ onOpenConsultation }: OffersProps) {
               </li>
             ))}
           </ul>
-          <div className="flex flex-col sm:flex-row gap-3 mt-auto">
-            <button
-              onClick={onOpenConsultation}
-              className="px-5 py-2.5 sm:py-3 bg-accent text-accent-foreground rounded-lg hover:opacity-90 transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base"
-            >
-              {decisionReview.cta.label}
-              <ArrowRight className="w-4 h-4" />
-            </button>
-            <Link
-              href={decisionReview.servicePath}
-              className="px-5 py-2.5 sm:py-3 glass rounded-lg hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
-            >
-              {DECISION_REVIEW_LINK_LABEL}
-            </Link>
+          <div className="flex flex-col gap-3 mt-auto">
+            <TierCta
+              tier={decisionReview}
+              onOpenConsultation={onOpenConsultation}
+              primary
+            />
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={onOpenConsultation}
+                className="flex-1 px-5 py-2.5 sm:py-3 glass rounded-lg hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
+                <CalendarCheck className="w-4 h-4 text-accent" />
+                {DECISION_REVIEW_CALL_LABEL}
+              </button>
+              <Link
+                href={decisionReview.servicePath}
+                className="flex-1 px-5 py-2.5 sm:py-3 glass rounded-lg hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
+                {DECISION_REVIEW_LINK_LABEL}
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -12,8 +12,11 @@ import type { TermsVersion } from "@/types";
  * `status` is the only field that may change here, and only to "superseded".
  *
  * EFFECTIVE from 2026-09-01. Lawyer review and accountant validation completed
- * on 2026-08-19, and the owner approved this text on 2026-08-21. There is
- * exactly one published version and this is it.
+ * on 2026-08-19, and the owner approved this text on 2026-08-21.
+ *
+ * SUPERSEDED on 2026-11-10 by v1.1 (src/data/terms/2026-12-01.ts), which adds
+ * CTO Decision Review. Only `status` changed; subscriptions accepted under this
+ * version stay governed by it (S14).
  *
  * HISTORY: this module was first frozen on 2026-08-19. The deep legal review
  * of that date found substantive defects, and the owner's decisions of
@@ -55,7 +58,7 @@ import type { TermsVersion } from "@/types";
  */
 export const termsV20260901: TermsVersion = {
   version: "1.0",
-  status: "effective",
+  status: "superseded",
   effectiveDate: "2026-09-01",
   lastUpdated: "2026-08-21",
   pdfPath: "/terms/trendev-terms-of-service-2026-09-01.pdf",

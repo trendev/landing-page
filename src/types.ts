@@ -159,11 +159,9 @@ export interface PricingTier {
     label: string;
     /**
      * "checkout" → Stripe link (consultation fallback while unset);
-     * "contact" → consultation; "call" → the free introductory call, always.
-     * A "call" offer is bought through a link sent after that call, never from
-     * a public button (issue #59).
+     * "contact" → consultation.
      */
-    kind: "checkout" | "contact" | "call";
+    kind: "checkout" | "contact";
   };
   /** Route of the full service description, e.g. "/services/cto-advisor". */
   servicePath: string;

@@ -3,11 +3,12 @@ import type { TermsVersion } from "@/types";
 /**
  * TRENDev Professional Services Terms of Service, version 1.1.
  *
- * STATUS: DRAFT, pending legal review and owner approval (issue #59). While
- * `status` is "draft", pre-review corrections are allowed but must regenerate
- * the PDF (docs/legal-versioning.md). /terms keeps serving v1.0 until this
- * version is approved: the registry skips drafts when choosing the current
- * version, and no live checkout points here.
+ * STATUS: EFFECTIVE. Approved by the owner on 2026-11-10 (issue #59), the day
+ * live checkout for CTO Decision Review opened, so it is the version served at
+ * /terms from then on. Like v1.0 before it, it is accepted at checkout ahead of
+ * its effective date; S3 and S14 make the version accepted at purchase the one
+ * that governs, and /terms says so until the date arrives. The text is now
+ * frozen: `status` may only change to "superseded" (docs/legal-versioning.md).
  *
  * WHY A NEW VERSION: v1.0 S1 covers the CTO Advisor and CTO Advisor+
  * subscriptions only, and its definitions and mechanics are monthly. CTO
@@ -31,11 +32,14 @@ import type { TermsVersion } from "@/types";
  *    checks it) and are renumbered 16 and 17; Annex C (18) reproduces the
  *    CTO Decision Review service description.
  *
- * OWNER DECISIONS STILL OPEN in S15, with proposed defaults in the text: no
- * refund once paid; reschedule at no charge on provider non-delivery, with a
- * full refund if the brief is not delivered within 90 days of receiving the
- * agreed documents; lapse without refund if the documents are not provided
- * within 90 days of payment despite a reminder.
+ * S15 AS APPROVED: the introductory call is recommended, not required, since
+ * the review can be bought straight from the site; the Agreed Scope is
+ * confirmed in writing before work starts either way. No refund once paid,
+ * except: a full refund if the buyer skipped the call and TRENDev declines the
+ * decision before any work starts; reschedule at no charge on provider
+ * non-delivery, with a full refund if the brief is not delivered within 90 days
+ * of receiving the agreed documents. The review lapses without refund if the
+ * documents are not provided within 90 days of payment despite a reminder.
  *
  * The Annexes are a deliberate, frozen COPY of the service descriptions, not an
  * import from src/data/serviceDescriptions.ts: importing live data would make
@@ -43,7 +47,7 @@ import type { TermsVersion } from "@/types";
  */
 export const termsV20261201: TermsVersion = {
   version: "1.1",
-  status: "draft",
+  status: "effective",
   effectiveDate: "2026-12-01",
   lastUpdated: "2026-11-10",
   pdfPath: "/terms/trendev-terms-of-service-2026-12-01.pdf",
@@ -225,7 +229,7 @@ export const termsV20261201: TermsVersion = {
       heading: "CTO Decision Review: one-off service",
       paragraphs: [
         "This Section applies to the Decision Review only. Sections 4 and 7, and the provisions of Section 6 on monthly payment in advance, recurring collection, Billing Periods and failed recurring payments, do not apply to it. The other provisions of these Terms apply to it in full.",
-        'Before purchase, the Client and the Provider hold a free introductory call. The decision to be reviewed, the questions agreed for it and the documents agreed for it (the "Agreed Scope") are then confirmed in writing; email is sufficient. The Decision Review covers the Agreed Scope only.',
+        'A free introductory call before purchase is recommended but not required. Whether or not it takes place before purchase, the decision to be reviewed, the questions agreed for it and the documents agreed for it (the "Agreed Scope") are confirmed in writing before any work starts; email is sufficient. The Decision Review covers the Agreed Scope only.',
         "The fee is a single payment, payable in full at purchase, at the price stated at checkout. It is invoiced as one charge, due on its date of issue. The paragraphs of Section 6 on taxes and on late payment apply to it. A Decision Review is not a subscription: it does not renew and does not convert into any other service.",
         "The Decision Review includes up to four (4) hours of work in total, covering preparation, review of the agreed documents, analysis, the written decision brief and its walkthrough. This is a total for the engagement, not a monthly allowance, and nothing carries over.",
         "Delivery timing is agreed in writing once the Agreed Scope is confirmed and the agreed documents are received. No delivery date is guaranteed unless it is agreed in writing.",
@@ -233,6 +237,7 @@ export const termsV20261201: TermsVersion = {
         "Either party may reschedule the walkthrough with at least one business day's notice. The fee is not refunded once paid, except as follows:",
       ],
       bullets: [
+        "If the Client purchases before any introductory call and the Provider declines the decision as unsuitable for a Decision Review before any work starts, the Provider refunds the fee in full.",
         "If the Provider cannot deliver at the agreed time for a reason attributable to it, it reschedules at no additional charge. If the Provider has not delivered the written decision brief within ninety (90) days of receiving the agreed documents, for a reason attributable to it, the Client may terminate the Decision Review by written notice and the Provider refunds the fee in full.",
         "If the Client does not provide the agreed documents within ninety (90) days of payment, despite a written reminder from the Provider, the Decision Review lapses and the fee is not refunded.",
       ],
@@ -496,15 +501,15 @@ export const termsV20261201: TermsVersion = {
           },
           {
             id: "annex-c-prerequisite",
-            heading: "Required first step: a free introductory call",
+            heading: "Recommended first step: a free introductory call",
             paragraphs: [
-              "A free 20-minute introductory call is required before purchase. It confirms fit, agrees the question and checks that the review fits the four-hour scope.",
+              "A free 20-minute introductory call is recommended before purchase. It confirms fit, agrees the question and checks that the review fits the four-hour scope. You can also purchase directly: the question and the documents are then agreed in writing before any work starts.",
             ],
             bullets: [
               "No preparation and no documents are needed for the call.",
               "The call carries no obligation to buy.",
               "The call is separate from the paid four hours. It is not a free audit and produces no assessment or deliverable.",
-              "Once the question is agreed, TRENDev sends you the payment link for the review.",
+              "If you purchase without a call and TRENDev declines the question as unsuitable for a review before any work starts, the fee is refunded in full.",
             ],
           },
           {

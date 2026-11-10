@@ -21,10 +21,9 @@ import type { ServiceDescription } from "@/types";
  * (Terms S2).
  *
  * The same parity rule binds cto-decision-review to Annex C of Terms v1.1
- * (src/data/terms/2026-12-01.ts), the first version that covers it. v1.1 is a
- * draft until the owner approves it, so this description can still change
- * until then, but only together with that Annex; scripts/check-offers.mjs
- * fails on any divergence.
+ * (src/data/terms/2026-12-01.ts), the first version that covers it. v1.1 was
+ * approved on 2026-11-10 and is frozen, so changing this description now means
+ * a new Terms version; scripts/check-offers.mjs fails on any divergence.
  *
  * Fractional CTO has no Annex: Terms S1 puts it outside the online Terms, so
  * its commercial terms come from its own engagement agreement.
@@ -117,15 +116,15 @@ export const serviceDescriptions: ServiceDescription[] = [
       },
       {
         id: "prerequisite",
-        heading: "Required first step: a free introductory call",
+        heading: "Recommended first step: a free introductory call",
         paragraphs: [
-          "A free 20-minute introductory call is required before purchase. It confirms fit, agrees the question and checks that the review fits the four-hour scope.",
+          "A free 20-minute introductory call is recommended before purchase. It confirms fit, agrees the question and checks that the review fits the four-hour scope. You can also purchase directly: the question and the documents are then agreed in writing before any work starts.",
         ],
         bullets: [
           "No preparation and no documents are needed for the call.",
           "The call carries no obligation to buy.",
           "The call is separate from the paid four hours. It is not a free audit and produces no assessment or deliverable.",
-          "Once the question is agreed, TRENDev sends you the payment link for the review.",
+          "If you purchase without a call and TRENDev declines the question as unsuitable for a review before any work starts, the fee is refunded in full.",
         ],
       },
       {

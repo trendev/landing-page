@@ -431,7 +431,7 @@ export const faqEntries: FaqEntry[] = [
     answer: [
       "A one-off review of one technical decision, for **€1,500 one-time, excluding applicable taxes**. You receive a concise written decision brief and a walkthrough of the findings with the decision-maker.",
       "It fits a concrete question with an agreed set of documents, for example whether to accept a development proposal, which migration scenario to pursue, or whether a proposed rewrite is justified. It includes up to 4 hours of work in total, preparation and writing included. It is not a subscription and it does not renew.",
-      "A free 20-minute introductory call comes first, to confirm the question fits. The full scope is on the [CTO Decision Review page](/services/cto-decision-review).",
+      "A free 20-minute introductory call is recommended first, to confirm the question fits, but you can also buy the review directly; the question and documents are then agreed in writing before any work starts. The full scope is on the [CTO Decision Review page](/services/cto-decision-review).",
     ],
     keywords: [
       "decision review",
@@ -471,7 +471,7 @@ export const faqEntries: FaqEntry[] = [
     topic: "plans-billing",
     question: "What if the decision needs more than four hours?",
     answer: [
-      "The introductory call is where we check that the question fits in the first place. If it becomes clear during the review that it does not, TRENDev tells you before going beyond the four hours.",
+      "The introductory call, or the written scope agreement if you bought directly, is where we check that the question fits in the first place. If it becomes clear during the review that it does not, TRENDev tells you before going beyond the four hours.",
       "We then either narrow the question so that it fits, or propose a separate scope and quote for you to accept or decline. Nothing beyond the limit is done or billed without your prior agreement.",
     ],
     keywords: ["overrun", "extra hours", "scope", "overflow"],
@@ -536,12 +536,12 @@ export const faqEntries: FaqEntry[] = [
     id: "why-consultation-first",
     topic: "plans-billing",
     question:
-      "Why do I have to book a free consultation before subscribing or buying a review?",
+      "Why book a free consultation before subscribing or buying a review?",
     answer: [
       "Because a subscription that starts badly wastes your money and my time.",
       "The free introductory call lasts 20 minutes. We clarify your situation, the decision or project at stake, and the support you need. We then decide whether there is a useful next step and who would own the work. It may establish that a different kind of support is more appropriate.",
-      "No preparation or documents are required. This is a fit conversation, not a free audit or a working session. It carries no obligation and remains the required first step before starting an engagement, whether a subscription or a CTO Decision Review.",
-      "For a Decision Review, the call is also where we agree the question and check that it fits the four-hour scope. The payment link for the review follows once that is agreed. The call is separate from the paid four hours.",
+      "No preparation or documents are required. This is a fit conversation, not a free audit or a working session. It carries no obligation and remains the required first step before starting a subscription.",
+      "For a CTO Decision Review the call is recommended rather than required. It is where we agree the question and check that it fits the four-hour scope. You can also buy the review directly: the question and documents are then agreed in writing before any work starts, and if TRENDev declines the question as unsuitable before any work starts, the fee is refunded in full. The call is separate from the paid four hours.",
     ],
     keywords: ["consultation", "discovery call", "prerequisite", "free"],
     related: ["which-plan-fits-us", "what-is-cto-decision-review"],

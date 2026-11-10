@@ -14,21 +14,23 @@ function isCheckoutTier(id: TierId): id is CheckoutTierId {
  * issue #16 filled STRIPE_PAYMENT_LINKS, checkout CTAs became direct links to
  * Stripe-hosted checkout.
  *
- * "call" tiers (CTO Decision Review, issue #59) always book the call: their
- * payment link is sent once the question is agreed, never shown here.
+ * `primary` gives a non-recommended tier the accent style, for a card where
+ * this is the main action (the CTO Decision Review card on the landing page).
  */
 export function TierCta({
   tier,
   onOpenConsultation,
+  primary = tier.recommended,
 }: {
   tier: PricingTier;
   onOpenConsultation: () => void;
+  primary?: boolean;
 }) {
   const stripeUrl = isCheckoutTier(tier.id) && tier.cta.kind === "checkout"
     ? STRIPE_PAYMENT_LINKS[tier.id]
     : "";
   const className = `w-full px-5 py-2.5 sm:py-3 rounded-lg transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base ${
-    tier.recommended
+    primary
       ? "bg-accent text-accent-foreground hover:opacity-90"
       : "glass hover:bg-white/10 transition-colors"
   }`;

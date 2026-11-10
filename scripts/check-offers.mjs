@@ -5,7 +5,8 @@
  *
  * What this protects is commercial and contractual, not visual: frozen prices,
  * a comparison whose columns cannot shift, a one-off offer that is never
- * described as monthly, a payment link that is never published, and service
+ * described as monthly, a one-off checkout that is the only one on the landing
+ * page and keeps the recommended call beside it, and service
  * descriptions that stay word for word identical to the Terms annexes.
  */
 import assert from 'node:assert/strict';
@@ -105,8 +106,8 @@ try {
     );
     for (const offer of pricingTiers) assert.equal(offer.taxNote, 'excluding applicable taxes');
     assert.equal(tier('fractional-cto').cta.kind, 'contact', 'Fractional CTO stays contact-only');
-    assert.equal(tier(DR).cta.kind, 'call', 'Decision Review is bought after the call, never from a button');
-    assert.equal(tier(DR).cta.label, 'Book a free 20-minute call');
+    assert.equal(tier(DR).cta.kind, 'checkout', 'Decision Review is bought by direct checkout (owner decision, 2026-11-10)');
+    assert.equal(tier(DR).cta.label, 'Buy CTO Decision Review');
     assert.ok(!tier(DR).recommended, 'Advisor+ stays the recommended tier');
     assert.ok(tier('cto-advisor-plus').recommended);
   });
@@ -125,7 +126,7 @@ try {
         `${label}: the existing offers' values must not change`,
       );
     }
-    for (const label of ['Best for', 'Written output', 'Required first step']) {
+    for (const label of ['Best for', 'Written output', 'First step']) {
       assert.ok(comparisonRows.some((row) => row.label === label), `Missing row: ${label}`);
     }
     const price = comparisonRows.find((row) => row.label === 'Price').values[DR];
@@ -157,12 +158,15 @@ try {
     assert.ok(versus.includes('**in total**') && versus.includes('**per month**'));
   });
 
-  await test('prerequisite wording: shared for every offer, "before purchase" for the review', () => {
+  await test('prerequisite wording: shared for the subscriptions, "recommended" for the review', () => {
     assert.equal(pricing.PREREQUISITE_NOTE, 'Prerequisite: a free 20-minute introductory call before starting an engagement.');
-    assert.match(pricing.DECISION_REVIEW_PREREQUISITE_NOTE, /^Prerequisite: a free 20-minute introductory call before purchase\./);
-    assert.match(pricing.DECISION_REVIEW_PREREQUISITE_NOTE, /No preparation or commitment required\.$/);
-    const required = comparisonRows.find((row) => row.label === 'Required first step');
-    for (const value of Object.values(required.values)) assert.equal(value, 'free 20-minute introductory call');
+    assert.match(pricing.DECISION_REVIEW_PREREQUISITE_NOTE, /^Recommended: a free 20-minute introductory call before purchase/);
+    assert.match(pricing.DECISION_REVIEW_PREREQUISITE_NOTE, /You can also buy directly: we then agree the question in writing before any work starts\.$/);
+    const first = comparisonRows.find((row) => row.label === 'First step');
+    assert.equal(first.values[DR], 'free 20-minute introductory call, recommended');
+    for (const id of ['cto-advisor', 'cto-advisor-plus', 'fractional-cto']) {
+      assert.equal(first.values[id], 'free 20-minute introductory call');
+    }
   });
 
   await test('JSON-LD: the review is one-time, the subscriptions stay monthly, all VAT-exclusive', () => {
@@ -180,7 +184,7 @@ try {
     assert.equal(tierService(tier('fractional-cto')).offers.priceSpecification.minPrice, 6000);
   });
 
-  await test('the Decision Review checkout is never published; its CTA books the intro call', async () => {
+  await test('the Decision Review is bought by direct checkout, with the call beside it', async () => {
     const { LandingPage } = await load('/src/pages/LandingPage.tsx');
     const { AdvisoryPage } = await load('/src/pages/AdvisoryPage.tsx');
     const { ServicePage } = await load('/src/pages/ServicePage.tsx');
@@ -190,17 +194,20 @@ try {
       advisory: render(AdvisoryPage, props),
       service: render(ServicePage, { ...props, slug: DR }),
     };
-    assert.ok(!('cto-decision-review' in stripe.STRIPE_PAYMENT_LINKS), 'No public checkout button for the review');
-    for (const link of Object.values(stripe.DECISION_REVIEW_PAYMENT_LINKS).filter(Boolean)) {
-      for (const [name, html] of Object.entries(pages)) {
-        assert.ok(!html.includes(link), `${name} publishes the Decision Review payment link`);
-      }
+    const reviewLink = stripe.STRIPE_PAYMENT_LINKS[DR];
+    assert.match(reviewLink, /^https:\/\/buy\.stripe\.com\/test_/);
+    for (const [name, html] of Object.entries(pages)) {
+      assert.ok(html.includes(`href="${reviewLink}"`), `${name} lacks the Decision Review checkout`);
     }
+    // The landing page has no subscription checkout: the review is its only one.
+    const landingCheckouts = [...new Set(pages.landing.match(/https:\/\/buy\.stripe\.com\/[^"]+/g))];
+    assert.deepEqual(landingCheckouts, [reviewLink]);
     // Advisor checkout itself is untouched: /advisory still links test checkout.
     assert.ok(pages.advisory.includes(stripe.STRIPE_PAYMENT_LINKS['cto-advisor']));
     for (const html of [pages.landing, pages.service]) {
-      assert.ok(html.includes('Book a free 20-minute call'));
-      assert.ok(html.includes('before purchase'));
+      assert.ok(html.includes('Buy CTO Decision Review'));
+      assert.ok(html.includes('Book a free 20-minute call first'), 'The recommended call stays beside the purchase button');
+      assert.ok(html.includes('Recommended: a free 20-minute introductory call before purchase'));
       assert.ok(!html.includes(content.ADVISORY_BOOKING_URL), 'The paid-session calendar is not a prospect CTA');
     }
     assert.ok(pages.service.includes('€1,500') && pages.service.includes('one-time'));
@@ -248,11 +255,13 @@ try {
     assert.equal(decisionReview.effectiveDate, v11.effectiveDate);
   });
 
-  await test('Terms v1.1 covers the review as one-off; v1.0 is untouched and stays current', () => {
-    assert.equal(v10.status, 'effective');
+  await test('Terms v1.1 is current and covers the review as one-off; v1.0 is superseded only', () => {
+    assert.equal(v10.status, 'superseded');
     assert.equal(v10.version, '1.0');
-    assert.equal(v11.status, 'draft');
-    assert.equal(terms.currentTermsDate, '2026-09-01', 'A draft must not become the version served at /terms');
+    assert.equal(v11.status, 'effective');
+    assert.equal(terms.currentTermsDate, '2026-12-01');
+    // A draft still never becomes current.
+    assert.ok(terms.termsVersionSummaries.every((entry) => entry.status !== 'draft' || entry.date !== terms.currentTermsDate));
     const summary = terms.termsVersionSummaries.find((entry) => entry.date === v11.effectiveDate);
     assert.deepEqual([summary.version, summary.status], [v11.version, v11.status]);
     assert.ok(textOf(v11.sections[0]).includes('CTO Decision Review one-off service'));
@@ -260,6 +269,9 @@ try {
     assert.ok(textOf(s15).includes('up to four (4) hours of work in total'));
     assert.ok(textOf(s15).includes('Sections 4 and 7'), 'Monthly mechanics must be switched off for the review');
     assert.ok(!textOf(v11.sections[0]).includes('Fractional CTO engagements are governed by these Terms'));
+    // Direct purchase is allowed, so the call cannot be a condition of the contract.
+    assert.ok(textOf(s15).includes('recommended but not required'));
+    assert.ok(textOf(s15).includes('confirmed in writing before any work starts'));
   });
 
   await test('one-off onboarding: no paid-session calendar, no billing portal', async () => {

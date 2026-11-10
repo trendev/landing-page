@@ -9,6 +9,7 @@ import { TierCta } from "@/components/TierCta";
 import { legalLinks } from "@/data/content";
 import {
   ADVISORY_PATH,
+  DECISION_REVIEW_CALL_LABEL,
   DECISION_REVIEW_PREREQUISITE_NOTE,
   PREREQUISITE_NOTE,
   pricingTiers,
@@ -73,8 +74,8 @@ export function ServicePage({ slug, onOpenConsultation }: ServicePageProps) {
 
   const selfService = tier.cta.kind === "checkout";
   const oneTime = tier.billing === "one-time";
-  // A "call" offer gets the more specific "before purchase" note; the shared
-  // note covers the subscriptions.
+  // The one-off review gets its own "recommended, direct purchase possible"
+  // note; the shared note covers the subscriptions.
   const prerequisite = oneTime
     ? DECISION_REVIEW_PREREQUISITE_NOTE
     : selfService
@@ -136,7 +137,20 @@ export function ServicePage({ slug, onOpenConsultation }: ServicePageProps) {
             </div>
           )}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-xl mx-auto">
-            <TierCta tier={tier} onOpenConsultation={onOpenConsultation} />
+            <TierCta
+              tier={tier}
+              onOpenConsultation={onOpenConsultation}
+              primary={tier.recommended || oneTime}
+            />
+            {oneTime && (
+              <button
+                onClick={onOpenConsultation}
+                className="w-full px-5 py-2.5 sm:py-3 glass rounded-lg hover:bg-white/10 transition-colors inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
+                <CalendarCheck className="w-4 h-4 text-accent" />
+                {DECISION_REVIEW_CALL_LABEL}
+              </button>
+            )}
           </div>
         </div>
 

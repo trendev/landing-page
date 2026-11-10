@@ -40,7 +40,11 @@ try {
   assert.ok(!/\/month|per month|2,500|6,000/.test(beforeFaq), 'Do not add a landing-page subscription section');
   const offersSection = beforeFaq.slice(beforeFaq.indexOf('id="offers"'));
   assert.ok(offersSection.includes('€1,500') && offersSection.includes('one-time'), 'The review price belongs to the offers section, as one-time');
-  assert.ok(!landing.includes('buy.stripe.com'), 'Delivery must not route to checkout');
+  // The Decision Review card is the landing page's one checkout (owner decision,
+  // 2026-11-10); nothing else there, delivery included, may route to Stripe.
+  const landingCheckouts = [...new Set(landing.match(/https:\/\/buy\.stripe\.com\/[^"]+/g) ?? [])];
+  assert.equal(landingCheckouts.length, 1, `One landing checkout expected, found ${landingCheckouts}`);
+  assert.ok(offersSection.includes(landingCheckouts[0]), 'The landing checkout belongs to the Decision Review card');
   assert.ok(landing.includes(`href="${MEDIUM_URL}"`), 'FAQ teaser must link the Medium publication');
   assert.ok(DELIVERY_ENQUIRY_EMAIL.startsWith('mailto:'));
   assert.ok(landing.includes(DELIVERY_ENQUIRY_EMAIL));
@@ -48,7 +52,7 @@ try {
   for (const price of ['1,500', '2,500', '6,000']) assert.ok(advisory.includes(price));
   assert.ok(advisory.includes('excluding applicable taxes'));
   assert.ok(advisory.includes('before starting an engagement'));
-  assert.ok(advisory.includes('before purchase'), 'Decision Review keeps its own prerequisite');
+  assert.ok(advisory.includes('Recommended: a free 20-minute introductory call before purchase'), 'Decision Review keeps its own call note');
   assert.ok(advisory.includes('buy.stripe.com/test_'), 'Smoke checks must use test checkout');
   assert.ok(landing.includes('free 20-minute call'));
   assert.ok(landing.includes('calendly.com'));

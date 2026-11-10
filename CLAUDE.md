@@ -26,9 +26,9 @@ checks through Vite and React SSR (with test checkout). It does not replace
 responsive browser QA. `node scripts/check-offers.mjs` (issue #59) guards the
 commercial and contractual invariants: frozen prices, a keyed comparison whose
 existing columns match a snapshot, a one-off offer never described as monthly
-(copy and JSON-LD), the Decision Review payment link never rendered, Annex
-parity (A/B/C against `serviceDescriptions.ts`, A/B against v1.0), drafts never
-current, and every published FAQ id still present. `npm test` runs both
+(copy and JSON-LD), the Decision Review checkout as the landing page's only
+checkout with the recommended call beside it, Annex parity (A/B/C against
+`serviceDescriptions.ts`, A/B against v1.0), drafts never current, and every published FAQ id still present. `npm test` runs both
 content scripts; deploy.yml runs it before the build. No linter is configured.
 
 ## Architecture
@@ -130,7 +130,7 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
   - `pricing.ts`: the 4 frozen offers (each with an explicit `billing` mode),
     the comparison (`values` keyed by `TierId`, so a column cannot shift),
     `PRIMARY_CTA_LABEL`, `PREREQUISITE_NOTE`, and the `DECISION_REVIEW_*`
-    copy (summary, "before purchase" prerequisite, boundary note).
+    copy (summary, "recommended" call note, call button label, boundary note).
   - `stripe.ts` — `STRIPE_PAYMENT_LINKS`, **selected by environment**: test
     links under `vite` (dev), live links under `vite build`, overridable with
     `VITE_STRIPE_MODE=test|live`. Use the override when previewing a production
@@ -207,12 +207,15 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
   €6,000/mo (contact-only, never self-service). Names and prices are frozen
   (issues #13, #59). Never present the review as monthly, as eight hours, or as
   a cheaper audit; `billing`, not the price label, decides how it is described.
-- **CTO Decision Review is bought after the call, never from a button.** Its
-  CTA is always "Book a free 20-minute call" (`cta.kind: "call"`); the Payment
-  Link (`DECISION_REVIEW_PAYMENT_LINKS` in `stripe.ts`, payment mode, quantity
-  1) is sent once the question is agreed, and must never be rendered. It
-  completes at `/welcome/decision-review`, which has no paid-session calendar
-  and no billing portal. Live stays empty until Terms v1.1 is approved.
+- **CTO Decision Review can be bought directly; the call is recommended, not
+  required** (owner decision, 2026-11-10, reversing the call-first rule of the
+  first #59 draft). Its CTA is "Buy CTO Decision Review" (`cta.kind:
+  "checkout"`, `STRIPE_PAYMENT_LINKS["cto-decision-review"]`, payment mode,
+  quantity 1, live and test), always with "Book a free 20-minute call first"
+  beside it. Terms v1.1 §15 then has the question agreed in writing before any
+  work starts, with a full refund if TRENDev declines it before work starts.
+  It completes at `/welcome/decision-review`, which has no paid-session
+  calendar and no billing portal.
 - Every displayed price carries **"excluding applicable taxes"** — never
   present 20% French VAT as universal.
 - **Stripe Tax is registration-gated, and registrations are per-mode.**
@@ -226,9 +229,9 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
 - The internal maximum day rate is deliberately **not published anywhere in
   this repo** — do not add it.
 - The prerequisite note (`PREREQUISITE_NOTE`, "before starting an
-  engagement") must stay adjacent to the purchase CTAs, and the more specific
-  `DECISION_REVIEW_PREREQUISITE_NOTE` ("before purchase") beside every
-  Decision Review CTA.
+  engagement") must stay adjacent to the subscription purchase CTAs, and
+  `DECISION_REVIEW_PREREQUISITE_NOTE` ("Recommended: … before purchase. You
+  can also buy directly …") beside every Decision Review purchase CTA.
 - **Every subpage renders a `BackLink`.** The site is a single-page app with
   deep-linkable routes, so a visitor can land on `/advisory`, `/services/*`,
   `/terms`, `/legal`, `/privacy` or `/welcome` straight from search or a
@@ -276,11 +279,15 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
   change means a new dated module under `src/data/terms/`, a new PDF
   (`node scripts/generate-terms-pdf.mjs <date>`); the dated route is
   prerendered from the registry automatically — never edit an accepted version. Full workflow: `docs/legal-versioning.md`.
-- **Terms v1.1 (2026-12-01) is a draft** (issue #59): v1.0 plus a one-off §15
-  and Annex C for CTO Decision Review, Annexes A/B byte-identical. The registry
-  serves the newest **non-draft** version at `/terms`, so v1.0 stays current
-  until v1.1 is approved; see `docs/legal-versioning.md`.
-- **Terms v1.0 (2026-09-01) is the effective version.** It was frozen on 2026-08-19, then rewritten **in place** on 2026-08-21
+- **Terms v1.1 (2026-12-01) is the current version**, approved by the owner on
+  2026-11-10 (issue #59): v1.0 plus a one-off §15 and Annex C for CTO Decision
+  Review, Annexes A/B byte-identical. It is served at `/terms` and accepted at
+  checkout ahead of its effective date (the pre-effective note on `/terms` is
+  active again until 2026-12-01). Its text is frozen like v1.0's. The registry
+  serves the newest **non-draft** version, so a future draft never displaces
+  it; see `docs/legal-versioning.md`.
+- **Terms v1.0 (2026-09-01) is superseded** (status only, 2026-11-10) and keeps
+  governing the subscriptions accepted under it (§14). It was frozen on 2026-08-19, then rewritten **in place** on 2026-08-21
   after the deep legal review of 2026-08-19 and the owner's decisions on it:
   same version, same date, same route, same PDF filename. That was legitimate
   only because, on 2026-08-21, the version had not yet reached its effective
