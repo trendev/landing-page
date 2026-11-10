@@ -210,7 +210,8 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
 - **CTO Decision Review can be bought directly; the call is recommended, not
   required** (owner decision, 2026-11-10, reversing the call-first rule of the
   first #59 draft), and it is actively sold: a "Best way to start" badge
-  (`badge`, styled like Advisor+'s "Recommended", which Advisor+ keeps) and an
+  (`badge`, shaped like Advisor+'s "Recommended", which Advisor+ keeps, but in
+  the amber `--highlight` token so the two read differently) and an
   accent CTA "Get your Decision Review" (`cta.kind:
   "checkout"`, `STRIPE_PAYMENT_LINKS["cto-decision-review"]`, payment mode,
   quantity 1, live and test), always with "Book a free 20-minute call first"
@@ -363,6 +364,10 @@ background. Visual reference
 - **Brand accent is the single source of truth.** Keep `--accent` in
   `theme.css` as the brand cyan (currently `#25D8EC`, matching the Figma comp). Components must reference the `accent` token
   (`bg-accent`, `text-accent`, `border-accent/30`) — never hardcode cyan hexes.
+- **One secondary colour: `--highlight`** (amber `#FFB547`, issue #59). It
+  marks the CTO Decision Review's "Best way to start" badge and card border
+  only, so that badge never reads as Advisor+'s cyan "Recommended". It is not
+  a second brand colour: CTAs, links and focus stay on `accent`.
 - **Dark palette** (add as tokens, don't sprinkle literals): background layers
   `#0A1430` -> `#070C1C` -> `#04060D`; text `#F1F4FF` (primary) / `#9DAFD8`
   (secondary) / `#6F7EA6` (muted).

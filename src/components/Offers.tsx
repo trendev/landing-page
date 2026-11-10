@@ -32,9 +32,9 @@ const decisionReview = pricingTiers.find(
 function DecisionReviewCard({ onOpenConsultation }: OffersProps) {
   const Icon = decisionReview.icon;
   return (
-    <article className="relative glass rounded-2xl border-accent/40 p-6 sm:p-8 mb-10 sm:mb-14">
+    <article className="relative glass rounded-2xl border-highlight/40 p-6 sm:p-8 mb-10 sm:mb-14">
       {decisionReview.badge && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-accent text-accent-foreground text-xs sm:text-sm whitespace-nowrap">
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-highlight text-highlight-foreground text-xs sm:text-sm whitespace-nowrap">
           {decisionReview.badge}
         </span>
       )}
