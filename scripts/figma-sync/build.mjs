@@ -41,6 +41,35 @@ async function toJpeg(src, dest, width) {
   await browser.close();
 }
 
+/**
+ * Raster <img> content (the product icons, issue #61) as PNG data URIs, so
+ * the frame shows the real artwork rather than a placeholder box. Drawn at 3x
+ * its CSS size through a page on the dev server (same origin, so the canvas
+ * is not tainted), and PNG because Figma's SVG import is not reliable with
+ * WebP. Cached per source and size.
+ */
+const imageCache = new Map();
+let imageBrowser;
+async function imageDataUri(src, w, h) {
+  const key = `${src}@${w}x${h}`;
+  if (imageCache.has(key)) return imageCache.get(key);
+  imageBrowser ??= await chromium.launch();
+  const page = await imageBrowser.newPage();
+  await page.goto(new URL('/favicon.png', src).href);
+  const uri = await page.evaluate(async ({ src, w, h }) => {
+    const img = new Image();
+    await new Promise((r, j) => { img.onload = r; img.onerror = j; img.src = src; });
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(w * 3);
+    canvas.height = Math.round(h * 3);
+    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/png');
+  }, { src: src.replace(/-(80|160)\.webp$/, '-240.webp'), w, h });
+  await page.close();
+  imageCache.set(key, uri);
+  return uri;
+}
+
 const svgDir = path.join(OUT, 'svg');
 fs.rmSync(svgDir, { recursive: true, force: true });
 fs.mkdirSync(svgDir, { recursive: true });
@@ -59,13 +88,19 @@ for (const { w, prefix, label } of WIDTHS) {
   await toJpeg(weavePng, weaveJpg, w);
   const uri = 'data:image/jpeg;base64,' + fs.readFileSync(weaveJpg).toString('base64');
 
-  routes.forEach((route, i) => {
+  for (const [i, route] of routes.entries()) {
     const data = JSON.parse(fs.readFileSync(path.join(dir, `${route.slug}.json`), 'utf8'));
     data.name = route.name;
+    for (const node of data.nodes ?? []) {
+      if (node.t === 'img' && node.src && node.w > 0 && node.h > 0) {
+        node.dataUri = await imageDataUri(node.src, node.w, node.h);
+      }
+    }
     const num = String(i + 1).padStart(2, '0');
     const file = path.join(svgDir, `${prefix}${num} ${route.name} (${label}).svg`);
     const svg = toSvg(data, uri);
     fs.writeFileSync(file, svg);
     console.log(`${file}  ${data.pageW}x${data.pageH}  ${Math.round(svg.length / 1024)}kb`);
-  });
+  }
 }
+await imageBrowser?.close();
