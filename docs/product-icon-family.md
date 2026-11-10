@@ -15,12 +15,12 @@ The badge identifies the service. A checkmark does not mean that a customer's pr
 
 ## Assets
 
-Four original RGB PNGs, **1254 × 1254 pixels**, opaque dark-navy background. Preserve the entire square, including the lower-right badge. They are raster assets, not SVG files.
+Four original RGB PNGs, **1254 × 1254 pixels** (final masters supplied by the owner on 10 November 2026, replacing the first upload of commit `81f3ab3`), opaque dark-navy background. Preserve the entire square, including the lower-right badge. They are raster assets, not SVG files.
 
-- [cto-decision-review-v1.png](../public/images/products/cto-decision-review-v1.png): 1166794 bytes; SHA-256 `285a40f74e8d31872a1b9f79e98522adc7d6006e67ae8c7a47ddd01496bcbd16`.
-- [cto-advisor-v1.png](../public/images/products/cto-advisor-v1.png): 1164189 bytes; SHA-256 `4ea4ba486d5a5b57842e6234466ce35775a70fada15e1a18dd5723d6e0b5c789`.
-- [cto-advisor-plus-v1.png](../public/images/products/cto-advisor-plus-v1.png): 1170179 bytes; SHA-256 `d8426ab4224de8f6b48af35e4c7b400cd7f1a1dcbdde406f81578610627cd2d1`.
-- [fractional-cto-v1.png](../public/images/products/fractional-cto-v1.png): 1156027 bytes; SHA-256 `f42c0a11e47b238edbef1636932f92cb9f66cf2b45950cb0cdc0080824a08a75`.
+- [cto-decision-review-v1.png](../public/images/products/cto-decision-review-v1.png): 1353064 bytes; SHA-256 `84a584bf0168f2c8376570ccd94b2f225e2315d3a87f8cc669b37552d6e1f594`.
+- [cto-advisor-v1.png](../public/images/products/cto-advisor-v1.png): 1363989 bytes; SHA-256 `b8aa75544c3d55de91e9ad628086f08bd64591063c195367ded8d57cc18a0ce8`.
+- [cto-advisor-plus-v1.png](../public/images/products/cto-advisor-plus-v1.png): 1378678 bytes; SHA-256 `ff2df456b13343f12704ac3d3c8a97b443655a51075cafa86a164159d83d25e9`.
+- [fractional-cto-v1.png](../public/images/products/fractional-cto-v1.png): 1346586 bytes; SHA-256 `8182d7ab6e7f3e04f2d352bf20624d1124c2818bcbf319ac3f8a59f72ea4ad10`.
 
 Use the same artwork on the site and its corresponding Stripe Product. Keep image paths keyed by the stable product ID, not by array order or price: Decision Review and Advisor both start at €1,500 but have different billing and scope.
 
@@ -47,7 +47,7 @@ Use the same artwork on the site and its corresponding Stripe Product. Keep imag
 
 ## Stripe product images (set 10 November 2026)
 
-Only `images` was written; name, description, prices, tax code and metadata are unchanged. The URLs are the pinned public GitHub raw files of asset commit `81f3ab3`, byte-identical to the committed masters (checked with `cmp`). They can move to `https://trendev.fr/images/products/<tier-id>-v1.png` after a deploy; the files are the same.
+The owner's final masters were uploaded in the Stripe Dashboard to each product's **Image** field, so Stripe hosts its own copy (`files.stripe.com` links); no external URL is involved. Only the image was changed: name, description, prices, tax code and metadata are unchanged (read back through the API). An earlier same-day attempt that pointed the products at GitHub raw URLs was replaced.
 
 | Product | Live | Test | Image |
 | --- | --- | --- | --- |
@@ -56,4 +56,4 @@ Only `images` was written; name, description, prices, tax code and metadata are 
 | CTO Advisor+ | `prod_V80RKd2qiyatRS` | `prod_V65nU6GRKT9Pty` | `cto-advisor-plus-v1.png` |
 | Fractional CTO | none (contact-only) | none | website only |
 
-Hosted checkout of all three Payment Links shows the matching icon in both modes (viewed, no payment made).
+Each image is the matching master from `public/images/products/`. Re-upload in the Dashboard (product > Edit > Image) if a master ever changes.
