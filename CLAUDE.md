@@ -23,7 +23,13 @@ npm run build      # production build to ./build, every route prerendered
 prerendered output: per-route canonical/title/robots, one H1, parseable
 JSON-LD, sitemap contents. `node scripts/check-positioning.mjs` runs dependency-free content/render smoke
 checks through Vite and React SSR (with test checkout). It does not replace
-responsive browser QA. There is no general test runner or linter configured.
+responsive browser QA. `node scripts/check-offers.mjs` (issue #59) guards the
+commercial and contractual invariants: frozen prices, a keyed comparison whose
+existing columns match a snapshot, a one-off offer never described as monthly
+(copy and JSON-LD), the Decision Review payment link never rendered, Annex
+parity (A/B/C against `serviceDescriptions.ts`, A/B against v1.0), drafts never
+current, and every published FAQ id still present. `npm test` runs both
+content scripts; deploy.yml runs it before the build. No linter is configured.
 
 ## Architecture
 
@@ -49,7 +55,7 @@ responsive browser QA. There is no general test runner or linter configured.
   `matchRoute`** (service slugs and Terms dates are derived from the data).
 - `src/pages/` — one component per route: `LandingPage` (owns the
   landing-only modal state: DetailModal, ProjectsModal), `AdvisoryPage` (the
-  subscription funnel: 3 tiers + `ComparisonTable`), `ServicePage`
+  offers page: 4 cards + `ComparisonTable`), `ServicePage`
   (data-driven by slug), `TermsPage` (versioned), `LegalPage`, `PrivacyPage`,
   `WelcomePage` (post-purchase onboarding, issue #18), `FaqPage` (the
   knowledge base: search + topic pills + accordion, and the only emitter of the
@@ -82,10 +88,11 @@ responsive browser QA. There is no general test runner or linter configured.
   is a **plain link on purpose**: an embed or a client-side RSS fetch is a
   third-party request, which would fall under the cookie-consent rules and
   `/privacy`.
-  `TierCta` is the shared Advisor/Fractional purchase CTA, and
-  `ComparisonTable` the 3-tier comparison; both are used by `/services/*`
-  only. **The landing page has no pricing/subscription section** — see the
-  commercial guardrails below.
+  `TierCta` is the shared purchase CTA, and `ComparisonTable` the 4-offer
+  comparison (cards below `lg`, table from `lg`); both are used by
+  `/advisory` and `/services/*` only. **The landing page has no
+  pricing/subscription section**; its one price is the CTO Decision Review card
+  in `Offers`; see the commercial guardrails below.
 - `src/components/modals/` — `Modal` is the shared backdrop wrapper;
   `DetailModal` / `ConsultationModal` / `ProjectsModal` build on it.
 - `src/components/icons/GithubIcon.tsx` / `MediumIcon.tsx` — inline brand marks
@@ -120,8 +127,10 @@ responsive browser QA. There is no general test runner or linter configured.
     closely and link to `/terms#...` on purpose: that wording already exists in
     four places and this must not become a fifth that contradicts a contract.
     Keep the module free of React/lucide imports so it stays Node-importable.
-  - `pricing.ts` — the 3 frozen premium tiers, comparison table,
-    `PRIMARY_CTA_LABEL`, `PREREQUISITE_NOTE`.
+  - `pricing.ts`: the 4 frozen offers (each with an explicit `billing` mode),
+    the comparison (`values` keyed by `TierId`, so a column cannot shift),
+    `PRIMARY_CTA_LABEL`, `PREREQUISITE_NOTE`, and the `DECISION_REVIEW_*`
+    copy (summary, "before purchase" prerequisite, boundary note).
   - `stripe.ts` — `STRIPE_PAYMENT_LINKS`, **selected by environment**: test
     links under `vite` (dev), live links under `vite build`, overridable with
     `VITE_STRIPE_MODE=test|live`. Use the override when previewing a production
@@ -192,9 +201,18 @@ responsive browser QA. There is no general test runner or linter configured.
 
 ## Commercial & legal guardrails (epic #12)
 
-- Exactly **3 public offers**: CTO Advisor €1,500/mo · CTO Advisor+ €2,500/mo
-  (recommended) · Fractional CTO from €6,000/mo (contact-only, never
-  self-service). Names and prices are frozen (issue #13).
+- Exactly **4 public offers**: CTO Decision Review €1,500 **one-time**, up to
+  4 hours **in total** (issue #59, approved 2026-11-10) · CTO Advisor
+  €1,500/mo · CTO Advisor+ €2,500/mo (recommended) · Fractional CTO from
+  €6,000/mo (contact-only, never self-service). Names and prices are frozen
+  (issues #13, #59). Never present the review as monthly, as eight hours, or as
+  a cheaper audit; `billing`, not the price label, decides how it is described.
+- **CTO Decision Review is bought after the call, never from a button.** Its
+  CTA is always "Book a free 20-minute call" (`cta.kind: "call"`); the Payment
+  Link (`DECISION_REVIEW_PAYMENT_LINKS` in `stripe.ts`, payment mode, quantity
+  1) is sent once the question is agreed, and must never be rendered. It
+  completes at `/welcome/decision-review`, which has no paid-session calendar
+  and no billing portal. Live stays empty until Terms v1.1 is approved.
 - Every displayed price carries **"excluding applicable taxes"** — never
   present 20% French VAT as universal.
 - **Stripe Tax is registration-gated, and registrations are per-mode.**
@@ -207,8 +225,10 @@ responsive browser QA. There is no general test runner or linter configured.
   verified state: `docs/stripe-acceptance-evidence.md`.
 - The internal maximum day rate is deliberately **not published anywhere in
   this repo** — do not add it.
-- The prerequisite note ("please schedule your free CTO consultation before
-  subscribing") must stay adjacent to the Advisor purchase CTAs.
+- The prerequisite note (`PREREQUISITE_NOTE`, "before starting an
+  engagement") must stay adjacent to the purchase CTAs, and the more specific
+  `DECISION_REVIEW_PREREQUISITE_NOTE` ("before purchase") beside every
+  Decision Review CTA.
 - **Every subpage renders a `BackLink`.** The site is a single-page app with
   deep-linkable routes, so a visitor can land on `/advisory`, `/services/*`,
   `/terms`, `/legal`, `/privacy` or `/welcome` straight from search or a
@@ -244,16 +264,23 @@ responsive browser QA. There is no general test runner or linter configured.
   partner names or availability commitments.
 - **Do not put a pricing/subscription section on the landing page.** The
   landing page stays Fractional-CTO-oriented end to end; a subscription block
-  mid-page confuses the narrative. The offers live on `/advisory` (all three
-  tiers + `ComparisonTable`) and `/services/*` (full descriptions). This was
+  mid-page confuses the narrative. The offers live on `/advisory` (all four
+  cards + `ComparisonTable`) and `/services/*` (full descriptions). This was
   tried the other way and reverted twice — the landing page links out, it does
-  not host the plans.
+  not host the plans. The **one exception** is the CTO Decision Review card at
+  the top of `#offers` (issue #59): a single one-off entry offer with its price,
+  deliberately kept apart from the separately scoped assessments below it.
+  `check-positioning.mjs` allows exactly that price above the FAQ and no
+  monthly one.
 - Terms versions are immutable once their PDF is committed: publishing a
   change means a new dated module under `src/data/terms/`, a new PDF
   (`node scripts/generate-terms-pdf.mjs <date>`); the dated route is
   prerendered from the registry automatically — never edit an accepted version. Full workflow: `docs/legal-versioning.md`.
-- **Terms v1.0 (2026-09-01) is the one published version**, and there is only
-  one. It was frozen on 2026-08-19, then rewritten **in place** on 2026-08-21
+- **Terms v1.1 (2026-12-01) is a draft** (issue #59): v1.0 plus a one-off §15
+  and Annex C for CTO Decision Review, Annexes A/B byte-identical. The registry
+  serves the newest **non-draft** version at `/terms`, so v1.0 stays current
+  until v1.1 is approved; see `docs/legal-versioning.md`.
+- **Terms v1.0 (2026-09-01) is the effective version.** It was frozen on 2026-08-19, then rewritten **in place** on 2026-08-21
   after the deep legal review of 2026-08-19 and the owner's decisions on it:
   same version, same date, same route, same PDF filename. That was legitimate
   only because, on 2026-08-21, the version had not yet reached its effective
@@ -282,9 +309,10 @@ responsive browser QA. There is no general test runner or linter configured.
   `subscription_data.metadata` and `custom_text` are all accepted by
   `POST /v1/payment_links/{id}`, so the recorded URL and the consent message
   repoint in place and the `buy.stripe.com` URLs survive.
-- **The online Terms cover the Advisor tiers only.** Per §1, Fractional
+- **The online Terms cover the self-service offers only**: the Advisor tiers
+  (v1.0) and, from v1.1, CTO Decision Review (Annex C). Per §1, Fractional
   CTO is out of scope: it is contact-only and contracted per engagement. Don't
-  reintroduce Fractional CTO clauses into the Terms or an Annex C.
+  reintroduce Fractional CTO clauses or an annex for it into the Terms.
 - The owner's standing steer on legal scope, from the 2026-08-19 review: keep
   it simple and proportionate to a small consultancy selling advice. Approved
   changes were the ones above; expressly declined were lawyer/accountant

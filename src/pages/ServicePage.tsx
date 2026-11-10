@@ -7,7 +7,12 @@ import { JsonLd } from "@/components/JsonLd";
 import { ScopeBoundaryNote } from "@/components/ScopeBoundaryNote";
 import { TierCta } from "@/components/TierCta";
 import { legalLinks } from "@/data/content";
-import { ADVISORY_PATH, PREREQUISITE_NOTE, pricingTiers } from "@/data/pricing";
+import {
+  ADVISORY_PATH,
+  DECISION_REVIEW_PREREQUISITE_NOTE,
+  PREREQUISITE_NOTE,
+  pricingTiers,
+} from "@/data/pricing";
 import { getServiceDescription } from "@/data/serviceDescriptions";
 import { useDocumentMeta } from "@/hooks/useDocumentMeta";
 import { breadcrumbList, graph, tierService } from "@/lib/structuredData";
@@ -67,6 +72,14 @@ export function ServicePage({ slug, onOpenConsultation }: ServicePageProps) {
   if (!service || !tier) return <NotFoundPage />;
 
   const selfService = tier.cta.kind === "checkout";
+  const oneTime = tier.billing === "one-time";
+  // A "call" offer gets the more specific "before purchase" note; the shared
+  // note covers the subscriptions.
+  const prerequisite = oneTime
+    ? DECISION_REVIEW_PREREQUISITE_NOTE
+    : selfService
+      ? PREREQUISITE_NOTE
+      : null;
   const jsonLd = graph(
     tierService(tier),
     breadcrumbList([
@@ -108,15 +121,17 @@ export function ServicePage({ slug, onOpenConsultation }: ServicePageProps) {
             <Section key={section.id} section={section} />
           ))}
           {/* Beside, never inside, the frozen Annex exclusions. */}
-          {tier.id !== "fractional-cto" && <ScopeBoundaryNote />}
+          {tier.id !== "fractional-cto" && (
+            <ScopeBoundaryNote variant={oneTime ? "decision-review" : "advisor"} />
+          )}
         </div>
 
         <div className="mt-8 sm:mt-10">
-          {selfService && (
+          {prerequisite && (
             <div className="glass rounded-xl px-5 py-4 flex items-start sm:items-center gap-3 mb-6">
               <CalendarCheck className="w-5 h-5 text-accent shrink-0" />
               <p className="text-sm sm:text-base text-foreground">
-                {PREREQUISITE_NOTE}
+                {prerequisite}
               </p>
             </div>
           )}
@@ -125,19 +140,24 @@ export function ServicePage({ slug, onOpenConsultation }: ServicePageProps) {
           </div>
         </div>
 
-        <div className="mt-12 sm:mt-16">
-          <h2 className="text-xl sm:text-2xl text-center mb-6">
-            Compare the three engagements
-          </h2>
-          <ComparisonTable />
-        </div>
+      </div>
 
+      {/* Wider than the description column: four offers need the room. */}
+      <div className="max-w-6xl mx-auto mt-12 sm:mt-16">
+        <h2 className="text-xl sm:text-2xl text-center mb-6">
+          Compare the four engagements
+        </h2>
+        <ComparisonTable />
+      </div>
+
+      <div className="max-w-4xl mx-auto">
         <footer className="mt-10 sm:mt-12 border-t border-border pt-6 text-center">
           <p className="text-xs sm:text-sm text-muted-foreground mb-3">
             Version {service.version}, effective {service.effectiveDate}, last
             updated {service.lastUpdated}. The service-description version
-            accepted at purchase governs your subscription, together with the
-            Terms of Service. Professional clients only.
+            accepted at purchase governs your{" "}
+            {oneTime ? "engagement" : "subscription"}, together with the Terms
+            of Service. Professional clients only.
           </p>
           <div className="mb-4">
             <BackLink />

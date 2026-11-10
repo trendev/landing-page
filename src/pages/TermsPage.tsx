@@ -123,6 +123,8 @@ export function TermsPage({ date }: TermsPageProps) {
           // so it points there; a superseded version is its own document.
           canonicalPath:
             date && date !== currentTermsDate ? `/terms/${date}` : "/terms",
+          // A draft is published for review, not for search.
+          ...(terms.status === "draft" ? { robots: "noindex, follow" } : {}),
         }
       : undefined,
   );
@@ -169,7 +171,7 @@ export function TermsPage({ date }: TermsPageProps) {
                   <strong>DRAFT: pending legal review.</strong> These Terms are
                   a draft and are not yet in force. They must be reviewed by a
                   French IT/commercial lawyer and approved before any
-                  self-service subscription is offered under them.
+                  self-service purchase is offered under them.
                 </p>
               </div>
             )}

@@ -1,7 +1,14 @@
 import type { TierId } from "@/types";
 
-/** Tiers that can be bought self-service. Fractional CTO is contact-only. */
-export type CheckoutTierId = Exclude<TierId, "fractional-cto">;
+/**
+ * Tiers bought through a public checkout button. Fractional CTO is
+ * contact-only, and CTO Decision Review is bought through a link sent after
+ * the introductory call (see DECISION_REVIEW_PAYMENT_LINKS below).
+ */
+export type CheckoutTierId = Exclude<
+  TierId,
+  "fractional-cto" | "cto-decision-review"
+>;
 
 type PaymentLinks = Record<CheckoutTierId, string>;
 
@@ -89,6 +96,35 @@ export const STRIPE_MODE: "test" | "live" =
 
 export const STRIPE_PAYMENT_LINKS: PaymentLinks =
   STRIPE_MODE === "live" ? LIVE_PAYMENT_LINKS : TEST_PAYMENT_LINKS;
+
+/**
+ * CTO Decision Review checkout (issue #59): a one-time payment, never a
+ * subscription, quantity fixed at one, completing at /welcome/decision-review.
+ *
+ * NEVER RENDERED ON THE SITE. The issue forbids a public "buy now" route that
+ * would let a prospect skip the fit and scope confirmation, so the public CTA
+ * is always the free introductory call; TRENDev sends this link once the
+ * question has been agreed. It lives here, like the subscription links, so the
+ * link set stays reviewable in the diff; scripts/check-offers.mjs fails if any
+ * rendered page contains it.
+ *
+ * Live stays empty until Terms v1.1, which is the first version to cover
+ * Decision Review, is approved and effective. The live Product and Price
+ * already exist (prod_VbQBhxpb4VHolf, price_1UaDLPHxg3uOgAWoKkkIDKA3).
+ */
+export const DECISION_REVIEW_PAYMENT_LINKS = {
+  // plink_1UaFKnHxg3uOgAWorERq7nui on prod_VbSFbm2arjmx0z /
+  // price_1UaFKcHxg3uOgAWoo9jGWZEw (test mirror of the live product), created
+  // 2026-11-10: one-time €1,500 exclusive of tax, quantity 1, Terms v1.1
+  // consent naming Section 15 and Annex C, the six evidence keys in
+  // `metadata`, `payment_intent_data.metadata` and the invoice's metadata,
+  // invoice creation on, completion at /welcome/decision-review.
+  test: "https://buy.stripe.com/test_9B600jgRzfE20n8bJ75AQ07",
+  live: "",
+} as const;
+
+export const DECISION_REVIEW_PAYMENT_LINK: string =
+  DECISION_REVIEW_PAYMENT_LINKS[STRIPE_MODE];
 
 /**
  * Stripe Customer Portal login page (issue #17), split by mode like the

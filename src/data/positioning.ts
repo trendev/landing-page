@@ -29,7 +29,7 @@ export const positioning = {
   engagements: {
     title: "Advice, leadership and delivery",
     description:
-      "A technical assessment for a specific question. Ongoing advice for recurring decisions. CTO leadership or a delivery team for work that needs execution. Each engagement has a clear scope; you can start with any of them.",
+      "A one-off review for a single technical decision. Ongoing advice for recurring decisions. CTO leadership or a delivery team for work that needs execution. Each engagement has a clear scope; you can start with any of them.",
   },
   methodology: {
     title: "How we work",
@@ -40,7 +40,10 @@ export const positioning = {
   offers: {
     title: "Start with a clear plan",
     description:
-      "Not ready to commit to a broader mission? Start with a defined question and concrete outputs. These assessments are optional: you can also brief us directly on leadership or delivery work.",
+      "Not ready to commit to a broader mission? Start with one defined question and a concrete output. None of this is a mandatory first step: you can also brief us directly on recurring advice, leadership or delivery work.",
+    assessmentsTitle: "Separately scoped assessments",
+    assessmentsDescription:
+      "For questions wider than one decision. Scope, duration and fees are agreed per engagement.",
   },
   expertise: {
     title: "Our expertise",
@@ -60,7 +63,7 @@ export const positioning = {
   advisory: {
     title: "CTO advice and leadership for your business",
     description:
-      "Keep ownership in your team with a recurring advisory subscription, or bring in a Fractional CTO to lead a defined mission. The difference is responsibility, not just time on a calendar.",
+      "Resolve one technical decision with a one-off review, keep ownership in your team with a recurring advisory subscription, or bring in a Fractional CTO to lead a defined mission. The difference is responsibility, not just time on a calendar.",
     deliveryLink: "Need implementation? Discuss a tailored delivery mission",
   },
 };

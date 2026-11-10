@@ -119,7 +119,18 @@ export interface FaqEntry {
 
 /* ── Premium CTO offers (epic #12) ─────────────────────────────────────── */
 
-export type TierId = "cto-advisor" | "cto-advisor-plus" | "fractional-cto";
+export type TierId =
+  | "cto-decision-review"
+  | "cto-advisor"
+  | "cto-advisor-plus"
+  | "fractional-cto";
+
+/**
+ * How an offer is paid for. Explicit on purpose (issue #59): recurring
+ * behaviour must never be inferred from a price label, and the JSON-LD, the
+ * card copy and the checkout mode all branch on it.
+ */
+export type BillingMode = "one-time" | "monthly" | "tailored";
 
 export interface PricingTier {
   id: TierId;
@@ -127,8 +138,9 @@ export interface PricingTier {
   name: string;
   /** Display price, e.g. "€1,500" or "From €6,000". */
   price: string;
-  /** e.g. "/month". */
+  /** e.g. "/month" or " one-time". */
   priceSuffix: string;
+  billing: BillingMode;
   /** Always "excluding applicable taxes" — never present French VAT as universal. */
   taxNote: string;
   /** Outcome-first value proposition; capacity is never the headline. */
@@ -145,8 +157,13 @@ export interface PricingTier {
   recommended?: boolean;
   cta: {
     label: string;
-    /** "checkout" → Stripe link (consultation fallback while unset); "contact" → consultation. */
-    kind: "checkout" | "contact";
+    /**
+     * "checkout" → Stripe link (consultation fallback while unset);
+     * "contact" → consultation; "call" → the free introductory call, always.
+     * A "call" offer is bought through a link sent after that call, never from
+     * a public button (issue #59).
+     */
+    kind: "checkout" | "contact" | "call";
   };
   /** Route of the full service description, e.g. "/services/cto-advisor". */
   servicePath: string;
@@ -154,8 +171,11 @@ export interface PricingTier {
 
 export interface ComparisonRow {
   label: string;
-  /** One value per tier (Advisor, Advisor+, Fractional). Booleans render as ✓/—. */
-  values: [string | boolean, string | boolean, string | boolean];
+  /**
+   * One value per tier, keyed by id so a new column can never shift values
+   * onto the wrong offer. Booleans render as ✓/—.
+   */
+  values: Record<TierId, string | boolean>;
 }
 
 /* ── Long-form page content (service descriptions, legal pages) ────────── */

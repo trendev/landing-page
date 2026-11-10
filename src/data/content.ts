@@ -432,11 +432,22 @@ export const engagementModes: EngagementMode[] = [
     cta: "Explore a technical assessment",
   },
   {
-    need: "Pressure-test a technology decision before committing resources",
+    // One bounded question goes to the one-off review (issue #59), not to a
+    // subscription; recurring decisions keep their own row below.
+    need: "Pressure-test one technology decision before committing resources",
+    engagement: "CTO Decision Review",
+    responsibility:
+      "A one-off review of one agreed decision, within 4 hours in total. You keep the decision and its execution.",
+    deliverables: ["Written decision brief", "Walkthrough of the findings"],
+    href: "/services/cto-decision-review",
+    cta: "CTO Decision Review",
+  },
+  {
+    need: "Get recurring advice on architecture, roadmap and hiring decisions",
     engagement: "CTO Advisor",
     responsibility:
-      "Evidence, options, recommendations and decision preparation. You keep operational ownership.",
-    deliverables: ["Decision brief", "Prioritised assessment"],
+      "Ongoing evidence, options, recommendations and decision preparation. You keep operational ownership.",
+    deliverables: ["Recurring decision support", "Substantive async advice"],
     href: "/services/cto-advisor",
     cta: "CTO Advisor",
   },

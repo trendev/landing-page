@@ -1,14 +1,21 @@
 import { ArrowRight } from "lucide-react";
 
-import { STRIPE_PAYMENT_LINKS } from "@/data/stripe";
-import type { PricingTier } from "@/types";
+import { STRIPE_PAYMENT_LINKS, type CheckoutTierId } from "@/data/stripe";
+import type { PricingTier, TierId } from "@/types";
+
+function isCheckoutTier(id: TierId): id is CheckoutTierId {
+  return id in STRIPE_PAYMENT_LINKS;
+}
 
 /**
  * Purchase CTA per the frozen CTA model (issue #13): contact tiers and
- * checkout tiers without a configured Stripe link open the consultation
- * modal (the consultation is the mandatory first step of the purchase
- * flow); once issue #16 fills STRIPE_PAYMENT_LINKS, checkout CTAs become
- * direct links to Stripe-hosted checkout.
+ * checkout tiers without a configured Stripe link open the introductory call
+ * booking (the call is the mandatory first step of the purchase flow); once
+ * issue #16 filled STRIPE_PAYMENT_LINKS, checkout CTAs became direct links to
+ * Stripe-hosted checkout.
+ *
+ * "call" tiers (CTO Decision Review, issue #59) always book the call: their
+ * payment link is sent once the question is agreed, never shown here.
  */
 export function TierCta({
   tier,
@@ -17,10 +24,9 @@ export function TierCta({
   tier: PricingTier;
   onOpenConsultation: () => void;
 }) {
-  const stripeUrl =
-    tier.cta.kind === "checkout" && tier.id !== "fractional-cto"
-      ? STRIPE_PAYMENT_LINKS[tier.id]
-      : "";
+  const stripeUrl = isCheckoutTier(tier.id) && tier.cta.kind === "checkout"
+    ? STRIPE_PAYMENT_LINKS[tier.id]
+    : "";
   const className = `w-full px-5 py-2.5 sm:py-3 rounded-lg transition-opacity inline-flex items-center justify-center gap-2 text-sm sm:text-base ${
     tier.recommended
       ? "bg-accent text-accent-foreground hover:opacity-90"

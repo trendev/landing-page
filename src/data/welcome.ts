@@ -1,4 +1,4 @@
-import { CalendarCheck, ClipboardList, Mail } from "lucide-react";
+import { CalendarCheck, ClipboardList, Mail, MessagesSquare } from "lucide-react";
 
 import { ADVISORY_BOOKING_URL, CONTACT_ADDRESS } from "@/data/content";
 import { STRIPE_PORTAL_LOGIN_URL } from "@/data/stripe";
@@ -296,5 +296,66 @@ export const welcomeClosing: ContentSection = {
     "Your advisory capacity is available from today, for the billing period you have just paid. Capacity covers meetings, preparation, substantive written advice, and architecture or document review. Short administrative exchanges do not consume it.",
     "TRENDev will confirm your advisory contact and the arrangements for your first session.",
     `Anything unclear, before or after the first session: ${CONTACT_ADDRESS}.`,
+  ],
+};
+
+/* ── CTO Decision Review (issue #59) ────────────────────────────────────── */
+
+/**
+ * /welcome/decision-review: where the one-off checkout completes. Same static,
+ * unauthenticated model as /welcome, but nothing on it belongs to a
+ * subscription: no paid-session calendar (that is ADVISORY_BOOKING_URL, for
+ * subscribers only, and counted against monthly capacity), no billing portal
+ * (there is no plan to manage) and no recurring capacity. The walkthrough is
+ * arranged by TRENDev once the documents are in, inside the four hours.
+ */
+export const DECISION_REVIEW_WELCOME_SUBTITLE =
+  "Your CTO Decision Review starts here.";
+
+const DECISION_REVIEW_DOCUMENTS_SUBJECT = "CTO Decision Review: agreed documents";
+
+export const decisionReviewSteps: WelcomeStep[] = [
+  {
+    id: "confirm-question",
+    icon: ClipboardList,
+    step: "01",
+    heading: "Check the agreed question",
+    paragraphs: [
+      "Your review covers the decision, the questions and the documents agreed during the introductory call. If anything has changed since, tell us before the work starts: the review is scoped to one decision and up to 4 hours in total.",
+    ],
+  },
+  {
+    id: "send-documents",
+    icon: Mail,
+    step: "02",
+    heading: "Send the agreed documents",
+    paragraphs: [
+      "Email the documents agreed for the review, with any context needed to read them. Use the same email address as at checkout, so we can match them to your purchase.",
+    ],
+    note: "Please do not send credentials, access tokens, secrets or production personal data by email. If something sensitive is central to the decision, we will agree a secure channel first.",
+    cta: {
+      label: "Email the agreed documents",
+      href: `mailto:${CONTACT_ADDRESS}?subject=${encodeURIComponent(DECISION_REVIEW_DOCUMENTS_SUBJECT)}`,
+      primary: true,
+    },
+  },
+  {
+    id: "timing-walkthrough",
+    icon: MessagesSquare,
+    step: "03",
+    heading: "Agree the timing and the walkthrough",
+    paragraphs: [
+      "Once the documents are in, TRENDev confirms the delivery timing in writing and proposes a time for the walkthrough with the decision-maker. The walkthrough is part of the four hours, not in addition to them.",
+    ],
+  },
+];
+
+export const decisionReviewClosing: ContentSection = {
+  id: "what-happens-next",
+  heading: "What happens next",
+  paragraphs: [
+    "You receive a concise written decision brief: the facts, the unknowns and assumptions, the options and their trade-offs, a recommendation and the checks that remain. We then go through it together.",
+    "If the question turns out to need more than the four hours, you hear about it before any extra work: we narrow the question or propose a separate scope. This was a single payment, so there is no subscription to manage and nothing renews.",
+    `Anything unclear: ${CONTACT_ADDRESS}.`,
   ],
 };

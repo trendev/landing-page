@@ -316,3 +316,68 @@ charged:
 
 Deleting customers is not exposed through the Stripe MCP tools, so remove them
 from the Dashboard. Tracked as a task list on its own issue.
+
+## CTO Decision Review: one-off checkout (issue #59)
+
+A one-off €1,500 purchase, not a subscription, so the evidence cannot live on
+`subscription_data.metadata` (there is no subscription object). It is recorded
+in three places instead, all with the same six keys (`tier_id`,
+`terms_version`, `terms_date`, `terms_url`, `service_description`,
+`service_description_url`):
+
+| Where | Why |
+|---|---|
+| Payment Link / Checkout Session `metadata` | What the buyer was shown |
+| `payment_intent_data.metadata` | Durable on the payment itself |
+| `invoice_creation.invoice_data.metadata` | Durable on the invoice; `invoice_creation` must be enabled, a payment-mode link issues no invoice otherwise |
+
+Product metadata is **not** acceptance evidence: it describes the catalogue,
+not what a given buyer accepted.
+
+**The link is never published on the site.** The public CTA is always the free
+20-minute call; TRENDev sends the link once the question is agreed.
+`scripts/check-offers.mjs` fails if a rendered page contains it.
+
+### As configured (test mode, 2026-11-10)
+
+- Product `prod_VbSFbm2arjmx0z`, price `price_1UaFKcHxg3uOgAWoo9jGWZEw`:
+  `unit_amount=150000`, `eur`, `one_time`, `tax_behavior=exclusive`,
+  `txcd_20060048`. Test mirror of live `prod_VbQBhxpb4VHolf` /
+  `price_1UaDLPHxg3uOgAWoKkkIDKA3`.
+- Payment Link `plink_1UaFKnHxg3uOgAWorERq7nui`
+  (`https://buy.stripe.com/test_9B600jgRzfE20n8bJ75AQ07`): quantity fixed at
+  1, no promotion codes, `terms_of_service: required` with a consent message
+  naming Terms **v1.1 (2026-12-01)**, Section 15 and Annex C, required business
+  legal name + B2B confirmation, required billing address, tax-ID collection,
+  automatic tax, `customer_creation: always`, invoice creation on, completion
+  at `https://trendev.fr/welcome/decision-review`.
+
+### Verified (test mode, 2026-11-10)
+
+Three purchases through the hosted page with card 4242, read back via the API:
+
+| Buyer | Session | Tax | Result |
+|---|---|---|---|
+| FR business, FR VAT ID | `cs_test_a1HArqSZ…` | €300 (20% FR VAT), total €1,800 | `mode: payment`, `subscription: null`, invoice `in_1UaFMwHxg3uOgAWoIOEzGZRF` |
+| DE business, DE VAT ID | `cs_test_a1nQJSat…` | €0, `tax_exempt: reverse` | invoice `in_1UaFPmHxg3uOgAWo0pr9X8eP` |
+| US business, no tax ID | `cs_test_a1BC0C0q…` | €0 | invoice `in_1UaFQ6Hxg3uOgAWod3s8IyeS` |
+
+All three carry the six keys on the session and on the payment intent
+(checked on `pi_3UaFPkHxg3uOgAWo1vDOP967`), and redirect to
+`/welcome/decision-review`. Test-mode tax registrations checked first: FR
+`standard` and `oss_union` are active.
+
+### Before live activation
+
+1. Owner/lawyer approve Terms v1.1, including the open Section 15 defaults
+   (refund and lapse rules); flip it to `effective` and regenerate its PDF.
+2. Account-wide Dashboard → Settings → Public business details → *Terms of
+   service* URL to `https://trendev.fr/terms/2026-12-01` (no API). It is shared
+   by every link, which is why v1.1 covers the Advisor tiers too. Repoint the
+   two Advisor links' consent message and metadata to v1.1 in place (see
+   `docs/legal-versioning.md`, "Repointing Stripe is cheaper…").
+3. Check `GET /v1/tax/registrations` in **live** mode (registrations are
+   per-mode), then create the live Payment Link field-for-field from the test
+   one and fill `DECISION_REVIEW_PAYMENT_LINKS.live`.
+4. One owner-performed live-mode read-back of the link before sending it to a
+   client.

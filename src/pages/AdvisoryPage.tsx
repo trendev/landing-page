@@ -5,7 +5,11 @@ import { BackLink } from "@/components/BackLink";
 import { ComparisonTable } from "@/components/ComparisonTable";
 import { ScopeBoundaryNote } from "@/components/ScopeBoundaryNote";
 import { TierCta } from "@/components/TierCta";
-import { PREREQUISITE_NOTE, pricingTiers } from "@/data/pricing";
+import {
+  DECISION_REVIEW_PREREQUISITE_NOTE,
+  PREREQUISITE_NOTE,
+  pricingTiers,
+} from "@/data/pricing";
 import { DELIVERY_ENQUIRY_EMAIL } from "@/data/content";
 import { positioning } from "@/data/positioning";
 import { JsonLd } from "@/components/JsonLd";
@@ -25,8 +29,8 @@ interface AdvisoryPageProps {
 }
 
 /**
- * The subscription funnel, deliberately its own page rather than a landing
- * section. Two different intents need two different entry points: the primary
+ * The offers page (one-off review, subscriptions, Fractional CTO), deliberately
+ * its own page rather than a landing section. Two different intents need two different entry points: the primary
  * CTA books a consultation, this page is where a visitor who already knows
  * what they want goes to compare and subscribe. It also gives the offers a
  * shareable, indexable URL to send to a prospect.
@@ -35,7 +39,7 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
   useDocumentMeta({
     title: "CTO Advisory Plans | TRENDev",
     description:
-      "Three ways to work with a senior CTO: CTO Advisor (€1,500/month), CTO Advisor+ (€2,500/month) and Fractional CTO (from €6,000/month), all excluding applicable taxes. Cancel anytime on the Advisor subscriptions.",
+      "Four ways to work with a senior CTO: CTO Decision Review (€1,500 one-time, one decision), CTO Advisor (€1,500/month), CTO Advisor+ (€2,500/month) and Fractional CTO (from €6,000/month), all excluding applicable taxes.",
     canonicalPath: "/advisory",
   });
 
@@ -56,11 +60,11 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
           </a>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch">
           {pricingTiers.map((tier) => (
             <div
               key={tier.id}
-              className={`relative p-6 sm:p-8 glass rounded-2xl flex flex-col ${
+              className={`relative p-6 glass rounded-2xl flex flex-col ${
                 tier.recommended ? "border-accent/40" : ""
               }`}
             >
@@ -102,6 +106,13 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
                   </li>
                 ))}
               </ul>
+              {/* "Before purchase", adjacent to this offer's own CTA. */}
+              {tier.cta.kind === "call" && (
+                <p className="text-xs text-foreground mb-5 flex items-start gap-2">
+                  <CalendarCheck className="w-4 h-4 text-accent shrink-0" />
+                  <span>{DECISION_REVIEW_PREREQUISITE_NOTE}</span>
+                </p>
+              )}
               <div className="mt-auto">
                 <TierCta tier={tier} onOpenConsultation={onOpenConsultation} />
                 <div className="text-center mt-3">
@@ -138,7 +149,7 @@ export function AdvisoryPage({ onOpenConsultation }: AdvisoryPageProps) {
 
         <div className="mt-12 sm:mt-16">
           <h2 className="text-2xl sm:text-3xl text-center mb-6">
-            Compare the three engagements
+            Compare the four engagements
           </h2>
           <ComparisonTable />
         </div>

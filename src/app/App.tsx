@@ -45,7 +45,7 @@ function Page({
     case "faq":
       return <FaqPage onOpenConsultation={onOpenConsultation} />;
     case "welcome":
-      return <WelcomePage />;
+      return <WelcomePage variant={route.variant} />;
     case "notFound":
       return <NotFoundPage />;
   }
