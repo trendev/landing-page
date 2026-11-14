@@ -1,7 +1,5 @@
 import {
   Brain,
-  BrainCircuit,
-  CalendarRange,
   ClipboardCheck,
   Cloud,
   Code,
@@ -22,7 +20,6 @@ import type {
   EngagementMode,
   MethodologyStep,
   Project,
-  ProductizedOffer,
   ProofCase,
   ServiceItem,
   WhyChooseItem,
@@ -95,7 +92,7 @@ export const expertise: ServiceItem[] = [
   },
   {
     icon: Target,
-    title: "CTO as a Service",
+    title: "Fractional CTO",
     description:
       "When a transition, hiring plan or platform programme needs senior ownership.",
     detailedContent: {
@@ -372,38 +369,6 @@ export const outcomes: string[] = [
   "Team handover and next steps",
 ];
 
-/** Named, fixed-scope entry points shown in the Offers section. */
-export const offers: ProductizedOffer[] = [
-  {
-    icon: ClipboardCheck,
-    name: "CTO Audit",
-    duration: "2-week assessment",
-    summary: "Before a major technical commitment or investment: assess the platform, the team and the risks, then decide what to tackle first.",
-    deliverables: ["Architecture review", "Engineering review", "Prioritized action plan"],
-  },
-  {
-    icon: BrainCircuit,
-    name: "AI Readiness Assessment",
-    duration: "Focused engagement",
-    summary: "Before committing a team to AI: assess use cases, data readiness and how you would evaluate value.",
-    deliverables: ["AI opportunities map", "Risk analysis", "Implementation roadmap"],
-  },
-  {
-    icon: Compass,
-    name: "Engineering Scale Blueprint",
-    duration: "Strategic engagement",
-    summary: "When coordination is slowing delivery: define squad ownership, hiring priorities and the operating model.",
-    deliverables: ["Operating model", "Org recommendations", "Execution roadmap"],
-  },
-  {
-    icon: CalendarRange,
-    name: "90-Day Transformation Plan",
-    duration: "90-day plan",
-    summary: "When change spans several teams: turn the direction into a sequenced first-quarter plan with owners and milestones.",
-    deliverables: ["Prioritized initiatives", "Milestones", "Leadership plan"],
-  },
-];
-
 /* ── Engagement modes & delivery model (issue #47) ──────────────────────
  *
  * TRENDev advises, leads and delivers. Advisory exclusions are the scope of
@@ -418,31 +383,12 @@ export const offers: ProductizedOffer[] = [
 export const DELIVERY_CTA_LABEL = "Discuss a delivery project";
 
 /**
- * Engagement modes, by the client's need. Names match `pricing.ts` exactly;
- * tailored delivery is deliberately not a tier and has no price.
+ * The three offers shown beside the featured CTO Decision Review card, by the
+ * client's need. Names match `pricing.ts` exactly. The landing page presents
+ * the four public offers and nothing else: tailored delivery is not a tier and
+ * stays a separate CTA (HowWeDeliver, Cta), never a card here.
  */
 export const engagementModes: EngagementMode[] = [
-  {
-    need: "Assess a product, a platform or the technology behind an investment",
-    engagement: "Technical assessment & due diligence",
-    responsibility:
-      "A separately scoped review of the technology, team and delivery risks, with findings and recommendations for founders or investors.",
-    deliverables: ["Technical findings and risks", "Prioritised recommendations"],
-    href: "/#offers",
-    cta: "Explore a technical assessment",
-  },
-  {
-    // One bounded question goes to the one-off review (issue #59), not to a
-    // subscription; recurring decisions keep their own row below.
-    need: "Pressure-test one technology decision before committing resources",
-    engagement: "CTO Decision Review",
-    responsibility:
-      "A one-off review of one agreed decision, within 4 hours in total. You keep the decision and its execution.",
-    deliverables: ["Written decision brief", "Walkthrough of the findings"],
-    href: "/services/cto-decision-review",
-    cta: "CTO Decision Review",
-    tierId: "cto-decision-review",
-  },
   {
     need: "Get recurring advice on architecture, roadmap and hiring decisions",
     engagement: "CTO Advisor",
@@ -464,7 +410,7 @@ export const engagementModes: EngagementMode[] = [
     tierId: "cto-advisor-plus",
   },
   {
-    need: "Lead a technology transition or structure a growing engineering organisation",
+    need: "Lead a technology transition, structure a growing engineering organisation or assess a technology investment",
     engagement: "Fractional CTO",
     responsibility:
       "Explicitly scoped leadership, authority, coordination and follow-through.",
@@ -472,15 +418,14 @@ export const engagementModes: EngagementMode[] = [
     href: "/services/fractional-cto",
     cta: "Fractional CTO",
     tierId: "fractional-cto",
-  },
-  {
-    need: "Build an MVP, deliver a platform change or launch a product capability",
-    engagement: "Tailored delivery engagement",
-    responsibility:
-      "Defined scope, delivery responsibilities, acceptance criteria and fees. Trusted partners may take part.",
-    deliverables: ["Implemented changes", "Agreed validation and handover"],
-    href: "/#contact",
-    cta: DELIVERY_CTA_LABEL,
+    // Broad assessments are scoped Fractional CTO missions, not offers of
+    // their own: the landing page shows four offers and nothing orphaned.
+    missions: [
+      "Technical audit & due diligence",
+      "AI readiness assessment",
+      "Engineering scale blueprint",
+      "90-day transformation plan",
+    ],
   },
 ];
 

@@ -62,18 +62,27 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
   site's `FAQPage` JSON-LD), `NotFoundPage`;
   `legalLayout.tsx` is the shared legal-page shell.
 - `src/components/` — one component per page section (Header, Hero,
-  Methodology, Offers, WhyChoose, Expertise, Services, Technologies, Faq, Cta,
-  Footer). `ServiceCard` is the shared card for the Expertise + Services grids.
-  `Methodology` (the `Understand → Prioritize → Execute → Scale` step
-  indicator + qualitative outcomes) and `Offers` (named, fixed-scope
-  productized entry points, e.g. "CTO Audit", distinct from the subscription
-  tiers on `/advisory`) carry the buying-journey content added for issue #8.
+  WhyChoose, Offers, HowWeDeliver, Methodology, Expertise, Services,
+  Technologies, Faq, Cta, Footer). `ServiceCard` is the shared card for the Expertise + Services grids.
+  `Methodology` is the `Understand → Prioritize → Execute → Scale` step
+  indicator + qualitative outcomes. `Offers` (`#offers`, placed right after
+  WhyChoose) is the landing page's **single offers section: the 4 public
+  offers and nothing else**: the featured CTO Decision Review card (price,
+  checkout) then one card each for CTO Advisor, CTO Advisor+ and Fractional
+  CTO (no prices, linking to `/services/*`), plus "Compare all four offers"
+  (`/advisory`). It also carries the legacy `#engagements` anchor. The old
+  "separately scoped assessments" (CTO Audit, AI Readiness, Scale Blueprint,
+  90-Day Plan) and the "Technical assessment & due diligence" row were
+  orphans not tied to any offer; they are now the Fractional CTO card's
+  "Typical scoped missions" (`missions`). Don't add a fifth card, an
+  assessment block or a delivery card back.
   `EngagementModels` was removed when issue #19 decided its fate: it was
   generic, unlinked filler duplicating messaging already covered by Hero,
   Offers, WhyChoose and Services, and it did not fit the premium boutique
   positioning `/advisory` was built for.
-  `EngagementModes` (need → engagement → responsibility → outputs, advise /
-  lead / deliver) and `HowWeDeliver` (senior leadership + trusted repeat partners, the
+  `EngagementModes` (a 6-row need → engagement table) was removed when the
+  offers were consolidated: it duplicated `Offers` and listed assessment and
+  delivery rows as if they were offers. `HowWeDeliver` (senior leadership + trusted repeat partners, the
   advice-to-delivery safeguards, and anonymised `proofCases`) carry the
   firm-level positioning of issue #47. `ScopeBoundaryNote` is site chrome shown
   on `/advisory` and the two Advisor `/services/*` pages, **beside** the frozen
@@ -92,14 +101,16 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
   comparison (cards below `lg`, table from `lg`); both are used by
   `/advisory` and `/services/*` only. **The landing page has no
   pricing/subscription section**; its one price is the CTO Decision Review card
-  in `Offers`; see the commercial guardrails below.
+  in `Offers` (the other three offer cards there carry no price); see the
+  commercial guardrails below.
 - `src/components/modals/` — `Modal` is the shared backdrop wrapper;
   `DetailModal` / `ConsultationModal` / `ProjectsModal` build on it.
 - `src/components/icons/GithubIcon.tsx` / `MediumIcon.tsx` — inline brand marks
   (lucide v1 dropped brand icons; do not re-add an icon dependency for them).
 - **All page copy lives under `src/data/`**, not in components:
   - `content.ts` — landing sections (expertise, services, whyChoose, projects,
-    methodologySteps, outcomes, offers, engagementModes,
+    methodologySteps, outcomes, engagementModes (the 3 offer cards beside
+    the Decision Review, by need; Fractional CTO carries `missions`),
     deliveryPrinciples, adviceSafeguards, proofCases) plus `navLinks`,
     `legalLinks`, `CALENDLY_URL`, `DELIVERY_ENQUIRY_EMAIL`,
     `DELIVERY_CTA_LABEL`, `GITHUB_URL`, `MEDIUM_URL` (the "Tales of a CTO"
@@ -283,7 +294,7 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
   tried the other way and reverted twice — the landing page links out, it does
   not host the plans. The **one exception** is the CTO Decision Review card at
   the top of `#offers` (issue #59): a single one-off entry offer with its price,
-  deliberately kept apart from the separately scoped assessments below it.
+  above the three unpriced offer cards.
   `check-positioning.mjs` allows exactly that price above the FAQ and no
   monthly one.
 - Terms versions are immutable once their PDF is committed: publishing a

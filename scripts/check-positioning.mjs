@@ -66,19 +66,27 @@ try {
   assert.equal(welcomeSteps.find(step => step.id === 'schedule-session').cta.href, ADVISORY_BOOKING_URL);
   assert.ok(welcome.includes(`href="${ADVISORY_BOOKING_URL}"`), 'Onboarding must render the paid-session link');
   assert.ok(!landing.includes(ADVISORY_BOOKING_URL), 'The paid calendar is not a prospect CTA');
-  assert.ok(engagementModes.some(mode => mode.engagement === 'Technical assessment & due diligence' && mode.href === '/#offers'));
-  assert.ok(engagementModes.some(mode => mode.engagement === 'CTO Advisor'));
-  // A single decision goes to the one-off review, recurring advice to Advisor.
-  const decisionRow = engagementModes.find(mode => /one technology decision/.test(mode.need));
-  assert.equal(decisionRow?.href, '/services/cto-decision-review');
+  // Four public offers on the landing page, nothing else: the Decision Review
+  // card plus exactly these three. Assessments are Fractional CTO missions, and
+  // delivery is a separate CTA, never an offer card.
+  assert.deepEqual(engagementModes.map(mode => mode.tierId), ['cto-advisor', 'cto-advisor-plus', 'fractional-cto']);
   assert.match(engagementModes.find(mode => mode.engagement === 'CTO Advisor').need, /recurring/i);
+  assert.ok(engagementModes.find(mode => mode.tierId === 'fractional-cto').missions?.some(m => /due diligence/i.test(m)), 'Due diligence is a Fractional CTO mission');
+  const offersOnly = offersSection.slice(0, offersSection.indexOf('</section>'));
+  for (const orphan of ['Separately scoped assessments', 'Tailored delivery engagement', 'CTO Audit', 'Technical assessment &amp; due diligence']) {
+    assert.ok(!offersOnly.includes(orphan), `Orphaned offer back in #offers: ${orphan}`);
+  }
+  for (const slug of ['cto-decision-review', 'cto-advisor', 'cto-advisor-plus', 'fractional-cto']) {
+    assert.ok(offersOnly.includes(`href="/services/${slug}"`), `#offers must link /services/${slug}`);
+  }
+  assert.ok(!landing.includes('CTO as a Service'), 'One name per offer: Fractional CTO');
   assert.ok(landing.includes('href="/services/cto-decision-review"'), 'Homepage must link the Decision Review page');
   for (const unsupported of ['Deployments from days to minutes', 'Production AI delivered in weeks', 'measurable returns']) {
     assert.ok(!landing.includes(unsupported), `Unverified claim: ${unsupported}`);
   }
   const captureRoutes = JSON.parse(readFileSync('scripts/figma-sync/routes.json', 'utf8'));
   assert.ok(captureRoutes.find(r => r.slug === 'overlay-projects').before.includes('explore our engineering resources'));
-  console.log('Positioning smoke checks passed: hero, audiences, anchors, assessment, advisory, delivery, booking and capture selector.');
+  console.log('Positioning smoke checks passed: hero, audiences, anchors, four offers, advisory, delivery, booking and capture selector.');
 } finally {
   await server.close();
 }
