@@ -522,8 +522,8 @@ export const faqEntries: FaqEntry[] = [
       "**CTO Decision Review** if there is one decision to resolve, such as a development proposal, a migration or a rewrite, and what you want is a written recommendation on it rather than ongoing advice.",
       "**CTO Advisor** if the technology decisions arrive at roughly the pace of a couple a month, you already have someone competent running delivery, and what you want is a sounding board and an outside review.",
       "**CTO Advisor+** if decisions arrive weekly, if the engineering organisation is growing, if you have board or investor conversations that need technical substance, or if you want the quarterly discipline of a structured review.",
-      "**Fractional CTO** if you need someone to own something rather than advise on it: a transformation, a governance model, a due diligence process, or a turnaround.",
-      "**None of the plans** if what you need is a broad assessment or due diligence, scoped on its own, or a defined piece of work designed and implemented: that is a [tailored delivery engagement](/faq#can-you-deliver-a-project), scoped and priced on its own.",
+      "**Fractional CTO** if you need someone to own something rather than advise on it: a transformation, a governance model, a due diligence process, or a turnaround. Broad assessments (a technical audit, technical due diligence, an AI readiness assessment, an engineering scale blueprint or a 90-day transformation plan) are scoped Fractional CTO missions.",
+      "**None of the plans** if what you need is a defined piece of work designed and implemented: that is a [tailored delivery engagement](/faq#can-you-deliver-a-project), scoped and priced on its own.",
     ],
     keywords: ["choose", "recommend", "which one", "fit"],
     related: [

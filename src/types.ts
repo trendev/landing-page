@@ -36,15 +36,6 @@ export interface MethodologyStep {
   points: string[];
 }
 
-export interface ProductizedOffer {
-  icon: LucideIcon;
-  name: string;
-  /** Short engagement length, e.g. "2-week assessment". */
-  duration: string;
-  summary: string;
-  deliverables: string[];
-}
-
 /* ── Engagement modes & delivery model (issue #47) ─────────────────────── */
 
 export interface EngagementMode {
@@ -56,11 +47,13 @@ export interface EngagementMode {
   responsibility: string;
   /** Tangible outputs, not activities. */
   deliverables: string[];
-  /** Where to go next: a route (`/services/...`) or the delivery enquiry. */
+  /** The offer's service page (`/services/...`). */
   href: string;
   cta: string;
-  /** Set only on the rows that are a named offer; shows its product icon (issue #61). */
-  tierId?: TierId;
+  /** The offer this row presents; shows its product icon (issue #61). */
+  tierId: TierId;
+  /** Typical scoped missions run within this offer (Fractional CTO only). */
+  missions?: string[];
 }
 
 export interface DeliveryPrinciple {

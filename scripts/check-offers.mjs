@@ -318,9 +318,9 @@ try {
     const landing = render(LandingPage, props);
     const advisory = render(AdvisoryPage, props);
     const count = (html, s) => html.split(s).length - 1;
-    // Selector rows (desktop + mobile) for all four, plus the review card.
-    for (const id of ids) assert.ok(count(landing, icon(id)) >= 2, `landing selector lacks ${id}`);
-    assert.ok(count(landing, icon(DR)) >= 3, 'the review card shows its icon');
+    // One responsive #offers section: each of the four offers is one card with
+    // its icon, shown once (the review's featured card included).
+    for (const id of ids) assert.equal(count(landing, icon(id)), 1, `landing #offers card for ${id}`);
     // /advisory: card + mobile comparison card + desktop comparison header.
     for (const id of ids) assert.equal(count(advisory, icon(id)), 3, `/advisory ${id}`);
     for (const { slug, tierId } of serviceDescriptions) {

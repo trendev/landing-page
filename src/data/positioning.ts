@@ -26,11 +26,6 @@ export const positioning = {
       "Advice must stand on its own. If we propose a follow-on delivery engagement, we disclose that commercial interest and agree it separately.",
     resourcesLink: "Explore our engineering resources",
   },
-  engagements: {
-    title: "Advice, leadership and delivery",
-    description:
-      "A one-off review for a single technical decision. Ongoing advice for recurring decisions. CTO leadership or a delivery team for work that needs execution. Each engagement has a clear scope; you can start with any of them.",
-  },
   methodology: {
     title: "How we work",
     description:
@@ -38,12 +33,11 @@ export const positioning = {
     outputsTitle: "What we define with you",
   },
   offers: {
-    title: "Start with a clear plan",
+    title: "Four ways to work with us",
     description:
-      "Not ready to commit to a broader mission? Start with one defined question and a concrete output. None of this is a mandatory first step: you can also brief us directly on recurring advice, leadership or delivery work.",
-    assessmentsTitle: "Separately scoped assessments",
-    assessmentsDescription:
-      "For questions wider than one decision. Scope, duration and fees are agreed per engagement.",
+      "Resolve one technical decision, get recurring advice, or bring in CTO leadership. Each offer has a clear scope, and you can start with any of them.",
+    missionsTitle: "Typical scoped missions",
+    compareLink: "Compare all four offers",
   },
   expertise: {
     title: "Our expertise",
