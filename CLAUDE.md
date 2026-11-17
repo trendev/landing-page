@@ -113,6 +113,7 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
     the Decision Review, by need; Fractional CTO carries `missions`),
     deliveryPrinciples, adviceSafeguards, proofCases) plus `navLinks`,
     `legalLinks`, `CALENDLY_URL`, `DELIVERY_ENQUIRY_EMAIL`,
+    `GENERAL_ENQUIRY_EMAIL` (the written first contact, issue #65),
     `DELIVERY_CTA_LABEL`, `GITHUB_URL`, `MEDIUM_URL` (the "Tales of a CTO"
     publication, issue #52).
     **`proofCases` are anonymised and source-grounded only**: never name a
@@ -262,8 +263,9 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
   everything else points at `/`. `BackLink` is `print:hidden`, so it never
   reaches the Terms PDF.
 - **The Hero's commercial CTAs come first.** Two buttons (consultation +
-  advisory plans) carry the hero; "Explore selected engagements" is a subdued text link
-  underneath and must not be promoted back to a third button competing with
+  advisory plans) carry the hero; the written-contact link (issue #65) and
+  "Explore selected engagements" are subdued text links
+  underneath and must not be promoted to a third button competing with
   them. It points to the anonymised cases; the engineering-resources modal
   remains available from `HowWeDeliver`.
 - **Two funnels, two buttons — never merge them.** Booking a consultation and
@@ -280,6 +282,23 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
   (`DELIVERY_CTA_LABEL` → `DELIVERY_ENQUIRY_EMAIL`, a prefilled mailto) is for
   tailored implementation work. It is not a tier, has no price and must never
   route to Stripe checkout; advisory is never a prerequisite for it.
+- **A fourth path: written first contact, no meeting required** (issue #65).
+  "Prefer to start in writing? Tell us what you're deciding." (hero) and
+  "Prefer email? Write to contact@trendev.fr" (`#contact`, showing the bare
+  address as the fallback) both use `GENERAL_ENQUIRY_EMAIL`: a general subject,
+  never the delivery one, and a prompt that asks for no documents. They stay
+  text links, never a form, backend or CRM (the future intake app is a
+  separate issue). An email does not replace the free call required before an
+  Advisor/Advisor+ subscription. `check-positioning.mjs` guards all of this.
+- **Technology Oversight is positioning, not an offer.** It is how the existing
+  offers are explained to investors (independent CTO judgment on evidence,
+  risks and decisions). Never add a fifth card, a portfolio retainer, an
+  "AI-powered audit", continuous monitoring or a promised speed gain. The hero
+  leads with decisions ("Make technology decisions you can defend.") and keeps
+  founders and software teams as explicitly welcome as investors.
+  Team maturity (investor card) is described through observable capabilities:
+  role coverage, reliance on key people, review practices. Never individual
+  ratings, a verdict from commit counts, or a judgement on the incumbent CTO.
 - **TRENDev advises, leads and delivers.** The Advisor exclusions ("TRENDev
   advises, your team decides and executes", no hands-on implementation) are
   the subscriptions' scope, frozen in the Terms annexes — not a firm-wide

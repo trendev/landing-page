@@ -6,6 +6,7 @@ import {
   CALENDLY_URL,
   DELIVERY_CTA_LABEL,
   DELIVERY_ENQUIRY_EMAIL,
+  GENERAL_ENQUIRY_EMAIL,
 } from "@/data/content";
 import {
   ADVISORY_PATH,
@@ -49,6 +50,17 @@ export function Cta() {
               {DELIVERY_CTA_LABEL}
             </a>
           </div>
+          {/* General written first contact (issue #65): a text link, so it never
+              competes with the buttons, and it shows the bare address as the
+              fallback when no mail client opens. Not the delivery enquiry. */}
+          <p className="mt-6 text-sm sm:text-base">
+            <a
+              href={GENERAL_ENQUIRY_EMAIL}
+              className="text-foreground/90 hover:text-accent transition-colors underline underline-offset-4"
+            >
+              {positioning.cta.writtenContactLabel}
+            </a>
+          </p>
         </div>
       </div>
     </section>

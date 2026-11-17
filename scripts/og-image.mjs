@@ -28,7 +28,7 @@ try {
   // The hero's proof line starts right at the 630px fold; half a sentence
   // along the bottom edge reads as a broken crop.
   await page
-    .getByText(/^Engineering and CTO expertise spanning/)
+    .getByText(/^Senior CTO and engineering experience/)
     .evaluate((el) => (el.style.visibility = 'hidden'));
   await page.waitForTimeout(500);
   await page.screenshot({ path: 'public/og-image.jpg', type: 'jpeg', quality: 88 });

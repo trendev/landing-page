@@ -11,7 +11,7 @@ try {
   const { LandingPage } = await server.ssrLoadModule('/src/pages/LandingPage.tsx');
   const { AdvisoryPage } = await server.ssrLoadModule('/src/pages/AdvisoryPage.tsx');
   const { positioning } = await server.ssrLoadModule('/src/data/positioning.ts');
-  const { engagementModes, DELIVERY_ENQUIRY_EMAIL, MEDIUM_URL, proofCases } = await server.ssrLoadModule('/src/data/content.ts');
+  const { engagementModes, DELIVERY_ENQUIRY_EMAIL, GENERAL_ENQUIRY_EMAIL, CONTACT_ADDRESS, MEDIUM_URL, proofCases } = await server.ssrLoadModule('/src/data/content.ts');
   const landing = renderToStaticMarkup(createElement(LandingPage, { onOpenConsultation() {} }));
   const advisory = renderToStaticMarkup(createElement(AdvisoryPage, { onOpenConsultation() {} }));
 
@@ -28,6 +28,12 @@ try {
   for (const audience of ['For founders', 'For growing startups', 'For investors']) {
     assert.ok(landing.includes(audience), `Missing audience: ${audience}`);
   }
+  // Team maturity is described through observable capabilities, never as
+  // individual ratings (Technology Oversight framing, Notion 2026-11-15).
+  const { whyChoose } = await server.ssrLoadModule('/src/data/content.ts');
+  const investorCard = whyChoose.find(item => item.title === 'For investors').description;
+  assert.match(investorCard, /team.s maturity/, 'Investor card must mention team maturity');
+  assert.ok(!/rating|score|ranking/i.test(investorCard), 'No individual scoring in the investor card');
   assert.equal(proofCases.length, 3);
   assert.ok(landing.includes('Approximately 90 engineers'));
   assert.ok(landing.includes('100+ EC2 instances'));
@@ -49,6 +55,20 @@ try {
   assert.ok(DELIVERY_ENQUIRY_EMAIL.startsWith('mailto:'));
   assert.ok(landing.includes(DELIVERY_ENQUIRY_EMAIL));
   assert.ok(advisory.includes(DELIVERY_ENQUIRY_EMAIL));
+  // Written first contact without a meeting (issue #65): a general subject,
+  // never the delivery one, offered as a text link in the hero and in #contact,
+  // with the bare address visible as the fallback.
+  assert.ok(GENERAL_ENQUIRY_EMAIL.startsWith(`mailto:${CONTACT_ADDRESS}?`));
+  assert.notEqual(GENERAL_ENQUIRY_EMAIL, DELIVERY_ENQUIRY_EMAIL);
+  assert.ok(!/delivery/i.test(decodeURIComponent(GENERAL_ENQUIRY_EMAIL.split('subject=')[1].split('&')[0])), 'The general enquiry must not become a delivery enquiry');
+  const generalHref = `href="${GENERAL_ENQUIRY_EMAIL.replace(/&/g, '&amp;')}"`;
+  const hero = landing.slice(0, landing.indexOf('id="why-choose"'));
+  const contact = landing.slice(landing.indexOf('id="contact"'));
+  assert.ok(hero.includes(generalHref), 'Hero must offer the written first contact');
+  assert.ok(contact.includes(generalHref), '#contact must offer the written first contact');
+  assert.ok(contact.includes(CONTACT_ADDRESS), '#contact must show the address as a fallback');
+  // The hero keeps exactly two buttons; the written contact stays a text link.
+  assert.equal((hero.match(/class="[^"]*px-5 sm:px-6/g) || []).length, 2, 'Hero must keep exactly two CTA buttons');
   for (const price of ['1,500', '2,500', '6,000']) assert.ok(advisory.includes(price));
   assert.ok(advisory.includes('excluding applicable taxes'));
   assert.ok(advisory.includes('before starting an engagement'));
@@ -86,7 +106,7 @@ try {
   }
   const captureRoutes = JSON.parse(readFileSync('scripts/figma-sync/routes.json', 'utf8'));
   assert.ok(captureRoutes.find(r => r.slug === 'overlay-projects').before.includes('explore our engineering resources'));
-  console.log('Positioning smoke checks passed: hero, audiences, anchors, four offers, advisory, delivery, booking and capture selector.');
+  console.log('Positioning smoke checks passed: hero, audiences, anchors, four offers, advisory, delivery, written contact, booking and capture selector.');
 } finally {
   await server.close();
 }

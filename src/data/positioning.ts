@@ -1,23 +1,27 @@
+import { CONTACT_ADDRESS } from "@/data/content";
+
 /** Buyer-facing copy. Contractual service definitions remain unchanged. */
 export const positioning = {
   hero: {
-    eyebrow: "CTO advisory · Technology leadership · Product delivery",
-    title: "Your technology partner, from idea to scale.",
+    eyebrow: "Independent CTO advice · Technology leadership · Product delivery",
+    title: "Make technology decisions you can defend.",
     description:
-      "For founders building a product, startups scaling their teams and investors assessing technology. TRENDev brings technical advice, CTO leadership and hands-on delivery to turn your next step into a clear plan and concrete work.",
+      "Before you commit to a software investment, a major product change or a delivery plan, understand what the evidence supports. TRENDev helps founders, software teams and investors clarify technical risks, make informed decisions and bring in the right leadership or delivery support.",
     proof:
-      "Engineering and CTO expertise spanning two-squad teams and organisations of approximately 90 engineers.",
+      "Senior CTO and engineering experience, from teams of 10 engineers to organisations of approximately 90 engineers.",
+    /** A plain text link, never a third button competing with the two CTAs. */
+    writtenContactLink: "Prefer to start in writing? Tell us what you’re deciding.",
     workLink: "Explore selected engagements",
   },
   challenges: {
-    title: "Technical support for your next step",
+    title: "Clarity before the next commitment.",
     description:
-      "Launch a product, scale an engineering organisation or assess a technology investment. We help you understand the choices, make a plan and bring in the expertise to move forward.",
+      "Whether you’re building a product, backing a software company or growing an engineering organisation, important technical choices affect budget, delivery and future options. We help you examine the evidence, understand the trade-offs and identify a sensible next step.",
   },
   delivery: {
-    title: "Concrete work behind the expertise",
+    title: "Experience behind the recommendations.",
     description:
-      "Selected engagements illustrating the experience brought to TRENDev missions. Real constraints, specific work and documented scope — with client identities kept confidential.",
+      "Selected engagements show the work behind TRENDev’s judgment: comparing architecture options, structuring engineering teams and navigating delivery constraints. Each example describes a real scope of work, with client identities kept confidential.",
     modelTitle: "Senior leadership. A delivery team shaped around the mission.",
     modelDescription:
       "TRENDev combines a senior technical lead with trusted delivery partners who have worked together repeatedly. We agree the team, responsibilities and delivery milestones around your needs, alongside your own engineers.",
@@ -35,7 +39,7 @@ export const positioning = {
   offers: {
     title: "Four ways to work with us",
     description:
-      "Resolve one technical decision, get recurring advice, or bring in CTO leadership. Each offer has a clear scope, and you can start with any of them.",
+      "One decision to examine, recurring CTO advice, or leadership for a defined technology challenge. Choose the engagement that matches the responsibility you need. No bigger programme is required just to get started.",
     missionsTitle: "Typical scoped missions",
     compareLink: "Compare all four offers",
   },
@@ -50,9 +54,11 @@ export const positioning = {
       "Build a product, modernise a platform or bring a new capability into production. We combine architecture, cloud, AI and software engineering around the work your project needs.",
   },
   cta: {
-    title: "Let’s talk about your next step",
+    title: "What technology decision are you facing?",
     description:
-      "An agency proposal to assess, a migration to unblock, a CTO transition or a technical review before an investment? Start with a free 20-minute call. We clarify your situation, the support and responsibility you need, and whether there is a useful next step. No preparation or commitment required. This is an introductory conversation, not a technical audit. You can also email a project brief directly.",
+      "A supplier proposal to assess, a platform change to plan, a CTO transition or a technical question around an investment? Tell us what you’re trying to decide. Start with a free 20-minute introductory call or write to us directly. No preparation or confidential documents are needed. This is an introductory exchange, not a free technical audit.",
+    /** General written first contact; distinct from the delivery enquiry. */
+    writtenContactLabel: `Prefer email? Write to ${CONTACT_ADDRESS}`,
   },
   advisory: {
     title: "CTO advice and leadership for your business",
