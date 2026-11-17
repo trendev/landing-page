@@ -28,6 +28,12 @@ try {
   for (const audience of ['For founders', 'For growing startups', 'For investors']) {
     assert.ok(landing.includes(audience), `Missing audience: ${audience}`);
   }
+  // Team maturity is described through observable capabilities, never as
+  // individual ratings (Technology Oversight framing, Notion 2026-11-15).
+  const { whyChoose } = await server.ssrLoadModule('/src/data/content.ts');
+  const investorCard = whyChoose.find(item => item.title === 'For investors').description;
+  assert.match(investorCard, /team.s maturity/, 'Investor card must mention team maturity');
+  assert.ok(!/rating|score|ranking/i.test(investorCard), 'No individual scoring in the investor card');
   assert.equal(proofCases.length, 3);
   assert.ok(landing.includes('Approximately 90 engineers'));
   assert.ok(landing.includes('100+ EC2 instances'));

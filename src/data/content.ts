@@ -267,7 +267,7 @@ export const whyChoose: WhyChooseItem[] = [
     icon: Compass,
     title: "For investors",
     description:
-      "Before an investment or while supporting a portfolio company, get an independent technical perspective on the platform, engineering organisation, delivery commitments and key dependencies. Understand what the evidence shows, what remains uncertain and which decisions need attention.",
+      "Before an investment or while supporting a portfolio company, get an independent technical perspective on the platform, delivery commitments and key dependencies, and on the engineering team’s maturity: role coverage, reliance on key people and how technical decisions are reviewed. Understand what the evidence shows, what remains uncertain and which decisions need attention.",
   },
 ];
 

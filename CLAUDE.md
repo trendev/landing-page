@@ -296,6 +296,9 @@ content scripts; deploy.yml runs it before the build. No linter is configured.
   "AI-powered audit", continuous monitoring or a promised speed gain. The hero
   leads with decisions ("Make technology decisions you can defend.") and keeps
   founders and software teams as explicitly welcome as investors.
+  Team maturity (investor card) is described through observable capabilities:
+  role coverage, reliance on key people, review practices. Never individual
+  ratings, a verdict from commit counts, or a judgement on the incumbent CTO.
 - **TRENDev advises, leads and delivers.** The Advisor exclusions ("TRENDev
   advises, your team decides and executes", no hands-on implementation) are
   the subscriptions' scope, frozen in the Terms annexes — not a firm-wide
