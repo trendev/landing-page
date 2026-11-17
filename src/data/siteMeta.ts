@@ -27,7 +27,7 @@ export const siteMeta = {
   /** The social card copy differs from <title>/description on purpose. */
   ogTitle: "CTO Advisory, Technical Due Diligence & Delivery | TRENDev",
   ogDescription:
-    "Your technology partner, from idea to scale. Technical advice, CTO leadership and delivery for founders, growing startups and investors.",
+    "Make technology decisions you can defend. Independent CTO advice, leadership and delivery for founders, software teams and investors.",
   /**
    * Google ignores meta keywords (Bing weighs them, lightly). Keep them to
    * services the site actually names, never terms it does not substantiate.

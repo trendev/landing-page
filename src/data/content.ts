@@ -255,19 +255,19 @@ export const whyChoose: WhyChooseItem[] = [
     icon: Rocket,
     title: "For founders",
     description:
-      "Turn a project into a product. Get support with technical feasibility, architecture, an MVP roadmap and implementation — whether you have an engineering team or are putting one together.",
+      "Bringing a product to market or assessing a supplier’s proposal? Get experienced CTO guidance on feasibility, priorities, architecture and what needs to be verified before you commit. When implementation is needed, TRENDev can help scope and deliver the work separately.",
   },
   {
     icon: Users,
     title: "For growing startups",
     description:
-      "Keep product delivery moving as customers and teams grow. Strengthen your architecture, structure your engineering organisation and bring in leadership or delivery capacity for the next stage.",
+      "Keep architecture, engineering capacity and product commitments aligned as you grow. Challenge roadmap assumptions, clarify ownership and bring in senior CTO advice or operational leadership when the next stage requires it.",
   },
   {
     icon: Compass,
     title: "For investors",
     description:
-      "Get a clear technical view before an investment or during portfolio support. Assess the product, architecture, engineering organisation and delivery risks through technical due diligence, then define practical priorities with the founders.",
+      "Before an investment or while supporting a portfolio company, get an independent technical perspective on the platform, engineering organisation, delivery commitments and key dependencies. Understand what the evidence shows, what remains uncertain and which decisions need attention.",
   },
 ];
 
@@ -535,5 +535,12 @@ export const CONTACT_ADDRESS = "contact@trendev.fr";
 /** Prefilled delivery-project mailto: never routed to subscription checkout. */
 export const DELIVERY_ENQUIRY_EMAIL =
   `mailto:${CONTACT_ADDRESS}?subject=Delivery%20project%20enquiry%20from%20TRENDev%20Website`;
+/**
+ * General written first contact (issue #65): no meeting required, and never a
+ * delivery-only subject. The body is a prompt only; it asks for no documents.
+ */
+export const GENERAL_ENQUIRY_EMAIL =
+  `mailto:${CONTACT_ADDRESS}?subject=${encodeURIComponent("Technology decision or project enquiry")}` +
+  `&body=${encodeURIComponent("What decision or project are you facing, and what would help you move forward?\n\n")}`;
 export const GITHUB_URL = "https://github.com/trendev";
 export const MEDIUM_URL = "https://medium.com/tales-of-a-cto";

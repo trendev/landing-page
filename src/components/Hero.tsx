@@ -1,6 +1,7 @@
 import { ArrowRight, Repeat } from "lucide-react";
 
 import { Link } from "@/app/router";
+import { GENERAL_ENQUIRY_EMAIL } from "@/data/content";
 import { ADVISORY_PATH, PRIMARY_CTA_LABEL, SECONDARY_CTA_LABEL } from "@/data/pricing";
 import { positioning } from "@/data/positioning";
 
@@ -42,9 +43,16 @@ export function Hero({ onOpenConsultation }: HeroProps) {
             {SECONDARY_CTA_LABEL}
           </Link>
         </div>
-        {/* Deliberately a text link, not a third button: the two CTAs above are
-            the commercial paths and must not compete with a portfolio view. */}
-        <div className="mt-5 sm:mt-6 px-4">
+        {/* Deliberately text links, not more buttons: the two CTAs above are
+            the commercial paths. The written contact (issue #65) needs no
+            meeting; the work link leads to the anonymised cases. */}
+        <div className="mt-5 sm:mt-6 px-4 flex flex-col items-center gap-3">
+          <a
+            href={GENERAL_ENQUIRY_EMAIL}
+            className="text-sm sm:text-base text-foreground/90 hover:text-accent transition-colors underline underline-offset-4"
+          >
+            {positioning.hero.writtenContactLink}
+          </a>
           <Link
             href="/#how-we-deliver"
             className="text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
